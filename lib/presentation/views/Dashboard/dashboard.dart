@@ -1,16 +1,40 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
+import 'package:pawcare_pro/domain/model/pet.dart';
 import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/PetProfile/petprofile.dart';
 import 'package:pawcare_pro/presentation/views/widgets/appbar.dart';
+import 'package:pawcare_pro/service/petinfo_service.dart';
 
-class Dashboard extends StatelessWidget {
+class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  final PetInfoService _petInfoService = PetInfoService();
+
+  //to store all the values that is fetched from db
+  List<PetInfo> _pet = [];
+
+  //loading/fetching data from the hive
+  Future<void> _loadPets() async {
+    //the datas recived from the db is stored into list
+    _pet = await _petInfoService.getPet();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _loadPets();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +52,7 @@ class Dashboard extends StatelessWidget {
               GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => PetProfile()));
+                      MaterialPageRoute(builder: (context) => const PetProfile()));
                 },
                 child: Container(
                   height: 150,
@@ -43,8 +67,8 @@ class Dashboard extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            heading2('PetName'),
-                            subject('Type | Breed')
+                            heading2(_pet.first.name),
+                            subject('${_pet.first.type} | ${_pet.first.breed}')
                           ],
                         ),
                       ),
@@ -52,28 +76,32 @@ class Dashboard extends StatelessWidget {
                   ),
                 ),
               ),
-              const Positioned(
+              Positioned(
                   left: 160,
                   top: -50,
                   child: CircleAvatar(
-                    backgroundColor: Color.fromARGB(28, 196, 229, 255),
+                    backgroundColor: const Color.fromARGB(28, 196, 229, 255),
                     radius: 120,
                     child: CircleAvatar(
-                        backgroundColor: Color.fromARGB(80, 196, 229, 255),
+                        backgroundColor: const Color.fromARGB(80, 196, 229, 255),
                         radius: 100,
                         child: CircleAvatar(
-                            backgroundColor: Color.fromARGB(100, 196, 229, 255),
-                            radius: 80,
-                            child: CircleAvatar(
-                              backgroundColor:
-                                  Color.fromARGB(80, 196, 229, 255),
-                              radius: 60,
-                              child: FaIcon(
-                                FontAwesomeIcons.paw,
-                                size: 70,
-                                color: Colors.white,
-                              ),
-                            ))),
+                          backgroundColor: const Color.fromARGB(100, 196, 229, 255),
+                          radius: 80,
+                          child: _pet.first.image != null
+                              ? CircleAvatar(
+                                  backgroundImage:
+                                      FileImage(File(_pet.first.image ?? '')),
+                                  radius: 65,
+                                )
+                              : const CircleAvatar(
+                                  radius: 65,
+                                  child: Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                        )),
                   ))
             ])
           ],

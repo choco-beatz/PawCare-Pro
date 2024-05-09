@@ -1,5 +1,8 @@
+import 'dart:io';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
@@ -25,6 +28,16 @@ class _AddPetState extends State<AddPet> {
   String gender = 'none';
   String size = 'none';
 
+  //for image
+  String? image;
+
+  //for dates
+  DateTime bdate = DateTime.now();
+  DateTime adate = DateTime.now();
+
+  String? formattedADate;
+  String? formattedBDate;
+
   final PetInfoService _petInfoService = PetInfoService();
 
   //TextEditingControllers
@@ -33,6 +46,19 @@ class _AddPetState extends State<AddPet> {
   final TextEditingController _breedController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _weigthController = TextEditingController();
+
+  // void _showDatePicker() {
+  //   showDatePicker(
+  //           // barrierColor: mainBG,
+  //           context: context,
+  //           firstDate: DateTime(2000),
+  //           lastDate: DateTime(2025))
+  //       .then((value) {
+  //     setState(() {
+  //       date = value!;
+  //     });
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +80,7 @@ class _AddPetState extends State<AddPet> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Stack(clipBehavior: Clip.none, children: [
-                const Center(
+                Center(
                   child: CircleAvatar(
                     backgroundColor: grey,
                     radius: 150,
@@ -67,11 +93,18 @@ class _AddPetState extends State<AddPet> {
                         child: CircleAvatar(
                           backgroundColor: mainBG,
                           radius: 119,
-                          child: FaIcon(
-                            FontAwesomeIcons.paw,
-                            size: 150,
-                            color: Colors.white,
-                          ),
+                          child: image != null
+                              ? CircleAvatar(
+                                  backgroundImage: FileImage(File(image ?? '')),
+                                  radius: 90,
+                                )
+                              : const CircleAvatar(
+                                  radius: 90,
+                                  child: Icon(
+                                    Icons.camera_alt_outlined,
+                                    color: Colors.white,
+                                  ),
+                                ),
                         ),
                       ),
                     ),
@@ -86,7 +119,11 @@ class _AddPetState extends State<AddPet> {
                       color: Colors.white,
                     ),
                     child: IconButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          getMainImagesFromGallery();
+                          // if (image == null) return;
+                          // imageBytes = await image.readAsBytes();
+                        },
                         icon: const Icon(
                           size: 25,
                           Icons.image_outlined,
@@ -102,7 +139,6 @@ class _AddPetState extends State<AddPet> {
                     height: 120,
                     width: 180,
                     child: RadioMenuButton(
-                      
                       value: 'dog',
                       style: fieldRadio,
                       groupValue: selected,
@@ -148,7 +184,7 @@ class _AddPetState extends State<AddPet> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor(" Enter pet's name"),
                   controller: _nameController,
                 ),
@@ -159,19 +195,18 @@ class _AddPetState extends State<AddPet> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
-                   style: TextStyle(color: Colors.white, fontSize: 20),
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
                     decoration: fieldDecor(" Enter pet's breed"),
                     controller: _breedController),
               ),
               line,
               label('Appearance and distinctive signs'),
               SizedBox(
-                height: 52,
+                // height: 52,
                 width: 370,
                 child: TextFormField(
-                   style: TextStyle(color: Colors.white, fontSize: 20),
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
+                    style: const TextStyle(color: Colors.white, fontSize: 20),
+                    maxLines: 4,
                     decoration:
                         fieldDecor(" Enter Appearance and distinctive signs"),
                     controller: _descriptionController),
@@ -313,7 +348,7 @@ class _AddPetState extends State<AddPet> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
-                   style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: const TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor("Enter Weight in Kg"),
                   controller: _weigthController,
                   keyboardType: TextInputType.number,
@@ -322,7 +357,26 @@ class _AddPetState extends State<AddPet> {
               line,
               label('Important Dates'),
               OutlinedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(() {
+                      //  DateTime selDate = await _showDatePicker;
+                      showDatePicker(
+                              // barrierColor: mainBG,
+                              context: context,
+                              initialDate: bdate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2025))
+                          .then((value) {
+                        setState(() {
+                          bdate = value!;
+                        });
+                      });
+                      formattedBDate = DateFormat('dd-MM-yyyy').format(bdate!);
+                      print(formattedBDate);
+                    });
+                    // _showDatePicker;
+                    // formattedDate = DateFormat('dd-MM-yyyy').format(date);
+                  },
                   style: dateButton,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -339,7 +393,26 @@ class _AddPetState extends State<AddPet> {
                   )),
               line,
               OutlinedButton(
-                  onPressed: () {},
+                   onPressed: () {
+                    setState(() {
+                      //  DateTime selDate = await _showDatePicker;
+                      showDatePicker(
+                              // barrierColor: mainBG,
+                              context: context,
+                              initialDate: adate,
+                              firstDate: DateTime(2000),
+                              lastDate: DateTime(2025))
+                          .then((value) {
+                        setState(() {
+                          adate = value!;
+                        });
+                      });
+                      formattedADate = DateFormat('dd-MM-yyyy').format(bdate!);
+                      
+                    });
+                    // _showDatePicker;
+                    // formattedDate = DateFormat('dd-MM-yyyy').format(date);
+                  },
                   style: dateButton,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -365,7 +438,10 @@ class _AddPetState extends State<AddPet> {
                         description: _descriptionController.text,
                         gender: gender,
                         size: size,
-                        weight: _weigthController.text);
+                        weight: _weigthController.text,
+                        image: image ?? '',
+                        bday: formattedBDate ?? '',
+                        aday: formattedADate ?? '');
 
                     await _petInfoService.addPet(pet);
                     _nameController.clear();
@@ -373,8 +449,10 @@ class _AddPetState extends State<AddPet> {
                     _descriptionController.clear();
                     _weigthController.clear();
 
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Dashboard()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const Dashboard()));
                   },
                   style: mainButton,
                   child: const Text('Save'))
@@ -383,5 +461,18 @@ class _AddPetState extends State<AddPet> {
         ),
       ),
     );
+  }
+
+  Future getMainImagesFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 100,
+        maxHeight: 1000,
+        maxWidth: 1000);
+    XFile xfilePick = pickedFile!;
+
+    setState(() {
+      image = xfilePick.path;
+    });
   }
 }

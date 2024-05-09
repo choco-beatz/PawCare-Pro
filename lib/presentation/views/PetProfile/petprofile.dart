@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/button.dart';
@@ -57,20 +59,29 @@ class _PetProfileState extends State<PetProfile> {
             children: [
               Row(
                 children: [
-                  const CircleAvatar(
-                      backgroundColor: lightGrey,
-                      radius: 90,
-                      child: CircleAvatar(
-                        backgroundColor: fieldColor,
-                        radius: 75,
-                        child: FaIcon(FontAwesomeIcons.paw),
-                      )),
+                  CircleAvatar(
+                    backgroundColor: lightGrey,
+                    radius: 90,
+                    child: _pet.first.image != null
+                        ? CircleAvatar(
+                            backgroundImage:
+                                FileImage(File(_pet.first.image ?? '')),
+                            radius: 70,
+                          )
+                        : const CircleAvatar(
+                            radius: 70,
+                            child: Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
+                  ),
                   Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        heading2("${_pet.first.name}"),
+                        heading2(_pet.first.name),
                         subject('${_pet.first.type} | ${_pet.first.breed}')
                       ],
                     ),
@@ -80,21 +91,22 @@ class _PetProfileState extends State<PetProfile> {
               space,
               space,
               label('Appearence and distinctive signs'),
-              subject2('${_pet.first.description}'),
+              subject2(_pet.first.description),
               space,
+              line,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Gender'), label2('${_pet.first.gender}')],
+                children: [subject2('Gender'), label2(_pet.first.gender)],
               ),
               line,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Size'), label2('${_pet.first.size}')],
+                children: [subject2('Size'), label2(_pet.first.size)],
               ),
               line,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Weight'), label2('${_pet.first.weight}')],
+                children: [subject2('Weight'), label2(_pet.first.weight)],
               ),
               space,
               space,
@@ -115,7 +127,7 @@ class _PetProfileState extends State<PetProfile> {
                   )),
                 ),
                 title: subject2('Birthday'),
-                subtitle: label2('data'),
+                subtitle: label2(_pet.first.bday),
               ),
               line,
               ListTile(
@@ -134,7 +146,7 @@ class _PetProfileState extends State<PetProfile> {
                   )),
                 ),
                 title: subject2('Adoption Day'),
-                subtitle: label2('data'),
+                subtitle: label2(_pet.first.aday),
               ),
               space,
               space,
@@ -146,7 +158,7 @@ class _PetProfileState extends State<PetProfile> {
                         MaterialPageRoute(builder: (context) => AddPet()));
                   },
                   style: mainButton,
-                  child: Text('Edit'))
+                  child: const Text('Edit'))
             ],
           ),
         ),

@@ -26,13 +26,25 @@ class PetInfo {
   @HiveField(6)
   late String weight;
 
-  PetInfo({
-    required this.type,
-    required this.name,
-    required this.breed,
-    required this.description,
-    required this.gender,
-    required this.size,
-    required this.weight,
-  });
+  @HiveField(7)
+  late String image;
+
+@HiveField(8)
+  late String bday;
+
+  @HiveField(9)
+  late String aday;
+
+
+  PetInfo(
+      {required this.type,
+      required this.name,
+      required this.breed,
+      required this.description,
+      required this.gender,
+      required this.size,
+      required this.weight,
+      required this.image,
+      required this.bday,
+      required this.aday,});
 }
