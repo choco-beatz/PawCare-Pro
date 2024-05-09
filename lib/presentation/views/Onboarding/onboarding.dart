@@ -57,6 +57,7 @@ class Onboarding extends StatelessWidget {
               height: 52,
               width: 370,
               child: TextFormField(
+                 style: TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor(' Enter your name')),
             ),
             const SizedBox(

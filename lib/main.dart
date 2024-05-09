@@ -1,7 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
+import 'package:pawcare_pro/constant/colors.dart';
+import 'package:pawcare_pro/domain/model/pet.dart';
 import 'package:pawcare_pro/presentation/views/Splash/splash_screen.dart';
+import 'package:pawcare_pro/service/petinfo_service.dart';
 
-void main() {
+void main() async {
+  //initializing hive
+  await Hive.initFlutter();
+  //getting the adapter that we created pet.g.dart
+  Hive.registerAdapter(PetInfoAdapter());
+  await PetInfoService().openBox();
   runApp(const MyApp());
 }
 
@@ -10,9 +19,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(primaryColor: mainColor, focusColor: Colors.white),
       home: SplashScreen(),
     );
   }

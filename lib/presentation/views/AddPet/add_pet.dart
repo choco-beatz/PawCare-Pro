@@ -5,10 +5,12 @@ import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/constant/textField.dart';
+import 'package:pawcare_pro/domain/model/pet.dart';
 import 'package:pawcare_pro/presentation/views/AddPet/widgets/field_style.dart';
 
 import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/Dashboard/dashboard.dart';
+import 'package:pawcare_pro/service/petinfo_service.dart';
 
 class AddPet extends StatefulWidget {
   AddPet({super.key});
@@ -18,9 +20,19 @@ class AddPet extends StatefulWidget {
 }
 
 class _AddPetState extends State<AddPet> {
+  //for radio
   String selected = 'none';
   String gender = 'none';
   String size = 'none';
+
+  final PetInfoService _petInfoService = PetInfoService();
+
+  //TextEditingControllers
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _breedController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _weigthController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -90,6 +102,7 @@ class _AddPetState extends State<AddPet> {
                     height: 120,
                     width: 180,
                     child: RadioMenuButton(
+                      
                       value: 'dog',
                       style: fieldRadio,
                       groupValue: selected,
@@ -134,16 +147,21 @@ class _AddPetState extends State<AddPet> {
               SizedBox(
                 height: 52,
                 width: 370,
-                child:
-                    TextFormField(decoration: fieldDecor(" Enter pet's name")),
+                child: TextFormField(
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  decoration: fieldDecor(" Enter pet's name"),
+                  controller: _nameController,
+                ),
               ),
               line,
               label('Breed'),
               SizedBox(
                 height: 52,
                 width: 370,
-                child:
-                    TextFormField(decoration: fieldDecor(" Enter pet's breed")),
+                child: TextFormField(
+                   style: TextStyle(color: Colors.white, fontSize: 20),
+                    decoration: fieldDecor(" Enter pet's breed"),
+                    controller: _breedController),
               ),
               line,
               label('Appearance and distinctive signs'),
@@ -151,10 +169,12 @@ class _AddPetState extends State<AddPet> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
+                   style: TextStyle(color: Colors.white, fontSize: 20),
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
                     decoration:
-                        fieldDecor(" Enter Appearance and distinctive signs")),
+                        fieldDecor(" Enter Appearance and distinctive signs"),
+                    controller: _descriptionController),
               ),
               line,
               label('Gender'),
@@ -293,7 +313,9 @@ class _AddPetState extends State<AddPet> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
+                   style: TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor("Enter Weight in Kg"),
+                  controller: _weigthController,
                   keyboardType: TextInputType.number,
                 ),
               ),
@@ -335,7 +357,22 @@ class _AddPetState extends State<AddPet> {
               space,
               space,
               FilledButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    final pet = PetInfo(
+                        type: selected,
+                        name: _nameController.text,
+                        breed: _breedController.text,
+                        description: _descriptionController.text,
+                        gender: gender,
+                        size: size,
+                        weight: _weigthController.text);
+
+                    await _petInfoService.addPet(pet);
+                    _nameController.clear();
+                    _breedController.clear();
+                    _descriptionController.clear();
+                    _weigthController.clear();
+
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => Dashboard()));
                   },

@@ -11,18 +11,31 @@ class SplashScreen extends StatefulWidget {
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> {
+class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMixin{
+  AnimationController? controller;
   @override
   void initState() {
     super.initState();
+    controller =
+        BottomSheet.createAnimationController(this);
+    controller?.duration = Duration(seconds: 2);
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      
       openBottomSheet(context);
+
     });
+  }
+
+@override
+  void dispose() {
+    controller?.dispose();
+    super.dispose();
   }
 
   openBottomSheet(BuildContext context) async {
     await Future.delayed(const Duration(seconds: 3), () {});
     showModalBottomSheet(
+      transitionAnimationController: controller,
         context: context,
         builder: (BuildContext context) {
           return Container(
