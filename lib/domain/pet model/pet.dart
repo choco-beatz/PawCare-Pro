@@ -35,6 +35,9 @@ class PetInfo {
   @HiveField(9)
   late String aday;
 
+  @HiveField(10)
+  late int? id;
+
 
   PetInfo(
       {required this.type,
@@ -46,5 +49,6 @@ class PetInfo {
       required this.weight,
       required this.image,
       required this.bday,
-      required this.aday,});
+      required this.aday,
+      this.id});
 }

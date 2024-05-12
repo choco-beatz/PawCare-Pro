@@ -1,8 +1,10 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pawcare_pro/domain/model/pet.dart';
+import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 
 class PetInfoService {
   Box<PetInfo>? _petInfoBox;
+
+  //to insert the generated id into db
 
   //to create/open the box
   Future<void> openBox() async {
@@ -19,31 +21,45 @@ class PetInfoService {
     if (_petInfoBox == null) {
       await openBox();
     }
-    await _petInfoBox!.add(pet);
+
+    await _petInfoBox!.put(pet.id, pet);
   }
 
+  // //to get datas from the box
+  // Future<List<PetInfo>> getPet() async {
+  //   if (_petInfoBox == null) {
+  //     await openBox();
+  //   }
+  //   final list = <PetInfo>[];
+  //   for (var i in _petInfoBox!.values) {
+  //     list.add(i);
+  //   }
+  //   return _petInfoBox!.values.toList();
+  // }
+
   //to get datas from the box
-  Future<List<PetInfo>> getPet() async {
+  Future<PetInfo?> getPet(int? id) async {
     if (_petInfoBox == null) {
       await openBox();
     }
-    return _petInfoBox!.values.toList();
+    final pet = _petInfoBox!.get(id);
+    return pet;
   }
 
   //to update datas in the box
-  Future<void> updatePet(int index, PetInfo pet) async {
+  Future<void> updatePet(PetInfo pet) async {
     if (_petInfoBox == null) {
       await openBox();
     }
 
-    await _petInfoBox!.putAt(index, pet);
+    await _petInfoBox!.put(pet.id, pet);
   }
 
   //to delete data in the box
-  Future<void>deletePet(int index) async{
-     if (_petInfoBox == null) {
+  Future<void> deletePet(int id) async {
+    if (_petInfoBox == null) {
       await openBox();
     }
-    await _petInfoBox!.deleteAt(index);
+    await _petInfoBox!.delete(id);
   }
 }

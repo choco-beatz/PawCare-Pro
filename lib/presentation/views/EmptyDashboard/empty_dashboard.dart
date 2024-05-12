@@ -13,7 +13,7 @@ class EmptyDash extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBar,
+      appBar:PreferredSize(preferredSize: Size.fromHeight(115), child: Appbar()),
       backgroundColor: mainBG,
       body: Padding(
         padding: const EdgeInsets.only(right: 25, left: 25),

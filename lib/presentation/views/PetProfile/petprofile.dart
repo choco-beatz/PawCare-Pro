@@ -6,15 +6,18 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
-import 'package:pawcare_pro/domain/model/pet.dart';
-import 'package:pawcare_pro/presentation/views/AddPet/add_pet.dart';
+import 'package:pawcare_pro/domain/pet%20model/pet.dart';
+
 import 'package:pawcare_pro/presentation/views/AddPet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/EditPetProfile/editpetprofile.dart';
+
 import 'package:pawcare_pro/presentation/views/PetProfile/widgets/data_style.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 
 class PetProfile extends StatefulWidget {
-  const PetProfile({super.key});
+  final int? petId;
+  const PetProfile({super.key, this.petId});
 
   @override
   State<PetProfile> createState() => _PetProfileState();
@@ -24,12 +27,13 @@ class _PetProfileState extends State<PetProfile> {
   final PetInfoService _petInfoService = PetInfoService();
 
   //to store all the values that is fetched from db
-  List<PetInfo> _pet = [];
+  // List<PetInfo> _pet = [];
+  PetInfo? _pet;
 
   //loading/fetching data from the hive
   Future<void> _loadPets() async {
     //the datas recived from the db is stored into list
-    _pet = await _petInfoService.getPet();
+    _pet = await _petInfoService.getPet(widget.petId);
     setState(() {});
   }
 
@@ -62,10 +66,10 @@ class _PetProfileState extends State<PetProfile> {
                   CircleAvatar(
                     backgroundColor: lightGrey,
                     radius: 90,
-                    child: _pet.first.image != null
+                    child: _pet!.image != null
                         ? CircleAvatar(
                             backgroundImage:
-                                FileImage(File(_pet.first.image ?? '')),
+                                FileImage(File(_pet!.image ?? '')),
                             radius: 70,
                           )
                         : const CircleAvatar(
@@ -81,8 +85,8 @@ class _PetProfileState extends State<PetProfile> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        heading2(_pet.first.name),
-                        subject('${_pet.first.type} | ${_pet.first.breed}')
+                        heading2(_pet!.name),
+                        subject('${_pet!.type} | ${_pet!.breed}')
                       ],
                     ),
                   )
@@ -91,22 +95,22 @@ class _PetProfileState extends State<PetProfile> {
               space,
               space,
               label('Appearence and distinctive signs'),
-              subject2(_pet.first.description),
+              subject2(_pet!.description),
               space,
               line,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Gender'), label2(_pet.first.gender)],
+                children: [subject2('Gender'), label2(_pet!.gender)],
               ),
               line,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Size'), label2(_pet.first.size)],
+                children: [subject2('Size'), label2(_pet!.size)],
               ),
               line,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Weight'), label2(_pet.first.weight)],
+                children: [subject2('Weight'), label2(_pet!.weight)],
               ),
               space,
               space,
@@ -127,7 +131,7 @@ class _PetProfileState extends State<PetProfile> {
                   )),
                 ),
                 title: subject2('Birthday'),
-                subtitle: label2(_pet.first.bday),
+                subtitle: label2(_pet!.bday),
               ),
               line,
               ListTile(
@@ -146,7 +150,7 @@ class _PetProfileState extends State<PetProfile> {
                   )),
                 ),
                 title: subject2('Adoption Day'),
-                subtitle: label2(_pet.first.aday),
+                subtitle: label2(_pet!.aday),
               ),
               space,
               space,
@@ -154,8 +158,10 @@ class _PetProfileState extends State<PetProfile> {
               space,
               FilledButton(
                   onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AddPet()));
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => EditPetProfile(PetID: _pet!.id,)));
                   },
                   style: mainButton,
                   child: const Text('Edit'))

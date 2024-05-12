@@ -1,8 +1,7 @@
 import 'dart:io';
-import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
@@ -14,14 +13,15 @@ import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/Dashboard/dashboard.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 
-class AddPet extends StatefulWidget {
-  AddPet({super.key});
+class EditPetProfile extends StatefulWidget {
+  final int? PetID;
+  const EditPetProfile({super.key, this.PetID});
 
   @override
-  State<AddPet> createState() => _AddPetState();
+  State<EditPetProfile> createState() => _EditPetProfileState();
 }
 
-class _AddPetState extends State<AddPet> {
+class _EditPetProfileState extends State<EditPetProfile> {
   //for radio
   String selected = 'none';
   String gender = 'none';
@@ -38,27 +38,36 @@ class _AddPetState extends State<AddPet> {
   String? formattedBDate;
 
   final PetInfoService _petInfoService = PetInfoService();
-  late PetInfo? pet;
 
   //TextEditingControllers
-
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _breedController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
-  final TextEditingController _weigthController = TextEditingController();
+  final TextEditingController _weightController = TextEditingController();
 
-  // void _showDatePicker() {
-  //   showDatePicker(
-  //           // barrierColor: mainBG,
-  //           context: context,
-  //           firstDate: DateTime(2000),
-  //           lastDate: DateTime(2025))
-  //       .then((value) {
-  //     setState(() {
-  //       date = value!;
-  //     });
-  //   });
-  // }
+  //to store all the values that is fetched from db
+  // List<PetInfo> _pet = [];
+  late PetInfo? _pet;
+
+  //loading/fetching data from the hive
+  Future<void> _loadPets() async {
+    //the datas recived from the db is stored into list
+    // _pet = await _petInfoService.getPet();
+    _pet = await _petInfoService.getPet(widget.PetID);
+      _nameController.text = _pet!.name;
+      _breedController.text = _pet!.breed;
+      _descriptionController.text = _pet!.description;
+      _weightController.text = _pet!.weight;
+    
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    _loadPets();
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +77,7 @@ class _AddPetState extends State<AddPet> {
         backgroundColor: mainBG,
         foregroundColor: Colors.white,
         title: const Text(
-          'Add Pet Profile',
+          'Edit Pet Profile',
           style: TextStyle(fontSize: 18),
         ),
         centerTitle: true,
@@ -79,59 +88,37 @@ class _AddPetState extends State<AddPet> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Stack(clipBehavior: Clip.none, children: [
-                Center(
-                  child: CircleAvatar(
-                    backgroundColor: grey,
-                    radius: 150,
-                    child: CircleAvatar(
-                      backgroundColor: mainBG,
-                      radius: 149,
-                      child: CircleAvatar(
-                        backgroundColor: grey,
-                        radius: 120,
-                        child: CircleAvatar(
-                          backgroundColor: mainBG,
-                          radius: 119,
-                          child: image != null
-                              ? CircleAvatar(
-                                  backgroundImage: FileImage(File(image ?? '')),
-                                  radius: 90,
-                                )
-                              : const CircleAvatar(
-                                  radius: 90,
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                        ),
-                      ),
-                    ),
+              Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: lightGrey,
+                    radius: 90,
+                    child: _pet!.image != null
+                        ? CircleAvatar(
+                            backgroundImage:
+                                FileImage(File(_pet!.image ?? '')),
+                            radius: 70,
+                          )
+                        : const CircleAvatar(
+                            radius: 70,
+                            child: Icon(
+                              Icons.camera_alt_outlined,
+                              color: Colors.white,
+                            ),
+                          ),
                   ),
-                ),
-                Positioned(
-                  left: 215,
-                  top: 210,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        heading2(_pet!.name),
+                        subject('${_pet!.type} | ${_pet!.breed}')
+                      ],
                     ),
-                    child: IconButton(
-                        onPressed: () async {
-                          getMainImagesFromGallery();
-                          // if (image == null) return;
-                          // imageBytes = await image.readAsBytes();
-                        },
-                        icon: const Icon(
-                          size: 25,
-                          Icons.image_outlined,
-                          color: mainColor,
-                        )),
-                  ),
-                )
-              ]),
+                  )
+                ],
+              ),
               label('Pet'),
               Row(
                 children: [
@@ -145,6 +132,8 @@ class _AddPetState extends State<AddPet> {
                       onChanged: (selection) {
                         setState(() {
                           selected = selection!;
+                          _pet!.type = selected;
+                          _petInfoService.updatePet(_pet!);
                         });
                       },
                       child: const FaIcon(
@@ -167,6 +156,8 @@ class _AddPetState extends State<AddPet> {
                       onChanged: (selection) {
                         setState(() {
                           selected = selection!;
+                          _pet!.type = selected;
+                          _petInfoService.updatePet(_pet!);
                         });
                       },
                       child: const FaIcon(
@@ -225,6 +216,8 @@ class _AddPetState extends State<AddPet> {
                         onChanged: (selection) {
                           setState(() {
                             gender = selection!;
+                            _pet!.gender = gender;
+                            _petInfoService.updatePet(_pet!);
                           });
                         },
                         child: subject('Female')),
@@ -242,6 +235,8 @@ class _AddPetState extends State<AddPet> {
                         onChanged: (selection) {
                           setState(() {
                             gender = selection!;
+                            _pet!.gender = gender;
+                            _petInfoService.updatePet(_pet!);
                           });
                         },
                         child: subject('Male')),
@@ -269,6 +264,8 @@ class _AddPetState extends State<AddPet> {
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
+                              _pet!.size = size;
+                              _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
@@ -296,6 +293,8 @@ class _AddPetState extends State<AddPet> {
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
+                              _pet!.size = size;
+                              _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
@@ -322,6 +321,8 @@ class _AddPetState extends State<AddPet> {
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
+                              _pet!.size = size;
+                              _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
@@ -350,7 +351,7 @@ class _AddPetState extends State<AddPet> {
                 child: TextFormField(
                   style: const TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor("Enter Weight in Kg"),
-                  controller: _weigthController,
+                  controller: _weightController,
                   keyboardType: TextInputType.number,
                 ),
               ),
@@ -371,7 +372,7 @@ class _AddPetState extends State<AddPet> {
                           bdate = value!;
                         });
                       });
-                      formattedBDate = DateFormat('dd-MM-yyyy').format(bdate!);
+                      formattedBDate = DateFormat('dd-MM-yyyy').format(bdate);
                       print(formattedBDate);
                     });
                     // _showDatePicker;
@@ -407,7 +408,7 @@ class _AddPetState extends State<AddPet> {
                           adate = value!;
                         });
                       });
-                      formattedADate = DateFormat('dd-MM-yyyy').format(bdate!);
+                      formattedADate = DateFormat('dd-MM-yyyy').format(bdate);
                     });
                     // _showDatePicker;
                     // formattedDate = DateFormat('dd-MM-yyyy').format(date);
@@ -430,29 +431,28 @@ class _AddPetState extends State<AddPet> {
               space,
               FilledButton(
                   onPressed: () async {
-                    final pet = PetInfo(
+                     final pet = PetInfo(
                         type: selected,
                         name: _nameController.text,
                         breed: _breedController.text,
                         description: _descriptionController.text,
                         gender: gender,
                         size: size,
-                        weight: _weigthController.text,
+                        weight: _weightController.text,
                         image: image ?? '',
                         bday: formattedBDate ?? '',
                         aday: formattedADate ?? '',
-                        id: DateTime.now().microsecond);
+                       );
 
-                    await _petInfoService.addPet(pet);
+                    await _petInfoService.updatePet(pet);
                     _nameController.clear();
                     _breedController.clear();
                     _descriptionController.clear();
-                    _weigthController.clear();
-
+                    _weightController.clear();
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>  Dashboard(petID: pet.id,)));
+                            builder: (context) => Dashboard(petID: pet.id,)));
                   },
                   style: mainButton,
                   child: const Text('Save'))
@@ -462,17 +462,5 @@ class _AddPetState extends State<AddPet> {
       ),
     );
   }
-
-  Future getMainImagesFromGallery() async {
-    final pickedFile = await ImagePicker().pickImage(
-        source: ImageSource.gallery,
-        imageQuality: 100,
-        maxHeight: 1000,
-        maxWidth: 1000);
-    XFile xfilePick = pickedFile!;
-
-    setState(() {
-      image = xfilePick.path;
-    });
-  }
 }
+

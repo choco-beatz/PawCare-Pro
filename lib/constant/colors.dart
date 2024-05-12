@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-const mainBG = Color.fromARGB(255, 16, 34, 61);
-const mainColor = Color.fromARGB(255, 0, 102, 255);
+const mainBG = Color.fromARGB(255, 38, 46, 58);
+const mainColor = Color.fromARGB(255, 25, 128, 239);
 const grey = Color.fromARGB(255, 82, 94, 113);
 const fieldColor = Color.fromARGB(68, 82, 94, 113);
 const lightGrey = Color.fromARGB(166, 111, 125, 147);

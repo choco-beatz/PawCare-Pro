@@ -1,13 +1,28 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/textField.dart';
+import 'package:pawcare_pro/domain/user%20model/user.dart';
 import 'package:pawcare_pro/presentation/views/EmptyDashboard/empty_dashboard.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
+import 'package:pawcare_pro/service/user_service.dart';
 
-class Onboarding extends StatelessWidget {
+class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
+
+  @override
+  State<Onboarding> createState() => _OnboardingState();
+}
+
+class _OnboardingState extends State<Onboarding> {
+  String? image;
+  final TextEditingController _usernameController = TextEditingController();
+
+  final UserInfoService _userInfoService = UserInfoService();
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +40,23 @@ class Onboarding extends StatelessWidget {
             subject('Please enter your information below to get started.'),
             sizedBox,
             Stack(clipBehavior: Clip.none, children: [
-              const CircleAvatar(
+              CircleAvatar(
                 backgroundColor: grey,
-                radius: 90,
-                child: Icon(
-                  size: 180,
-                  Icons.account_circle_outlined,
-                  color: Colors.white,
-                ),
+                radius: 95,
+                child: image != null
+                    ? CircleAvatar(
+                        backgroundImage: FileImage(File(image ?? '')),
+                        radius: 80,
+                      )
+                    : const CircleAvatar(
+                        radius: 80,
+                        backgroundColor: lightGrey,
+                        child: Icon(
+                          size: 65,
+                          Icons.camera_alt_outlined,
+                          color: Colors.white,
+                        ),
+                      ),
               ),
               Positioned(
                 left: 115,
@@ -43,7 +67,9 @@ class Onboarding extends StatelessWidget {
                     color: Colors.white,
                   ),
                   child: IconButton(
-                      onPressed: () {},
+                      onPressed: () async {
+                        getMainImagesFromGallery();
+                      },
                       icon: const Icon(
                         size: 25,
                         Icons.image_outlined,
@@ -53,18 +79,27 @@ class Onboarding extends StatelessWidget {
               )
             ]),
             sizedBox,
+            sizedBox,
             SizedBox(
               height: 52,
               width: 370,
               child: TextFormField(
-                 style: TextStyle(color: Colors.white, fontSize: 20),
-                  decoration: fieldDecor(' Enter your name')),
+                style: TextStyle(color: Colors.white, fontSize: 20),
+                decoration: fieldDecor(' Enter your name'),
+                controller: _usernameController,
+              ),
             ),
             const SizedBox(
-              height: 100,
+              height: 80,
             ),
             FilledButton(
-                onPressed: () {
+                onPressed: () async {
+                  final user = UserInfo(
+                      username: _usernameController.text, image: image ?? '',);
+
+                  await _userInfoService.adduser(user);
+                  _usernameController.clear();
+
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => EmptyDash()));
                 },
@@ -74,5 +109,18 @@ class Onboarding extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future getMainImagesFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 100,
+        maxHeight: 1000,
+        maxWidth: 1000);
+    XFile xfilePick = pickedFile!;
+
+    setState(() {
+      image = xfilePick.path;
+    });
   }
 }
