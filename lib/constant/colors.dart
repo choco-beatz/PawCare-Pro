@@ -6,3 +6,4 @@ const grey = Color.fromARGB(255, 82, 94, 113);
 const fieldColor = Color.fromARGB(68, 82, 94, 113);
 const lightGrey = Color.fromARGB(166, 111, 125, 147);
 const lightBlue = Color.fromARGB(255, 168, 203, 255);
+const lightgreen = Color.fromARGB(255, 169, 255, 226);

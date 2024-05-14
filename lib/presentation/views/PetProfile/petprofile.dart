@@ -34,7 +34,9 @@ class _PetProfileState extends State<PetProfile> {
   Future<void> _loadPets() async {
     //the datas recived from the db is stored into list
     _pet = await _petInfoService.getPet(widget.petId);
-    setState(() {});
+     if (mounted) {
+      setState(() {});
+    }
   }
 
   @override

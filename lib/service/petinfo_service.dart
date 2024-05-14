@@ -47,12 +47,15 @@ class PetInfoService {
   }
 
   //to update datas in the box
-  Future<void> updatePet(PetInfo pet) async {
+  Future<void> updatePet(int? id, PetInfo pet) async {
     if (_petInfoBox == null) {
       await openBox();
     }
-
-    await _petInfoBox!.put(pet.id, pet);
+    if (id != null) {
+      await _petInfoBox!.put(id, pet);
+    } else {
+      print(id);
+    }
   }
 
   //to delete data in the box

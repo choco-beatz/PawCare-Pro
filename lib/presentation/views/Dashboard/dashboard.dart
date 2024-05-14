@@ -1,11 +1,13 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
-import 'package:pawcare_pro/presentation/views/PetProfile/petprofile.dart';
+import 'package:pawcare_pro/presentation/views/Dashboard/widgets/active_profile.dart';
+import 'package:pawcare_pro/presentation/views/Dashboard/widgets/healthcard.dart';
+import 'package:pawcare_pro/presentation/views/HealthCard/Screens/healthcard_dashboard.dart';
 import 'package:pawcare_pro/presentation/views/widgets/appbar.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 
@@ -39,77 +41,45 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: const PreferredSize(
           preferredSize: Size.fromHeight(115), child: Appbar()),
       backgroundColor: mainBG,
       body: Padding(
-        padding: const EdgeInsets.all(25),
+        padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             label('Active Pet Profile'),
             space,
-            Stack(children: [
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PetProfile(petId: _pet!.id,)));
-                },
-                child: Container(
-                  height: 150,
-                  decoration: BoxDecoration(
-                      color: mainColor,
-                      borderRadius: BorderRadius.circular(20)),
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            heading2(_pet!.name),
-                            subject('${_pet!.type} | ${_pet!.breed}')
-                          ],
-                        ),
-                      ),
-                    ],
+            ActiveProfile(
+              petID: _pet!.id,
+            ),
+            space,
+            Column(children: [
+              Row(
+                children: [
+                 CardButton(
+                    bg: lightBlue,
+                    heading: 'Documents',
+                    image: 'asset/document.png',
                   ),
-                ),
+                  const SizedBox(
+                    width: 15,
+                  ),
+                  GestureDetector(
+                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HealthCardDashboard())),
+                    child: CardButton(
+                      bg: lightgreen,
+                      heading: 'Health Card',
+                      image: 'asset/veterinary.png',
+                    ),
+                  )
+                ],
               ),
-              Positioned(
-                  left: 160,
-                  top: -50,
-                  child: CircleAvatar(
-                    backgroundColor: const Color.fromARGB(28, 196, 229, 255),
-                    radius: 120,
-                    child: CircleAvatar(
-                        backgroundColor:
-                            const Color.fromARGB(80, 196, 229, 255),
-                        radius: 100,
-                        child: CircleAvatar(
-                          backgroundColor:
-                              const Color.fromARGB(100, 196, 229, 255),
-                          radius: 80,
-                          child: _pet!.image != null
-                              ? CircleAvatar(
-                                  backgroundImage:
-                                      FileImage(File(_pet!.image ?? '')),
-                                  radius: 65,
-                                )
-                              : const CircleAvatar(
-                                  radius: 65,
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                        )),
-                  ))
-            ])
+            ]),
           ],
         ),
       ),

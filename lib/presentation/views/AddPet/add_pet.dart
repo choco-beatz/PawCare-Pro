@@ -100,6 +100,7 @@ class _AddPetState extends State<AddPet> {
                                 )
                               : const CircleAvatar(
                                   radius: 90,
+                                  backgroundColor: lightGrey,
                                   child: Icon(
                                     Icons.camera_alt_outlined,
                                     color: Colors.white,
@@ -137,9 +138,9 @@ class _AddPetState extends State<AddPet> {
                 children: [
                   SizedBox(
                     height: 120,
-                    width: 180,
+                    width: 170,
                     child: RadioMenuButton(
-                      value: 'dog',
+                      value: 'Dog',
                       style: fieldRadio,
                       groupValue: selected,
                       onChanged: (selection) {
@@ -159,9 +160,9 @@ class _AddPetState extends State<AddPet> {
                   ),
                   SizedBox(
                     height: 120,
-                    width: 180,
+                    width: 170,
                     child: RadioMenuButton(
-                      value: 'cat',
+                      value: 'Cat',
                       style: fieldRadio,
                       groupValue: selected,
                       onChanged: (selection) {
@@ -217,9 +218,9 @@ class _AddPetState extends State<AddPet> {
                 children: [
                   SizedBox(
                     height: 60,
-                    width: 180,
+                    width: 170,
                     child: RadioMenuButton(
-                        value: 'female',
+                        value: 'Female',
                         style: fieldRadio,
                         groupValue: gender,
                         onChanged: (selection) {
@@ -234,9 +235,9 @@ class _AddPetState extends State<AddPet> {
                   ),
                   SizedBox(
                     height: 60,
-                    width: 180,
+                    width: 170,
                     child: RadioMenuButton(
-                        value: 'male',
+                        value: 'Male',
                         style: fieldRadio,
                         groupValue: gender,
                         onChanged: (selection) {
@@ -255,15 +256,15 @@ class _AddPetState extends State<AddPet> {
                 child: GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: 2,
-                  childAspectRatio: 2.25,
+                  childAspectRatio: 2.1,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   children: [
                     SizedBox(
                       height: 60,
-                      width: 95,
+                      width: 70,
                       child: RadioMenuButton(
-                          value: 'small',
+                          value: 'Small',
                           style: fieldRadio,
                           groupValue: size,
                           onChanged: (selection) {
@@ -272,7 +273,7 @@ class _AddPetState extends State<AddPet> {
                             });
                           },
                           child: const SizedBox(
-                            width: 120,
+                            width: 117,
                             child: ListTile(
                               title: Text(
                                 'Small',
@@ -288,9 +289,9 @@ class _AddPetState extends State<AddPet> {
                     ),
                     SizedBox(
                       height: 60,
-                      width: 95,
+                      width: 70,
                       child: RadioMenuButton(
-                          value: 'medium',
+                          value: 'Medium',
                           style: fieldRadio,
                           groupValue: size,
                           onChanged: (selection) {
@@ -299,7 +300,7 @@ class _AddPetState extends State<AddPet> {
                             });
                           },
                           child: const SizedBox(
-                            width: 120,
+                            width: 110,
                             child: ListTile(
                               title: Text(
                                 'Medium',
@@ -314,9 +315,9 @@ class _AddPetState extends State<AddPet> {
                           )),
                     ),
                     SizedBox(
-                      width: 95,
+                      width: 70,
                       child: RadioMenuButton(
-                          value: 'huge',
+                          value: 'Huge',
                           style: fieldRadio,
                           groupValue: size,
                           onChanged: (selection) {
@@ -325,7 +326,7 @@ class _AddPetState extends State<AddPet> {
                             });
                           },
                           child: const SizedBox(
-                            width: 120,
+                            width: 110,
                             child: ListTile(
                               title: Text(
                                 'Huge',
@@ -452,7 +453,9 @@ class _AddPetState extends State<AddPet> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>  Dashboard(petID: pet.id,)));
+                            builder: (context) => Dashboard(
+                                  petID: pet.id,
+                                )));
                   },
                   style: mainButton,
                   child: const Text('Save'))

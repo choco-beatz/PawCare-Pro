@@ -54,11 +54,14 @@ class _EditPetProfileState extends State<EditPetProfile> {
     //the datas recived from the db is stored into list
     // _pet = await _petInfoService.getPet();
     _pet = await _petInfoService.getPet(widget.PetID);
-      _nameController.text = _pet!.name;
-      _breedController.text = _pet!.breed;
-      _descriptionController.text = _pet!.description;
-      _weightController.text = _pet!.weight;
-    
+    _nameController.text = _pet!.name;
+    _breedController.text = _pet!.breed;
+    _descriptionController.text = _pet!.description;
+    _weightController.text = _pet!.weight;
+    selected = _pet!.type;
+    gender = _pet!.gender;
+    size = _pet!.size;
+
     setState(() {});
   }
 
@@ -95,8 +98,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                     radius: 90,
                     child: _pet!.image != null
                         ? CircleAvatar(
-                            backgroundImage:
-                                FileImage(File(_pet!.image ?? '')),
+                            backgroundImage: FileImage(File(_pet!.image ?? '')),
                             radius: 70,
                           )
                         : const CircleAvatar(
@@ -124,7 +126,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                 children: [
                   SizedBox(
                     height: 120,
-                    width: 180,
+                    width: 170,
                     child: RadioMenuButton(
                       value: 'dog',
                       style: fieldRadio,
@@ -133,7 +135,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                         setState(() {
                           selected = selection!;
                           _pet!.type = selected;
-                          _petInfoService.updatePet(_pet!);
+                          // _petInfoService.updatePet(_pet!);
                         });
                       },
                       child: const FaIcon(
@@ -148,7 +150,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                   ),
                   SizedBox(
                     height: 120,
-                    width: 180,
+                    width: 170,
                     child: RadioMenuButton(
                       value: 'cat',
                       style: fieldRadio,
@@ -157,7 +159,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                         setState(() {
                           selected = selection!;
                           _pet!.type = selected;
-                          _petInfoService.updatePet(_pet!);
+                          // _petInfoService.updatePet(_pet!);
                         });
                       },
                       child: const FaIcon(
@@ -208,7 +210,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                 children: [
                   SizedBox(
                     height: 60,
-                    width: 180,
+                    width: 170,
                     child: RadioMenuButton(
                         value: 'female',
                         style: fieldRadio,
@@ -217,7 +219,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                           setState(() {
                             gender = selection!;
                             _pet!.gender = gender;
-                            _petInfoService.updatePet(_pet!);
+                            // _petInfoService.updatePet(_pet!);
                           });
                         },
                         child: subject('Female')),
@@ -227,7 +229,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                   ),
                   SizedBox(
                     height: 60,
-                    width: 180,
+                    width: 170,
                     child: RadioMenuButton(
                         value: 'male',
                         style: fieldRadio,
@@ -236,7 +238,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                           setState(() {
                             gender = selection!;
                             _pet!.gender = gender;
-                            _petInfoService.updatePet(_pet!);
+                            // _petInfoService.updatePet(_pet!);
                           });
                         },
                         child: subject('Male')),
@@ -250,7 +252,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                 child: GridView.count(
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: 2,
-                  childAspectRatio: 2.25,
+                  childAspectRatio: 2.1,
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   children: [
@@ -265,11 +267,11 @@ class _EditPetProfileState extends State<EditPetProfile> {
                             setState(() {
                               size = selection!;
                               _pet!.size = size;
-                              _petInfoService.updatePet(_pet!);
+                              // _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
-                            width: 120,
+                            width: 117,
                             child: ListTile(
                               title: Text(
                                 'Small',
@@ -294,11 +296,11 @@ class _EditPetProfileState extends State<EditPetProfile> {
                             setState(() {
                               size = selection!;
                               _pet!.size = size;
-                              _petInfoService.updatePet(_pet!);
+                              // _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
-                            width: 120,
+                            width: 110,
                             child: ListTile(
                               title: Text(
                                 'Medium',
@@ -322,11 +324,11 @@ class _EditPetProfileState extends State<EditPetProfile> {
                             setState(() {
                               size = selection!;
                               _pet!.size = size;
-                              _petInfoService.updatePet(_pet!);
+                              // _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
-                            width: 120,
+                            width: 110,
                             child: ListTile(
                               title: Text(
                                 'Huge',
@@ -431,7 +433,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
               space,
               FilledButton(
                   onPressed: () async {
-                     final pet = PetInfo(
+                    final pet = PetInfo(
                         type: selected,
                         name: _nameController.text,
                         breed: _breedController.text,
@@ -442,17 +444,23 @@ class _EditPetProfileState extends State<EditPetProfile> {
                         image: image ?? '',
                         bday: formattedBDate ?? '',
                         aday: formattedADate ?? '',
-                       );
-
-                    await _petInfoService.updatePet(pet);
-                    _nameController.clear();
-                    _breedController.clear();
-                    _descriptionController.clear();
-                    _weightController.clear();
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Dashboard(petID: pet.id,)));
+                        id: _pet!.id);
+                    print(_pet!.id);
+                    await _petInfoService.updatePet(_pet!.id, pet).then((_) {
+                      _nameController.clear();
+                      _breedController.clear();
+                      _descriptionController.clear();
+                      _weightController.clear();
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => Dashboard(petID: pet.id,)));
+                      void complete()
+                      {
+                        Navigator.pop(context);
+                      }
+                      
+                    });
                   },
                   style: mainButton,
                   child: const Text('Save'))
@@ -463,4 +471,3 @@ class _EditPetProfileState extends State<EditPetProfile> {
     );
   }
 }
-
