@@ -444,6 +444,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                         image: image ?? '',
                         bday: formattedBDate ?? '',
                         aday: formattedADate ?? '',
+                        isActive: true,
                         id: _pet!.id);
                     print(_pet!.id);
                     await _petInfoService.updatePet(_pet!.id, pet).then((_) {

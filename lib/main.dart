@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pawcare_pro/constant/colors.dart';
+import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/domain/user%20model/user.dart';
 import 'package:pawcare_pro/presentation/views/Splash/splash_screen.dart';
+import 'package:pawcare_pro/service/certificate_services.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 import 'package:pawcare_pro/service/user_service.dart';
 
@@ -17,6 +19,11 @@ void main() async {
   //getting the adapter that we created user.g.dart
   Hive.registerAdapter(UserInfoAdapter());
   await UserInfoService().openBox();
+
+//getting the adapter that we created user.g.dart
+  Hive.registerAdapter(CertificateAdapter());
+  await CertificateService().openBox();
+
   runApp(const MyApp());
 }
 

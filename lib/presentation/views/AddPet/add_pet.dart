@@ -13,6 +13,7 @@ import 'package:pawcare_pro/presentation/views/AddPet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/Dashboard/dashboard.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AddPet extends StatefulWidget {
   AddPet({super.key});
@@ -442,13 +443,19 @@ class _AddPetState extends State<AddPet> {
                         image: image ?? '',
                         bday: formattedBDate ?? '',
                         aday: formattedADate ?? '',
-                        id: DateTime.now().microsecond);
+                        id: DateTime.now().microsecond,
+                        isActive: true);
 
                     await _petInfoService.addPet(pet);
                     _nameController.clear();
                     _breedController.clear();
                     _descriptionController.clear();
                     _weigthController.clear();
+
+                    //shared preference is initialized and a key and value is set
+                  final SharedPreferences sP =
+                      await SharedPreferences.getInstance();
+                  sP.setString('petname', pet.name);
 
                     Navigator.push(
                         context,

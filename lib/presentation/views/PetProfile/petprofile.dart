@@ -32,7 +32,7 @@ class _PetProfileState extends State<PetProfile> {
 
   //loading/fetching data from the hive
   Future<void> _loadPets() async {
-    //the datas recived from the db is stored into list
+    //the datas recived from the db is stored
     _pet = await _petInfoService.getPet(widget.petId);
      if (mounted) {
       setState(() {});

@@ -31,7 +31,28 @@ subject2(String data) {
   return Text(
     data,
     style: const TextStyle(
-      color: Color.fromARGB(255, 175, 175, 175),
+      color: Color.fromARGB(255, 211, 211, 211),
+      fontSize: 18,
+    ),
+  );
+}
+
+dateButtonText(String data) {
+  return Text(
+    data,
+    style: const TextStyle(
+      color: Colors.white,
+      fontSize: 18,
+    ),
+  );
+}
+
+leading(String data) {
+  return Text(
+    data,
+    style: const TextStyle(
+      fontWeight: FontWeight.w500,
+      color: Colors.white,
       fontSize: 18,
     ),
   );

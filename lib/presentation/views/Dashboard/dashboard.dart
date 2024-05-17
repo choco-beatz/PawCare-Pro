@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
-import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/Dashboard/widgets/active_profile.dart';
@@ -61,7 +59,7 @@ class _DashboardState extends State<Dashboard> {
             Column(children: [
               Row(
                 children: [
-                 CardButton(
+                  CardButton(
                     bg: lightBlue,
                     heading: 'Documents',
                     image: 'asset/document.png',
@@ -70,7 +68,10 @@ class _DashboardState extends State<Dashboard> {
                     width: 15,
                   ),
                   GestureDetector(
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => HealthCardDashboard())),
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => HealthCardDashboard())),
                     child: CardButton(
                       bg: lightgreen,
                       heading: 'Health Card',

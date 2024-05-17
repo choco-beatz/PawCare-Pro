@@ -14,7 +14,7 @@ class Appbar extends StatefulWidget {
 }
 
 class _AppbarState extends State<Appbar> {
-  final UserInfoService _UserInfoService = UserInfoService();
+  final UserInfoService _userInfoService = UserInfoService();
 
   //to store all the values that is fetched from db
   List<UserInfo> _user = [];
@@ -22,7 +22,7 @@ class _AppbarState extends State<Appbar> {
   //loading/fetching data from the hive
   Future<void> _loadUsers() async {
     //the datas recived from the db is stored into list
-    _user = await _UserInfoService.getuser();
+    _user = await _userInfoService.getuser();
     setState(() {});
   }
 

@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pawcare_pro/constant/button.dart';
@@ -10,6 +9,7 @@ import 'package:pawcare_pro/presentation/views/EmptyDashboard/empty_dashboard.da
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/service/user_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Onboarding extends StatefulWidget {
   const Onboarding({super.key});
@@ -84,7 +84,7 @@ class _OnboardingState extends State<Onboarding> {
               height: 52,
               width: 370,
               child: TextFormField(
-                style: TextStyle(color: Colors.white, fontSize: 20),
+                style: const TextStyle(color: Colors.white, fontSize: 20),
                 decoration: fieldDecor(' Enter your name'),
                 controller: _usernameController,
               ),
@@ -95,13 +95,20 @@ class _OnboardingState extends State<Onboarding> {
             FilledButton(
                 onPressed: () async {
                   final user = UserInfo(
-                      username: _usernameController.text, image: image ?? '',);
+                    username: _usernameController.text,
+                    image: image ?? '',
+                  );
 
                   await _userInfoService.adduser(user);
                   _usernameController.clear();
 
+                  //shared preference is initialized and a key and value is set
+                  final SharedPreferences sP =
+                      await SharedPreferences.getInstance();
+                  sP.setString('username', user.username);
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => EmptyDash()));
+                  
                 },
                 style: mainButton,
                 child: const Text('Done'))

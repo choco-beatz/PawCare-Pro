@@ -39,6 +39,10 @@ class PetInfo {
   late int? id;
 
 
+@HiveField(11)
+  late bool isActive;
+
+
   PetInfo(
       {required this.type,
       required this.name,
@@ -50,5 +54,6 @@ class PetInfo {
       required this.image,
       required this.bday,
       required this.aday,
+      required this.isActive,
       this.id});
 }
