@@ -3,8 +3,8 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
-import 'package:pawcare_pro/presentation/views/AddPet/add_pet.dart';
-import 'package:pawcare_pro/presentation/views/HealthCard/Screens/Certificate/add_certificates.dart';
+import 'package:pawcare_pro/presentation/views/add_pet/add_pet.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/Screens/Certificate/add_certificates.dart';
 
 class EmptyCertificate extends StatelessWidget {
   const EmptyCertificate({super.key});

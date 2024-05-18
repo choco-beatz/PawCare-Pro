@@ -3,7 +3,7 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
-import 'package:pawcare_pro/presentation/views/AddPet/add_pet.dart';
+import 'package:pawcare_pro/presentation/views/add_pet/add_pet.dart';
 
 import 'package:pawcare_pro/presentation/views/widgets/appbar.dart';
 

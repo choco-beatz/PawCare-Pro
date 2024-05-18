@@ -5,7 +5,7 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/user%20model/user.dart';
-import 'package:pawcare_pro/presentation/views/EmptyDashboard/empty_dashboard.dart';
+import 'package:pawcare_pro/presentation/views/emptydashboard/empty_dashboard.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/service/user_service.dart';

@@ -5,9 +5,9 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
-import 'package:pawcare_pro/presentation/views/Dashboard/dashboard.dart';
-import 'package:pawcare_pro/presentation/views/EmptyDashboard/empty_dashboard.dart';
-import 'package:pawcare_pro/presentation/views/Onboarding/onboarding.dart';
+import 'package:pawcare_pro/presentation/views/dashboard/dashboard.dart';
+import 'package:pawcare_pro/presentation/views/emptydashboard/empty_dashboard.dart';
+import 'package:pawcare_pro/presentation/views/onboarding/onboarding.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,8 +21,6 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with TickerProviderStateMixin {
-  Box<PetInfo?>? _petBox;
-
   final PetInfoService _petInfoService = PetInfoService();
 
   //for shared preference
@@ -42,10 +40,10 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<int?> checkPet() async {
     await toInit();
-    final pets = _petBox?.values.toList();
+    final pets = _petInfoService.petInfo?.values.toList();
     if (pets != null) {
       for (var pet in pets) {
-        if (pet!.isActive == true) {
+        if (pet!.isActive) {
           return pet.id;
         }
       }

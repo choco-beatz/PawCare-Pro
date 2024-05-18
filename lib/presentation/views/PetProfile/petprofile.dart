@@ -8,9 +8,9 @@ import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 
-import 'package:pawcare_pro/presentation/views/AddPet/widgets/field_style.dart';
-import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
-import 'package:pawcare_pro/presentation/views/EditPetProfile/editpetprofile.dart';
+import 'package:pawcare_pro/presentation/views/add_pet/widgets/field_style.dart';
+import 'package:pawcare_pro/presentation/views/add_pet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/editpetprofile/editpetprofile.dart';
 
 import 'package:pawcare_pro/presentation/views/PetProfile/widgets/data_style.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';

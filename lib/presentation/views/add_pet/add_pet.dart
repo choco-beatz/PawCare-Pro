@@ -9,9 +9,9 @@ import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
-import 'package:pawcare_pro/presentation/views/AddPet/widgets/field_style.dart';
-import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
-import 'package:pawcare_pro/presentation/views/Dashboard/dashboard.dart';
+import 'package:pawcare_pro/presentation/views/add_pet/widgets/field_style.dart';
+import 'package:pawcare_pro/presentation/views/add_pet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/dashboard/dashboard.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -409,7 +409,7 @@ class _AddPetState extends State<AddPet> {
                           adate = value!;
                         });
                       });
-                      formattedADate = DateFormat('dd-MM-yyyy').format(bdate!);
+                      formattedADate = DateFormat('dd-MM-yyyy').format(bdate);
                     });
                     // _showDatePicker;
                     // formattedDate = DateFormat('dd-MM-yyyy').format(date);

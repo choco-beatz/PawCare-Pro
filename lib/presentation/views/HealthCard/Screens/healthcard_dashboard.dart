@@ -3,9 +3,9 @@ import 'package:flutter/widgets.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
-import 'package:pawcare_pro/presentation/views/HealthCard/Screens/Certificate/empty_certificate.dart';
-import 'package:pawcare_pro/presentation/views/HealthCard/Screens/Certificate/view_certificate.dart';
-import 'package:pawcare_pro/presentation/views/HealthCard/widgets/healthcard_dashboard_widgets.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/Screens/Certificate/empty_certificate.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/Screens/Certificate/view_certificate.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/widgets/healthcard_dashboard_widgets.dart';
 
 class HealthCardDashboard extends StatelessWidget {
   const HealthCardDashboard({super.key});

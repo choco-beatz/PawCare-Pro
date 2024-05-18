@@ -4,6 +4,8 @@ import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 class PetInfoService {
   Box<PetInfo>? _petInfoBox;
 
+  get petInfo => _petInfoBox;
+
   //to insert the generated id into db
 
   //to create/open the box

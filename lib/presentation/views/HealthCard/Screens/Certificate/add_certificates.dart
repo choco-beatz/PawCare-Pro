@@ -7,8 +7,8 @@ import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
-import 'package:pawcare_pro/presentation/views/AddPet/widgets/field_style.dart';
-import 'package:pawcare_pro/presentation/views/AddPet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/add_pet/widgets/field_style.dart';
+import 'package:pawcare_pro/presentation/views/add_pet/widgets/lable.dart';
 import 'package:pawcare_pro/service/certificate_services.dart';
 
 class AddCertificates extends StatefulWidget {
@@ -185,13 +185,13 @@ class _AddCertificatesState extends State<AddCertificates> {
                       .updateCertificate(certificate.id, certificate)
                       .then((_) {
                     _fileNameController.clear();
-
+                    
                     // Navigator.push(
                     //     context,
                     //     MaterialPageRoute(
                     //         builder: (context) => Dashboard(petID: pet.id,)));
 
-                    Navigator.pop(context);
+                    Navigator.pop(context,certificate);
                   });
                 },
                 style: mainButton,
