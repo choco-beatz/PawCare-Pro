@@ -1,4 +1,3 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pawcare_pro/constant/button.dart';
@@ -6,23 +5,23 @@ import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/constant/textField.dart';
-import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
+import 'package:pawcare_pro/domain/vaccine%20model/vaccine.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
-import 'package:pawcare_pro/service/certificate_services.dart';
+import 'package:pawcare_pro/service/vaccine_services.dart';
 
-class AddCertificates extends StatefulWidget {
-  const AddCertificates({super.key});
+class AddVaccines extends StatefulWidget {
+  const AddVaccines({super.key});
 
   @override
-  State<AddCertificates> createState() => _AddCertificatesState();
+  State<AddVaccines> createState() => _AddVaccinesState();
 }
 
-class _AddCertificatesState extends State<AddCertificates> {
+class _AddVaccinesState extends State<AddVaccines> {
   //TextEditingControllers
-  final TextEditingController _fileNameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
 
-  final CertificateService _certificateService = CertificateService();
+  final VaccineService _vaccineService = VaccineService();
 
   //for dates
   DateTime idate = DateTime.now();
@@ -31,20 +30,15 @@ class _AddCertificatesState extends State<AddCertificates> {
   String? formattedIDate;
   String? formattedEDate;
 
-  //for file
-  String? filePath;
-
-  //for file picker
-  FilePickerResult? result = null;
-
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainBG,
         foregroundColor: Colors.white,
         title: const Text(
-          'Certificates',
+          'Add Vaccines',
           style: TextStyle(fontSize: 18),
         ),
       ),
@@ -55,69 +49,14 @@ class _AddCertificatesState extends State<AddCertificates> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              sizedBox,
-              Center(
-                child: Stack(clipBehavior: Clip.none, children: [
-                  CircleAvatar(
-                    backgroundColor: grey,
-                    radius: 95,
-                    child: result == null
-                        ? const CircleAvatar(
-                            backgroundColor: lightGrey,
-                            radius: 80,
-                            child: Icon(
-                              size: 65,
-                              Icons.file_upload,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const CircleAvatar(
-                            radius: 80,
-                            backgroundColor: lightGrey,
-                            child: Icon(
-                              size: 65,
-                              Icons.file_copy_outlined,
-                              color: Colors.white,
-                            ),
-                          ),
-                  ),
-                  Positioned(
-                    left: 115,
-                    top: 130,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: IconButton(
-                          onPressed: () async {
-                            result = await FilePicker.platform
-                                .pickFiles(type: FileType.any);
-                            if (result != null) {
-                              setState(() {
-                                filePath = result?.files.single.path;
-                              });
-                            }
-                          },
-                          icon: const Icon(
-                            size: 25,
-                            Icons.file_open_outlined,
-                            color: mainColor,
-                          )),
-                    ),
-                  )
-                ]),
-              ),
-              space,
-              space,
-              label('Certificate name'),
+              label('Schedule Vaccination'),
               SizedBox(
                 height: 52,
                 width: 370,
                 child: TextFormField(
                   style: const TextStyle(color: Colors.white, fontSize: 20),
-                  decoration: fieldDecor(" Enter the name of the Certificate"),
-                  controller: _fileNameController,
+                  decoration: fieldDecor(" Enter the name of the Vaccination"),
+                  controller: _nameController,
                 ),
               ),
               line,
@@ -170,29 +109,28 @@ class _AddCertificatesState extends State<AddCertificates> {
                   style: dateButton,
                   child: subject('Add Expiry date')),
               SizedBox(
-                height: 90,
+                height: height * 0.41,
               ),
               FilledButton(
                   onPressed: () async {
-                    final certificate = Certificate(
-                      name: _fileNameController.text,
+                    final vaccine = Vaccine(
+                      name: _nameController.text,
                       id: DateTime.now().microsecond,
-                      file: filePath ?? '',
                       idate: formattedIDate ?? '',
                       edate: formattedEDate ?? '',
                     );
-                    print(certificate.name);
-                    await _certificateService
-                        .updateCertificate(certificate.id, certificate)
+
+                    await _vaccineService
+                        .updateVaccine(vaccine.id, vaccine)
                         .then((_) {
-                      _fileNameController.clear();
+                      _nameController.clear();
 
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(
                       //         builder: (context) => Dashboard(petID: pet.id,)));
 
-                      Navigator.pop(context, certificate);
+                      Navigator.pop(context, vaccine);
                     });
                   },
                   style: mainButton,

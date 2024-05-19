@@ -1,17 +1,15 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
-
-import 'package:pawcare_pro/presentation/views/add_pet/widgets/field_style.dart';
-import 'package:pawcare_pro/presentation/views/add_pet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
+import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/editpetprofile/editpetprofile.dart';
-
 import 'package:pawcare_pro/presentation/views/PetProfile/widgets/data_style.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 
@@ -34,7 +32,7 @@ class _PetProfileState extends State<PetProfile> {
   Future<void> _loadPets() async {
     //the datas recived from the db is stored
     _pet = await _petInfoService.getPet(widget.petId);
-     if (mounted) {
+    if (mounted) {
       setState(() {});
     }
   }
@@ -63,36 +61,39 @@ class _PetProfileState extends State<PetProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                children: [
-                  CircleAvatar(
-                    backgroundColor: lightGrey,
-                    radius: 90,
-                    child: _pet!.image != null
-                        ? CircleAvatar(
-                            backgroundImage:
-                                FileImage(File(_pet!.image ?? '')),
-                            radius: 70,
-                          )
-                        : const CircleAvatar(
-                            radius: 70,
-                            child: Icon(
-                              Icons.camera_alt_outlined,
-                              color: Colors.white,
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      backgroundColor: lightGrey,
+                      radius: 90,
+                      child: _pet!.image != null
+                          ? CircleAvatar(
+                              backgroundImage:
+                                  FileImage(File(_pet!.image ?? '')),
+                              radius: 70,
+                            )
+                          : const CircleAvatar(
+                              radius: 70,
+                              child: Icon(
+                                Icons.camera_alt_outlined,
+                                color: Colors.white,
+                              ),
                             ),
-                          ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        heading2(_pet!.name),
-                        subject('${_pet!.type} | ${_pet!.breed}')
-                      ],
                     ),
-                  )
-                ],
+                    Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          heading2(_pet!.name),
+                          subject('${_pet!.type} | ${_pet!.breed}')
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
               space,
               space,
@@ -163,7 +164,9 @@ class _PetProfileState extends State<PetProfile> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => EditPetProfile(PetID: _pet!.id,)));
+                            builder: (context) => EditPetProfile(
+                                  petID: _pet!.id,
+                                )));
                   },
                   style: mainButton,
                   child: const Text('Edit'))

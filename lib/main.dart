@@ -4,10 +4,12 @@ import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/domain/user%20model/user.dart';
+import 'package:pawcare_pro/domain/vaccine%20model/vaccine.dart';
 import 'package:pawcare_pro/presentation/views/splash/splash_screen.dart';
 import 'package:pawcare_pro/service/certificate_services.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 import 'package:pawcare_pro/service/user_service.dart';
+import 'package:pawcare_pro/service/vaccine_services.dart';
 
 void main() async {
   //initializing hive
@@ -20,9 +22,13 @@ void main() async {
   Hive.registerAdapter(UserInfoAdapter());
   await UserInfoService().openBox();
 
-//getting the adapter that we created user.g.dart
+//getting the adapter that we created certificate.g.dart
   Hive.registerAdapter(CertificateAdapter());
   await CertificateService().openBox();
+
+//getting the adapter that we created vaccine.g.dart
+  Hive.registerAdapter(VaccineAdapter());
+  await VaccineService().openBox();
 
   runApp(const MyApp());
 }

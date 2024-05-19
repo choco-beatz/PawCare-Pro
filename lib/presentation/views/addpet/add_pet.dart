@@ -9,8 +9,8 @@ import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
-import 'package:pawcare_pro/presentation/views/add_pet/widgets/field_style.dart';
-import 'package:pawcare_pro/presentation/views/add_pet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
+import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/dashboard.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -367,7 +367,7 @@ class _AddPetState extends State<AddPet> {
                               context: context,
                               initialDate: bdate,
                               firstDate: DateTime(2000),
-                              lastDate: DateTime(2025))
+                              lastDate: DateTime.now())
                           .then((value) {
                         setState(() {
                           bdate = value!;
@@ -403,7 +403,7 @@ class _AddPetState extends State<AddPet> {
                               context: context,
                               initialDate: adate,
                               firstDate: DateTime(2000),
-                              lastDate: DateTime(2025))
+                              lastDate: DateTime.now())
                           .then((value) {
                         setState(() {
                           adate = value!;
@@ -453,9 +453,9 @@ class _AddPetState extends State<AddPet> {
                     _weigthController.clear();
 
                     //shared preference is initialized and a key and value is set
-                  final SharedPreferences sP =
-                      await SharedPreferences.getInstance();
-                  sP.setString('petname', pet.name);
+                    final SharedPreferences sP =
+                        await SharedPreferences.getInstance();
+                    sP.setString('petname', pet.name);
 
                     Navigator.push(
                         context,

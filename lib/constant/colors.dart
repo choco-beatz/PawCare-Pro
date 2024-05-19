@@ -9,3 +9,5 @@ const lightBlue = Color.fromARGB(255, 168, 203, 255);
 const lightgreen = Color.fromARGB(255, 169, 255, 226);
 const transgreen = Color.fromARGB(82, 0, 162, 108);
 const transblue = Color.fromARGB(82, 0, 67, 168);
+const lightPink = Color.fromARGB(255, 255, 168, 219);
+const lightRed = Color.fromARGB(255, 255, 168, 168);

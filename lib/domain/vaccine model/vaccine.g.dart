@@ -1,46 +1,43 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'certificate.dart';
+part of 'vaccine.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CertificateAdapter extends TypeAdapter<Certificate> {
+class VaccineAdapter extends TypeAdapter<Vaccine> {
   @override
-  final int typeId = 2;
+  final int typeId = 3;
 
   @override
-  Certificate read(BinaryReader reader) {
+  Vaccine read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Certificate(
+    return Vaccine(
       name: fields[0] as String,
-      file: fields[1] as String,
-      idate: fields[2] as String,
-      edate: fields[3] as String,
-      id: fields[5] as int,
-      pet: (fields[4] as List?)?.cast<PetInfo>(),
+      idate: fields[1] as String,
+      edate: fields[2] as String,
+      id: fields[4] as int,
+      pet: (fields[3] as List?)?.cast<PetInfo>(),
     );
   }
 
   @override
-  void write(BinaryWriter writer, Certificate obj) {
+  void write(BinaryWriter writer, Vaccine obj) {
     writer
-      ..writeByte(6)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.name)
       ..writeByte(1)
-      ..write(obj.file)
-      ..writeByte(2)
       ..write(obj.idate)
-      ..writeByte(3)
+      ..writeByte(2)
       ..write(obj.edate)
-      ..writeByte(4)
+      ..writeByte(3)
       ..write(obj.pet)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.id);
   }
 
@@ -50,7 +47,7 @@ class CertificateAdapter extends TypeAdapter<Certificate> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CertificateAdapter &&
+      other is VaccineAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

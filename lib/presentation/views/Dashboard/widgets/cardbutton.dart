@@ -16,9 +16,10 @@ class CardButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Container(
-        width: screenWidth * 0.44,
-        height: 200,
+        width: screenWidth * 0.45,
+        height: screenHeight * 0.26,
         decoration: BoxDecoration(
             color: fieldColor,
             borderRadius: BorderRadius.circular(15),
@@ -50,10 +51,11 @@ class CardButton extends StatelessWidget {
           ),
           Positioned(
               top: 60,
-              left: 47,
+              left: 50,
               child: Image.asset(
                 height: 75,
                 width: 75,
+                fit: BoxFit.cover,
                 image,
               ))
         ]));

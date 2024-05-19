@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/colors.dart';
+import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/user%20model/user.dart';
 import 'package:pawcare_pro/service/user_service.dart';
 
@@ -38,28 +39,28 @@ class _AppbarState extends State<Appbar> {
       toolbarHeight: double.infinity,
       automaticallyImplyLeading: false,
       titleSpacing: 0,
-      title: ListTile(
-        title: const Padding(
-          padding: EdgeInsets.only(top: 10),
-          child: Text(
-            'Hello,',
-            style: TextStyle(
-                color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
-          ),
-        ),
-        subtitle: Text(
-          _user.first.username,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
-        ),
-        leading: CircleAvatar(
-          backgroundColor: mainBG,
-          child: _user.first.image != null
-              ? CircleAvatar(
-                  backgroundImage: FileImage(File(_user.first.image ?? '')),
-                  radius: 70,
-                )
-              : const CircleAvatar(
+      title: _user.isEmpty
+          ? ListTile(
+              title: const Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text(
+                  'Hello,',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                ),
+              ),
+              subtitle: Text(
+                leading('Username'),
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500),
+              ),
+              leading: const CircleAvatar(
+                backgroundColor: mainBG,
+                child: CircleAvatar(
                   radius: 70,
                   child: FaIcon(
                     size: 65,
@@ -67,8 +68,44 @@ class _AppbarState extends State<Appbar> {
                     color: Colors.white,
                   ),
                 ),
-        ),
-      ),
+              ),
+            )
+          : ListTile(
+              title: const Padding(
+                padding: EdgeInsets.only(top: 10),
+                child: Text(
+                  'Hello,',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400),
+                ),
+              ),
+              subtitle: Text(
+                _user.first.username,
+                style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500),
+              ),
+              leading: CircleAvatar(
+                backgroundColor: mainBG,
+                child: _user.first.image != null
+                    ? CircleAvatar(
+                      
+                        backgroundImage: FileImage(File(_user.first.image)),
+                        radius: 80,
+                      )
+                    : const CircleAvatar(
+                        radius: 70,
+                        child: FaIcon(
+                          size: 65,
+                          FontAwesomeIcons.person,
+                          color: Colors.white,
+                        ),
+                      ),
+              ),
+            ),
       backgroundColor: mainBG,
       foregroundColor: Colors.white,
     );

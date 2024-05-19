@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
-import 'package:pawcare_pro/constant/style.dart';
-import 'package:pawcare_pro/presentation/views/healthcard/Screens/Certificate/empty_certificate.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/Screens/Certificate/view_certificate.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/view_vaccines.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/widgets/healthcard_dashboard_widgets.dart';
 
 class HealthCardDashboard extends StatelessWidget {
@@ -27,7 +25,10 @@ class HealthCardDashboard extends StatelessWidget {
         child: Column(
           children: [
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ViewVaccines()));
+              },
               child: HealthCardButton(
                   bgColor: transgreen,
                   head: 'Vaccines',
