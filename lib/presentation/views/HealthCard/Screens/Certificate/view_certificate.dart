@@ -88,9 +88,7 @@ class _ViewCertificatesState extends State<ViewCertificates> {
                 child: Card(
                   color: grey,
                   child: ListTile(
-                    onLongPress: () {
-                      //to delete
-                    },
+                    
                     onTap: () {
                       showBottomSheet(
                           context: context,
@@ -179,6 +177,19 @@ class _ViewCertificatesState extends State<ViewCertificates> {
                             );
                           });
                     },
+                    trailing: IconButton(
+                        onPressed: () async {
+                          await _certificateService.deleteCertificate(current.id);
+                          print('object');
+                          setState(() {
+                            _certificate.removeAt(index);
+                          });
+                        },
+                        icon: Icon(
+                          Icons.delete_outline_rounded,
+                          size: 35,
+                          color: Color.fromARGB(255, 211, 211, 211),
+                        )),
                     title: leading(current.name),
                     subtitle: Row(
                       children: [

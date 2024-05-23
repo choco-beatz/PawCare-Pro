@@ -1,6 +1,4 @@
-import 'dart:ffi';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
@@ -82,18 +80,23 @@ class _ActiveProfileState extends State<ActiveProfile> {
                 child: CircleAvatar(
                   backgroundColor: const Color.fromARGB(100, 196, 229, 255),
                   radius: 80,
-                  child: _pet!.image != null
-                      ? CircleAvatar(
-                          backgroundImage: FileImage(File(_pet!.image ?? '')),
+                  child: CircleAvatar(
+                          backgroundImage: FileImage(File(_pet!.image)),
                           radius: 65,
                         )
-                      : const CircleAvatar(
-                          radius: 65,
-                          child: Icon(
-                            Icons.camera_alt_outlined,
-                            color: Colors.white,
-                          ),
-                        ),
+                     
+                  //  _pet!.image != null
+                  //     ? CircleAvatar(
+                  //         backgroundImage: FileImage(File(_pet!.image ?? '')),
+                  //         radius: 65,
+                  //       )
+                  //     : const CircleAvatar(
+                  //         radius: 65,
+                  //         child: Icon(
+                  //           Icons.camera_alt_outlined,
+                  //           color: Colors.white,
+                  //         ),
+                  //       ),
                 )),
           ))
     ]);

@@ -8,7 +8,8 @@ import 'package:pawcare_pro/domain/user%20model/user.dart';
 import 'package:pawcare_pro/service/user_service.dart';
 
 class Appbar extends StatefulWidget {
-  const Appbar({super.key});
+  final Color bg;
+  Appbar({super.key, required this.bg});
 
   @override
   State<Appbar> createState() => _AppbarState();
@@ -71,15 +72,12 @@ class _AppbarState extends State<Appbar> {
               ),
             )
           : ListTile(
-              title: const Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Text(
-                  'Hello,',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                ),
+              title: Text(
+                'Hello,',
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400),
               ),
               subtitle: Text(
                 _user.first.username,
@@ -89,24 +87,14 @@ class _AppbarState extends State<Appbar> {
                     fontWeight: FontWeight.w500),
               ),
               leading: CircleAvatar(
-                backgroundColor: mainBG,
-                child: _user.first.image != null
-                    ? CircleAvatar(
-                      
-                        backgroundImage: FileImage(File(_user.first.image)),
-                        radius: 80,
-                      )
-                    : const CircleAvatar(
-                        radius: 70,
-                        child: FaIcon(
-                          size: 65,
-                          FontAwesomeIcons.person,
-                          color: Colors.white,
-                        ),
-                      ),
-              ),
+                  radius: 30,
+                  backgroundColor: mainBG,
+                  child: CircleAvatar(
+                    backgroundImage: FileImage(File(_user.first.image)),
+                    radius: 80,
+                  )),
             ),
-      backgroundColor: mainBG,
+      backgroundColor: widget.bg,
       foregroundColor: Colors.white,
     );
   }

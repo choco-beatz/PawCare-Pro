@@ -1,10 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
-import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/dashboard.dart';
 import 'package:pawcare_pro/presentation/views/emptydashboard/empty_dashboard.dart';
 import 'package:pawcare_pro/presentation/views/onboarding/onboarding.dart';
@@ -113,7 +111,9 @@ class _SplashScreenState extends State<SplashScreen>
         transitionAnimationController: controller,
         context: context,
         builder: (BuildContext context) {
+          double height = MediaQuery.of(context).size.height;
           return Container(
+            height: height * 0.4,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25),

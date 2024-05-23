@@ -83,9 +83,6 @@ class _ViewVaccinesState extends State<ViewVaccines> {
                 child: Card(
                   color: grey,
                   child: ListTile(
-                    onLongPress: () {
-                      //to delete
-                    },
                     onTap: () {
                       showBottomSheet(
                           context: context,
@@ -138,6 +135,19 @@ class _ViewVaccinesState extends State<ViewVaccines> {
                             );
                           });
                     },
+                    trailing: IconButton(
+                        onPressed: () async {
+                          await _vaccineService.deleteVaccine(current.id);
+                          print('object');
+                          setState(() {
+                            _vaccine.removeAt(index);
+                          });
+                        },
+                        icon: Icon(
+                          Icons.delete_outline_rounded,
+                          size: 35,
+                          color: Color.fromARGB(255, 211, 211, 211),
+                        )),
                     title: leading(current.name),
                     subtitle: Row(
                       children: [

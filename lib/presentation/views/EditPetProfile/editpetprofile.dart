@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:intl/intl.dart';
 import 'package:pawcare_pro/constant/button.dart';
@@ -54,15 +53,16 @@ class _EditPetProfileState extends State<EditPetProfile> {
     //the datas recived from the db is stored into list
     // _pet = await _petInfoService.getPet();
     _pet = await _petInfoService.getPet(widget.petID);
-    _nameController.text = _pet!.name;
-    _breedController.text = _pet!.breed;
-    _descriptionController.text = _pet!.description;
-    _weightController.text = _pet!.weight;
-    selected = _pet!.type;
-    gender = _pet!.gender;
-    size = _pet!.size;
-
-    setState(() {});
+    setState(() {
+      _nameController.text = _pet!.name;
+      _breedController.text = _pet!.breed;
+      _descriptionController.text = _pet!.description;
+      _weightController.text = _pet!.weight;
+      selected = _pet!.type;
+      gender = _pet!.gender;
+      size = _pet!.size;
+      print(gender);
+    });
   }
 
   @override
@@ -96,22 +96,12 @@ class _EditPetProfileState extends State<EditPetProfile> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor: lightGrey,
-                      radius: 90,
-                      child: _pet!.image != null
-                          ? CircleAvatar(
-                              backgroundImage:
-                                  FileImage(File(_pet!.image ?? '')),
-                              radius: 70,
-                            )
-                          : const CircleAvatar(
-                              radius: 70,
-                              child: Icon(
-                                Icons.camera_alt_outlined,
-                                color: Colors.white,
-                              ),
-                            ),
-                    ),
+                        backgroundColor: lightGrey,
+                        radius: 90,
+                        child: CircleAvatar(
+                          backgroundImage: FileImage(File(_pet!.image)),
+                          radius: 70,
+                        )),
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -132,12 +122,13 @@ class _EditPetProfileState extends State<EditPetProfile> {
                     height: 120,
                     width: 170,
                     child: RadioMenuButton(
-                      value: 'dog',
+                      value: 'Dog',
                       style: fieldRadio,
-                      groupValue: selected,
+                      groupValue: _pet!.type,
                       onChanged: (selection) {
                         setState(() {
                           selected = selection!;
+
                           _pet!.type = selected;
                           // _petInfoService.updatePet(_pet!);
                         });
@@ -156,9 +147,9 @@ class _EditPetProfileState extends State<EditPetProfile> {
                     height: 120,
                     width: 170,
                     child: RadioMenuButton(
-                      value: 'cat',
+                      value: 'Cat',
                       style: fieldRadio,
-                      groupValue: selected,
+                      groupValue: _pet!.type,
                       onChanged: (selection) {
                         setState(() {
                           selected = selection!;
@@ -218,7 +209,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                     child: RadioMenuButton(
                         value: 'female',
                         style: fieldRadio,
-                        groupValue: gender,
+                        groupValue: _pet!.gender,
                         onChanged: (selection) {
                           setState(() {
                             gender = selection!;
@@ -237,7 +228,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                     child: RadioMenuButton(
                         value: 'male',
                         style: fieldRadio,
-                        groupValue: gender,
+                        groupValue: _pet!.gender,
                         onChanged: (selection) {
                           setState(() {
                             gender = selection!;
@@ -266,7 +257,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                       child: RadioMenuButton(
                           value: 'small',
                           style: fieldRadio,
-                          groupValue: size,
+                          groupValue: _pet!.size,
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
@@ -295,7 +286,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                       child: RadioMenuButton(
                           value: 'medium',
                           style: fieldRadio,
-                          groupValue: size,
+                          groupValue: _pet!.size,
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
@@ -323,7 +314,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                       child: RadioMenuButton(
                           value: 'huge',
                           style: fieldRadio,
-                          groupValue: size,
+                          groupValue: _pet!.size,
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
@@ -450,6 +441,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                         aday: formattedADate ?? '',
                         isActive: true,
                         id: _pet!.id);
+                    setState(() {});
                     print(_pet!.id);
                     await _petInfoService.updatePet(_pet!.id, pet).then((_) {
                       _nameController.clear();

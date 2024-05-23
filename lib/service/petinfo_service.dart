@@ -27,17 +27,17 @@ class PetInfoService {
     await _petInfoBox!.put(pet.id, pet);
   }
 
-  // //to get datas from the box
-  // Future<List<PetInfo>> getPet() async {
-  //   if (_petInfoBox == null) {
-  //     await openBox();
-  //   }
-  //   final list = <PetInfo>[];
-  //   for (var i in _petInfoBox!.values) {
-  //     list.add(i);
-  //   }
-  //   return _petInfoBox!.values.toList();
-  // }
+  //to get datas from the box
+  Future<List<PetInfo>> getPets() async {
+    if (_petInfoBox == null) {
+      await openBox();
+    }
+    final list = <PetInfo>[];
+    for (var i in _petInfoBox!.values) {
+      list.add(i);
+    }
+    return _petInfoBox!.values.toList();
+  }
 
   //to get datas from the box
   Future<PetInfo?> getPet(int? id) async {

@@ -17,7 +17,7 @@ class EmptyDash extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(height * 0.1), child: Appbar()),
+          preferredSize: Size.fromHeight(height * 0.1), child: Appbar(bg: mainBG,)),
       backgroundColor: mainBG,
       body: Padding(
         padding: const EdgeInsets.only(right: 25, left: 25),

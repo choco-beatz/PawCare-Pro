@@ -1,7 +1,4 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
@@ -9,6 +6,7 @@ import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/widgets/active_profile.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/widgets/cardbutton.dart';
 import 'package:pawcare_pro/presentation/views/HealthCard/Screens/healthcard_dashboard.dart';
+import 'package:pawcare_pro/presentation/views/dashboard/widgets/drawer.dart';
 import 'package:pawcare_pro/presentation/views/widgets/appbar.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 
@@ -42,12 +40,12 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: PreferredSize(
-          preferredSize: Size.fromHeight(height * 0.1), child: Appbar()),
+          preferredSize: Size.fromHeight(height * 0.1), child: Appbar(bg: mainBG,)),
       backgroundColor: mainBG,
+      drawer: CustDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: SingleChildScrollView(
