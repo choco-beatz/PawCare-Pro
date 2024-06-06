@@ -48,6 +48,19 @@ class PetInfoService {
     return pet;
   }
 
+  //to update isActive for each pet in the box
+  Future<void> updateIsActive(int? id, PetInfo pet) async {
+    if (_petInfoBox == null) {
+      await openBox();
+    }
+    List<PetInfo> pets = await getPets();
+    for (var pet in pets) {
+      pet.id == id ? pet.isActive = true : pet.isActive = false;
+
+      await _petInfoBox!.put(pet.id, pet);
+    }
+  }
+
   //to update datas in the box
   Future<void> updatePet(int? id, PetInfo pet) async {
     if (_petInfoBox == null) {
@@ -61,7 +74,7 @@ class PetInfoService {
   }
 
   //to delete data in the box
-  Future<void> deletePet(int id) async {
+  Future<void> deletePet(int? id) async {
     if (_petInfoBox == null) {
       await openBox();
     }

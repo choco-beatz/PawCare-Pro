@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
@@ -61,6 +62,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
       selected = _pet!.type;
       gender = _pet!.gender;
       size = _pet!.size;
+      image = _pet!.image;
       print(gender);
     });
   }
@@ -95,13 +97,36 @@ class _EditPetProfileState extends State<EditPetProfile> {
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    CircleAvatar(
-                        backgroundColor: lightGrey,
-                        radius: 90,
-                        child: CircleAvatar(
-                          backgroundImage: FileImage(File(_pet!.image)),
-                          radius: 70,
-                        )),
+                    Stack(children: [
+                      CircleAvatar(
+                          backgroundColor: lightGrey,
+                          radius: 90,
+                          child: CircleAvatar(
+                            backgroundImage: FileImage(File(image!)),
+                            radius: 70,
+                          )),
+                      Positioned(
+                        left: 120,
+                        top: 120,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.white,
+                          ),
+                          child: IconButton(
+                              onPressed: () async {
+                                getMainImagesFromGallery();
+                                // if (image == null) return;
+                                // imageBytes = await image.readAsBytes();
+                              },
+                              icon: const Icon(
+                                size: 25,
+                                Icons.image_outlined,
+                                color: mainColor,
+                              )),
+                        ),
+                      )
+                    ]),
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -363,7 +388,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                               context: context,
                               initialDate: bdate,
                               firstDate: DateTime(2000),
-                              lastDate: DateTime(2025))
+                              lastDate: DateTime.now())
                           .then((value) {
                         setState(() {
                           bdate = value!;
@@ -399,7 +424,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                               context: context,
                               initialDate: adate,
                               firstDate: DateTime(2000),
-                              lastDate: DateTime(2025))
+                              lastDate: DateTime.now())
                           .then((value) {
                         setState(() {
                           adate = value!;
@@ -436,18 +461,19 @@ class _EditPetProfileState extends State<EditPetProfile> {
                         gender: gender,
                         size: size,
                         weight: _weightController.text,
-                        image: image ?? '',
-                        bday: formattedBDate ?? '',
-                        aday: formattedADate ?? '',
+                        image: image ?? _pet!.image,
+                        bday: formattedBDate ?? _pet!.bday,
+                        aday: formattedADate ?? _pet!.aday,
                         isActive: true,
                         id: _pet!.id);
-                    setState(() {});
+
                     print(_pet!.id);
                     await _petInfoService.updatePet(_pet!.id, pet).then((_) {
                       _nameController.clear();
                       _breedController.clear();
                       _descriptionController.clear();
                       _weightController.clear();
+                      setState(() {});
                       // Navigator.push(
                       //     context,
                       //     MaterialPageRoute(
@@ -462,5 +488,18 @@ class _EditPetProfileState extends State<EditPetProfile> {
         ),
       ),
     );
+  }
+
+  Future getMainImagesFromGallery() async {
+    final pickedFile = await ImagePicker().pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 100,
+        maxHeight: 1000,
+        maxWidth: 1000);
+    XFile xfilePick = pickedFile!;
+
+    setState(() {
+      image = xfilePick.path;
+    });
   }
 }

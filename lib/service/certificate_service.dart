@@ -1,4 +1,3 @@
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
 
@@ -35,7 +34,7 @@ class CertificateService {
     for (var i in _certificateBox!.values) {
       list.add(i);
     }
-  
+
     return _certificateBox!.values.toList();
   }
 

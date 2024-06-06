@@ -9,10 +9,11 @@ import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
-import 'package:pawcare_pro/service/certificate_services.dart';
+import 'package:pawcare_pro/service/certificate_service.dart';
 
 class AddCertificates extends StatefulWidget {
-  const AddCertificates({super.key});
+  final int petId;
+  const AddCertificates({super.key, required this.petId});
 
   @override
   State<AddCertificates> createState() => _AddCertificatesState();
@@ -35,7 +36,7 @@ class _AddCertificatesState extends State<AddCertificates> {
   String? filePath;
 
   //for file picker
-  FilePickerResult? result = null;
+  FilePickerResult? result;
 
   @override
   Widget build(BuildContext context) {
@@ -169,7 +170,7 @@ class _AddCertificatesState extends State<AddCertificates> {
                   },
                   style: dateButton,
                   child: subject('Add Expiry date')),
-              SizedBox(
+              const SizedBox(
                 height: 90,
               ),
               FilledButton(
@@ -180,6 +181,7 @@ class _AddCertificatesState extends State<AddCertificates> {
                       file: filePath ?? '',
                       idate: formattedIDate ?? '',
                       edate: formattedEDate ?? '',
+                      petId: widget.petId
                     );
                     print(certificate.name);
                     await _certificateService

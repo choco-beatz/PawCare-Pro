@@ -43,6 +43,7 @@ dependencies:
   intl: ^0.19.0
   shared_preferences: ^2.2.3
   file_picker: ^8.0.3
+  open_file: ^3.3.2
 
 dev_dependencies:
   flutter_test:
@@ -78,6 +79,10 @@ flutter:
     - asset/injection.png
     - asset/docs.png
     - asset/story.png
+    - asset/certificate.png
+    - asset/vaccine.png
+    - asset/food.png
+    - asset/bowl.png
    
 
   # An image asset can refer to one or more resolution-specific "variants", see

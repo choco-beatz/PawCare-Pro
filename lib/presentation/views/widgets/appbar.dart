@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/colors.dart';
-import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/user%20model/user.dart';
 import 'package:pawcare_pro/service/user_service.dart';
 
@@ -41,8 +40,8 @@ class _AppbarState extends State<Appbar> {
       automaticallyImplyLeading: false,
       titleSpacing: 0,
       title: _user.isEmpty
-          ? ListTile(
-              title: const Padding(
+          ? const ListTile(
+              title: Padding(
                 padding: EdgeInsets.only(top: 10),
                 child: Text(
                   'Hello,',
@@ -53,13 +52,13 @@ class _AppbarState extends State<Appbar> {
                 ),
               ),
               subtitle: Text(
-                leading('Username'),
-                style: const TextStyle(
+                'Username',
+                style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.w500),
               ),
-              leading: const CircleAvatar(
+              leading: CircleAvatar(
                 backgroundColor: mainBG,
                 child: CircleAvatar(
                   radius: 70,
@@ -72,7 +71,7 @@ class _AppbarState extends State<Appbar> {
               ),
             )
           : ListTile(
-              title: Text(
+              title: const Text(
                 'Hello,',
                 style: TextStyle(
                     color: Colors.white,

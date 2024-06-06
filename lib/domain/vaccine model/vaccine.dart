@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 
 part 'vaccine.g.dart';
 
@@ -16,7 +15,7 @@ class Vaccine {
   late String edate;
 
   @HiveField(3)
-  late List<PetInfo>? pet;
+  late int petId;
 
   @HiveField(4)
   late int id;
@@ -26,5 +25,5 @@ class Vaccine {
       required this.idate,
       required this.edate,
       required this.id,
-      this.pet});
+      required this.petId});
 }

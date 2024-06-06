@@ -21,7 +21,7 @@ class VaccineAdapter extends TypeAdapter<Vaccine> {
       idate: fields[1] as String,
       edate: fields[2] as String,
       id: fields[4] as int,
-      pet: (fields[3] as List?)?.cast<PetInfo>(),
+      petId: fields[3] as int,
     );
   }
 
@@ -36,7 +36,7 @@ class VaccineAdapter extends TypeAdapter<Vaccine> {
       ..writeByte(2)
       ..write(obj.edate)
       ..writeByte(3)
-      ..write(obj.pet)
+      ..write(obj.petId)
       ..writeByte(4)
       ..write(obj.id);
   }

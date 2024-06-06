@@ -11,7 +11,8 @@ import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 import 'package:pawcare_pro/service/vaccine_services.dart';
 
 class AddVaccines extends StatefulWidget {
-  const AddVaccines({super.key});
+  final int petId;
+  const AddVaccines({super.key, required this.petId});
 
   @override
   State<AddVaccines> createState() => _AddVaccinesState();
@@ -118,6 +119,7 @@ class _AddVaccinesState extends State<AddVaccines> {
                       id: DateTime.now().microsecond,
                       idate: formattedIDate ?? '',
                       edate: formattedEDate ?? '',
+                      petId: widget.petId
                     );
 
                     await _vaccineService

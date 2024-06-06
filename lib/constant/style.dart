@@ -49,6 +49,7 @@ dateButtonText(String data) {
 
 leading(String data) {
   return Text(
+    overflow: TextOverflow.ellipsis,
     data,
     style: const TextStyle(
       fontWeight: FontWeight.w500,

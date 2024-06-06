@@ -3,10 +3,11 @@ import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/Screens/Certificate/view_certificate.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/view_vaccines.dart';
-import 'package:pawcare_pro/presentation/views/healthcard/widgets/healthcard_dashboard_widgets.dart';
+import 'package:pawcare_pro/presentation/views/widgets/healthcard_dashboard_widgets.dart';
 
 class HealthCardDashboard extends StatelessWidget {
-  const HealthCardDashboard({super.key});
+  final int petId;
+  const HealthCardDashboard({super.key, required this.petId});
 
   @override
   Widget build(BuildContext context) {
@@ -27,9 +28,9 @@ class HealthCardDashboard extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ViewVaccines()));
+                    MaterialPageRoute(builder: (context) => ViewVaccines(petId: petId,)));
               },
-              child: HealthCardButton(
+              child: CardButton(
                   bgColor: transgreen,
                   head: 'Vaccines',
                   image: 'asset/injection.png',
@@ -41,9 +42,9 @@ class HealthCardDashboard extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => ViewCertificates()));
+                        builder: (context) => ViewCertificates(petId: petId)));
               },
-              child: HealthCardButton(
+              child: CardButton(
                   bgColor: transblue,
                   head: 'Certificates',
                   image: 'asset/docs.png',

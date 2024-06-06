@@ -34,8 +34,11 @@ class _ActiveProfileState extends State<ActiveProfile> {
     super.initState();
   }
 
+  //for image
+
   @override
   Widget build(BuildContext context) {
+    print(_pet!.image);
     double height = MediaQuery.of(context).size.height;
     return Stack(children: [
       GestureDetector(
@@ -46,6 +49,9 @@ class _ActiveProfileState extends State<ActiveProfile> {
                   builder: (context) => PetProfile(
                         petId: _pet!.id,
                       )));
+                      setState(() {
+                        
+                      });
         },
         child: Container(
           height: height * 0.18,
@@ -78,26 +84,26 @@ class _ActiveProfileState extends State<ActiveProfile> {
                 backgroundColor: const Color.fromARGB(80, 196, 229, 255),
                 radius: 100,
                 child: CircleAvatar(
-                  backgroundColor: const Color.fromARGB(100, 196, 229, 255),
-                  radius: 80,
-                  child: CircleAvatar(
-                          backgroundImage: FileImage(File(_pet!.image)),
-                          radius: 65,
-                        )
-                     
-                  //  _pet!.image != null
-                  //     ? CircleAvatar(
-                  //         backgroundImage: FileImage(File(_pet!.image ?? '')),
-                  //         radius: 65,
-                  //       )
-                  //     : const CircleAvatar(
-                  //         radius: 65,
-                  //         child: Icon(
-                  //           Icons.camera_alt_outlined,
-                  //           color: Colors.white,
-                  //         ),
-                  //       ),
-                )),
+                    backgroundColor: const Color.fromARGB(100, 196, 229, 255),
+                    radius: 80,
+                    child: CircleAvatar(
+                      backgroundImage: FileImage(File(_pet!.image)),
+                      radius: 65,
+                    )
+
+                    //  _pet!.image != null
+                    //     ? CircleAvatar(
+                    //         backgroundImage: FileImage(File(_pet!.image ?? '')),
+                    //         radius: 65,
+                    //       )
+                    //     : const CircleAvatar(
+                    //         radius: 65,
+                    //         child: Icon(
+                    //           Icons.camera_alt_outlined,
+                    //           color: Colors.white,
+                    //         ),
+                    //       ),
+                    )),
           ))
     ]);
   }

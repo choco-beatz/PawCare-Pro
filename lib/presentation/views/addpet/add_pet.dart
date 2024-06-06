@@ -35,8 +35,8 @@ class _AddPetState extends State<AddPet> {
   DateTime bdate = DateTime.now();
   DateTime adate = DateTime.now();
 
-  String? formattedADate;
-  String? formattedBDate;
+  String formattedADate = 'Not set';
+  String formattedBDate = 'Not set';
 
   final PetInfoService _petInfoService = PetInfoService();
   late PetInfo? pet;
@@ -47,19 +47,6 @@ class _AddPetState extends State<AddPet> {
   final TextEditingController _breedController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _weigthController = TextEditingController();
-
-  // void _showDatePicker() {
-  //   showDatePicker(
-  //           // barrierColor: mainBG,
-  //           context: context,
-  //           firstDate: DateTime(2000),
-  //           lastDate: DateTime(2025))
-  //       .then((value) {
-  //     setState(() {
-  //       date = value!;
-  //     });
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -371,9 +358,11 @@ class _AddPetState extends State<AddPet> {
                           .then((value) {
                         setState(() {
                           bdate = value!;
+                          formattedBDate =
+                              DateFormat('dd-MM-yyyy').format(bdate);
                         });
                       });
-                      formattedBDate = DateFormat('dd-MM-yyyy').format(bdate!);
+
                       print(formattedBDate);
                     });
                     // _showDatePicker;
@@ -390,7 +379,9 @@ class _AddPetState extends State<AddPet> {
                       const SizedBox(
                         width: 10,
                       ),
-                      subject('Add Birth date')
+                      formattedBDate == 'Not set'
+                          ? subject('Add Birth date')
+                          : subject(formattedBDate)
                     ],
                   )),
               line,
@@ -407,9 +398,10 @@ class _AddPetState extends State<AddPet> {
                           .then((value) {
                         setState(() {
                           adate = value!;
+                          formattedADate =
+                              DateFormat('dd-MM-yyyy').format(adate);
                         });
                       });
-                      formattedADate = DateFormat('dd-MM-yyyy').format(bdate);
                     });
                     // _showDatePicker;
                     // formattedDate = DateFormat('dd-MM-yyyy').format(date);
@@ -425,7 +417,9 @@ class _AddPetState extends State<AddPet> {
                       const SizedBox(
                         width: 10,
                       ),
-                      subject('Add Adoption date')
+                      formattedADate == 'Not set'
+                          ? subject('Add Adoption date')
+                          : subject(formattedADate)
                     ],
                   )),
               space,
@@ -441,12 +435,14 @@ class _AddPetState extends State<AddPet> {
                         size: size,
                         weight: _weigthController.text,
                         image: image ?? '',
-                        bday: formattedBDate ?? '',
-                        aday: formattedADate ?? '',
+                        bday: formattedBDate,
+                        aday: formattedADate,
                         id: DateTime.now().microsecond,
-                        isActive: true);
+                        isActive: false);
 
                     await _petInfoService.addPet(pet);
+                    await _petInfoService.updateIsActive(pet.id,pet);
+                    setState(() {});
                     _nameController.clear();
                     _breedController.clear();
                     _descriptionController.clear();

@@ -3,23 +3,17 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
-import 'package:pawcare_pro/presentation/views/addpet/add_pet.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/add_vaccines.dart';
 
-import 'package:pawcare_pro/presentation/views/widgets/appbar.dart';
-
-class EmptyDash extends StatelessWidget {
-  const EmptyDash({super.key});
+class EmptyVaccine extends StatelessWidget {
+  final int petId;
+  const EmptyVaccine({super.key, required this.petId});
 
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(height * 0.1),
-          child: Appbar(
-            bg: mainBG,
-          )),
       backgroundColor: mainBG,
       body: Padding(
         padding: const EdgeInsets.only(right: 25, left: 25),
@@ -27,28 +21,31 @@ class EmptyDash extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(
-                height: height * 0.12,
+                height: height * 0.14,
               ),
               SizedBox(
-                height: height * 0.35,
-                width: width * 0.7,
+                height: height * 0.20,
+                width: width * 0.4,
                 child: const Image(
                   fit: BoxFit.fill,
-                  image: AssetImage('asset/animals.png'),
+                  image: AssetImage('asset/vaccine.png'),
                 ),
               ),
-              heading('Uh-Oh!'),
+              space,
+              space,
+              space,
+              heading('No vaccination added'),
               sizedBox,
               subject(
-                  'Looks like you have no profiles set up at this moment, add your pet now'),
-              SizedBox(height: height * 0.12),
-              FilledButton(
+                  "Organize your pet's vaccinations effortlessly. Manage your pet's health seamlessly."),
+              SizedBox(height: height * 0.15),
+              OutlinedButton(
                   onPressed: () {
-                    Navigator.pushReplacement(context,
-                        MaterialPageRoute(builder: (context) => AddPet()));
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => AddVaccines(petId: petId,)));
                   },
-                  style: secondaryButton,
-                  child: const Text('Add your pets'))
+                  style: dateButton,
+                  child: subject('Add Vaccines +'))
             ],
           ),
         ),

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
 
-class HealthCardButton extends StatelessWidget {
+class CardButton extends StatelessWidget {
   Color bgColor;
   Color brColor;
   String head;
   String image;
-  HealthCardButton(
+  CardButton(
       {super.key,
       required this.bgColor,
       required this.brColor,

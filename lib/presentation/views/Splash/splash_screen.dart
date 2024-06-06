@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen>
     getValidation().whenComplete(() async {
       if (checkUsername == null) {
         controller = BottomSheet.createAnimationController(this);
-        controller?.duration = Duration(seconds: 2);
+        controller?.duration = const Duration(seconds: 2);
         WidgetsBinding.instance.addPostFrameCallback((_) {
           openBottomSheet(context);
         });
@@ -80,22 +80,9 @@ class _SplashScreenState extends State<SplashScreen>
                       )));
         } else {
           Navigator.push(
-              context, MaterialPageRoute(builder: (context) => EmptyDash()));
+              context, MaterialPageRoute(builder: (context) => const EmptyDash()));
         }
       }
-      // else if (checkPetname == null && checkUsername != null) {
-      //   print(checkPetname);
-      //   Navigator.push(
-      //       context, MaterialPageRoute(builder: (context) => EmptyDash()));
-      // }
-      // else if (checkPetname != null && checkUsername != null) {
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) => Dashboard(
-      //                 petID: pet!.id,
-      //               )));
-      // }
     });
   }
 
@@ -113,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen>
         builder: (BuildContext context) {
           double height = MediaQuery.of(context).size.height;
           return Container(
-            height: height * 0.4,
+            height: height * 0.45,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25),
@@ -169,10 +156,10 @@ class _SplashScreenState extends State<SplashScreen>
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => Onboarding()));
+                                    builder: (context) => const Onboarding()));
                           },
                           style: mainButton,
-                          child: Text('Get started'))
+                          child: const Text('Get started'))
                     ],
                   ),
                 )),

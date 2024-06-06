@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 
 part 'certificate.g.dart';
 
@@ -19,7 +18,7 @@ class Certificate {
   late String edate;
 
   @HiveField(4)
-  late List<PetInfo>? pet;
+  late int petId;
 
   @HiveField(5)
   late int id;
@@ -30,5 +29,5 @@ class Certificate {
       required this.idate,
       required this.edate,
       required this.id,
-      this.pet});
+      required this.petId});
 }

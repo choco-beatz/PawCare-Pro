@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
@@ -45,6 +44,7 @@ class _PetProfileState extends State<PetProfile> {
 
   @override
   Widget build(BuildContext context) {
+    print(_pet!.image);
     return Scaffold(
       backgroundColor: mainBG,
       appBar: AppBar(
@@ -66,22 +66,12 @@ class _PetProfileState extends State<PetProfile> {
                 child: Row(
                   children: [
                     CircleAvatar(
-                      backgroundColor: lightGrey,
-                      radius: 90,
-                      child: _pet!.image != null
-                          ? CircleAvatar(
-                              backgroundImage:
-                                  FileImage(File(_pet!.image ?? '')),
-                              radius: 70,
-                            )
-                          : const CircleAvatar(
-                              radius: 70,
-                              child: Icon(
-                                Icons.camera_alt_outlined,
-                                color: Colors.white,
-                              ),
-                            ),
-                    ),
+                        backgroundColor: lightGrey,
+                        radius: 90,
+                        child: CircleAvatar(
+                          backgroundImage: FileImage(File(_pet!.image)),
+                          radius: 70,
+                        )),
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(

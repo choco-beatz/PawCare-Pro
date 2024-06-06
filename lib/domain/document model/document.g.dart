@@ -1,47 +1,47 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'certificate.dart';
+part of 'document.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CertificateAdapter extends TypeAdapter<Certificate> {
+class DocumentsAdapter extends TypeAdapter<Documents> {
   @override
-  final int typeId = 2;
+  final int typeId = 5;
 
   @override
-  Certificate read(BinaryReader reader) {
+  Documents read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Certificate(
-      name: fields[0] as String,
-      file: fields[1] as String,
-      idate: fields[2] as String,
-      edate: fields[3] as String,
-      id: fields[5] as int,
-      petId: fields[4] as int,
+    return Documents(
+      dname: fields[0] as String,
+      dfile: fields[1] as String,
+      didate: fields[2] as String,
+      dedate: fields[3] as String,
+      did: fields[5] as int,
+      petID: fields[4] as int,
     );
   }
 
   @override
-  void write(BinaryWriter writer, Certificate obj) {
+  void write(BinaryWriter writer, Documents obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
-      ..write(obj.name)
+      ..write(obj.dname)
       ..writeByte(1)
-      ..write(obj.file)
+      ..write(obj.dfile)
       ..writeByte(2)
-      ..write(obj.idate)
+      ..write(obj.didate)
       ..writeByte(3)
-      ..write(obj.edate)
+      ..write(obj.dedate)
       ..writeByte(4)
-      ..write(obj.petId)
+      ..write(obj.petID)
       ..writeByte(5)
-      ..write(obj.id);
+      ..write(obj.did);
   }
 
   @override
@@ -50,7 +50,7 @@ class CertificateAdapter extends TypeAdapter<Certificate> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CertificateAdapter &&
+      other is DocumentsAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
