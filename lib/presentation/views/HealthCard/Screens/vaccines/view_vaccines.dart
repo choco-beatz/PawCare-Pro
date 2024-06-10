@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
-import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/vaccine%20model/vaccine.dart';
-import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/add_vaccines.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/emptyvaccine.dart';
-import 'package:pawcare_pro/presentation/views/healthcard/widgets/bottom_sheet.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/view_vac.dart';
 import 'package:pawcare_pro/service/vaccine_services.dart';
 
 class ViewVaccines extends StatefulWidget {
@@ -47,7 +44,6 @@ class _ViewVaccinesState extends State<ViewVaccines> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           backgroundColor: mainBG,
@@ -98,57 +94,13 @@ class _ViewVaccinesState extends State<ViewVaccines> {
                         color: grey,
                         child: ListTile(
                           onTap: () {
-                            showBottomSheet(
-                                context: context,
-                                builder: (context) {
-                                  return Container(
-                                    height: height * 0.31,
-                                    decoration: bottomSheetStyle,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(20),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          label(current.name),
-                                          label('Date'),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  subject2('Issued Date'),
-                                                  leading(current.idate)
-                                                ],
-                                              ),
-                                              Column(
-                                                crossAxisAlignment:
-                                                    CrossAxisAlignment.start,
-                                                children: [
-                                                  subject2('Expiry Date'),
-                                                  leading(current.edate)
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                          space,
-                                          space,
-                                          space,
-                                          FilledButton(
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                            style: mainButton,
-                                            child: const Text('Done'),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                });
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewVac(
+                                        edate: current.edate,
+                                        idate: current.idate,
+                                        name: current.name)));
                           },
                           trailing: IconButton(
                               onPressed: () async {

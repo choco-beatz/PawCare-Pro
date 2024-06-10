@@ -38,7 +38,7 @@ void main() async {
   Hive.registerAdapter(DocumentsAdapter());
   await DocumentService().openBox();
 
-  //getting the adapter that we created document.g.dart
+  //getting the adapter that we created recipe.g.dart
   Hive.registerAdapter(RecipeAdapter());
   await RecipeService().openBox();
 

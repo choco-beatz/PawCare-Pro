@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 heading(String data) {
   return Text(
     data,
+    overflow: TextOverflow.ellipsis,
     style: const TextStyle(
         color: Colors.white, fontSize: 28, fontWeight: FontWeight.w700),
   );
@@ -22,6 +23,7 @@ subject(String data) {
 heading2(String data) {
   return Text(
     data,
+    overflow: TextOverflow.ellipsis,
     style: const TextStyle(
         color: Colors.white, fontSize: 28, fontWeight: FontWeight.w500),
   );
@@ -39,6 +41,7 @@ subject2(String data) {
 
 dateButtonText(String data) {
   return Text(
+    overflow: TextOverflow.ellipsis,
     data,
     style: const TextStyle(
       color: Colors.white,

@@ -7,19 +7,19 @@ import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 
-class ViewDoc extends StatelessWidget {
-  final String dname;
-  final String didate;
-  final String dedate;
-  final String dfile;
-  ViewDoc(
+class ViewCert extends StatelessWidget {
+  final String name;
+  final String idate;
+  final String edate;
+  final String file;
+  ViewCert(
       {super.key,
-      required this.dedate,
-      required this.didate,
-      required this.dname,
-      required this.dfile});
+      required this.edate,
+      required this.idate,
+      required this.name,
+      required this.file});
 
-  String? file;
+  String? cert;
 
   @override
   Widget build(BuildContext context) {
@@ -39,18 +39,18 @@ class ViewDoc extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              label(dname),
+              label(name),
               sizedBox,
               sizedBox,
               Center(
                 child: GestureDetector(
                   onTap: () async {
-                    file = await dfile;
+                    cert = await file;
                   },
-                  child: file != null
+                  child: cert != null
                       ? GestureDetector(
                           onTap: () async {
-                            final result = await OpenFile.open(file);
+                            final result = await OpenFile.open(cert);
                             print(result.message);
                           },
                           child: const CircleAvatar(
@@ -80,22 +80,19 @@ class ViewDoc extends StatelessWidget {
               ),
               sizedBox,
               sizedBox,
+              sizedBox,
+              sizedBox,
               label('Date'),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [subject2('Issued Date'), leading(didate)],
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [subject2('Expiry Date'), leading(dedate)],
-                  ),
-                ],
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [subject2('Issued Date'), leading(idate)],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [subject2('Expiry Date'), leading(edate)],
               ),
               SizedBox(
-                height: height * 0.22,
+                height: height * 0.2,
               ),
               FilledButton(
                 onPressed: () {

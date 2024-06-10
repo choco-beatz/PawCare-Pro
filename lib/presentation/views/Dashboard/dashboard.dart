@@ -25,7 +25,7 @@ class _DashboardState extends State<Dashboard> {
 
   //to store all the values that is fetched from db
   List<PetInfo?> _pets = [];
-  late PetInfo? _pet;
+  PetInfo? _pet;
 
   //loading/fetching data from the hive
   Future<void> _loadPets() async {
@@ -93,7 +93,9 @@ class _DashboardState extends State<Dashboard> {
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => HealthCardDashboard(petId: _pet!.id!,))),
+                              builder: (context) => HealthCardDashboard(
+                                    petId: _pet!.id!,
+                                  ))),
                       child: CardButton(
                         bg: lightgreen,
                         heading: 'Health Card',
@@ -110,7 +112,9 @@ class _DashboardState extends State<Dashboard> {
                       onTap: () => Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => NutritionDashboard(petId: _pet!.id!,))),
+                              builder: (context) => NutritionDashboard(
+                                    petId: _pet!.id!,
+                                  ))),
                       child: CardButton(
                         bg: lightRed,
                         heading: 'Nutrition',

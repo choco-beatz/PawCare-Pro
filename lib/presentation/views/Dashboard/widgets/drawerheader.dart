@@ -48,13 +48,6 @@ class _CustDrawerHeaderState extends State<CustDrawerHeader> {
               ),
             ),
             subtitle: leading('Username'),
-            // Text(
-            //   leading('Username'),
-            //   style: const TextStyle(
-            //       color: Colors.white,
-            //       fontSize: 20,
-            //       fontWeight: FontWeight.w500),
-            // ),
             leading: const CircleAvatar(
               backgroundColor: mainBG,
               child: CircleAvatar(
@@ -68,7 +61,7 @@ class _CustDrawerHeaderState extends State<CustDrawerHeader> {
             ),
           )
         : ListTile(
-            title: Text(
+            title: const Text(
               'Hello,',
               style: TextStyle(
                   color: Colors.white,

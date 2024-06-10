@@ -60,7 +60,7 @@ class _CustDrawerState extends State<CustDrawer> {
           child: Row(
             children: [
               SizedBox(
-                  width: width * 0.55,
+                  width: width * 0.5,
                   height: height * 0.16,
                   child: ListView.builder(
                     itemCount: _pet.length,
@@ -77,39 +77,69 @@ class _CustDrawerState extends State<CustDrawer> {
                           _petInfoService.updateIsActive(current.id, current);
                           setState(() {});
                         },
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: width * 0.1,
-                              backgroundColor:
-                                  current!.isActive == true ? mainColor : grey,
-                              child: CircleAvatar(
-                                radius: width * 0.09,
-                                backgroundImage: FileImage(File(current.image)),
+                        child: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: Column(
+                            children: [
+                              CircleAvatar(
+                                radius: width * 0.1,
+                                backgroundColor: current!.isActive == true
+                                    ? mainColor
+                                    : grey,
+                                child: CircleAvatar(
+                                  radius: width * 0.09,
+                                  backgroundImage:
+                                      FileImage(File(current.image)),
+                                ),
                               ),
-                            ),
-                            space,
-                            Text(
-                              current.name,
-                              textAlign: TextAlign.center,
-                              style: TextStyle(
-                                  color: current.isActive == true
-                                      ? mainColor
-                                      : grey,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
-                            )
-                          ],
+                              space,
+                              Text(
+                                current.name,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    color: current.isActive == true
+                                        ? mainColor
+                                        : grey,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500),
+                              )
+                            ],
+                          ),
                         ),
                       );
                     },
                   )),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AddPet()));
-                  },
-                  icon: const Icon(Icons.add))
+              Padding(
+                padding: const EdgeInsets.only(bottom: 15),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.push(context,
+                          MaterialPageRoute(builder: ((context) => AddPet()))),
+                      child: CircleAvatar(
+                          radius: width * 0.1,
+                          backgroundColor: lightGrey,
+                          child: CircleAvatar(
+                              radius: width * 0.09,
+                              backgroundColor: Colors.black54,
+                              child: const Icon(
+                                Icons.add,
+                                color: lightGrey,
+                                size: 40,
+                              ))),
+                    ),
+                    space,
+                    const Text(
+                      'Add pet',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: lightGrey,
+                          fontSize: 18,
+                          fontWeight: FontWeight.w500),
+                    )
+                  ],
+                ),
+              ),
             ],
           ),
         ),

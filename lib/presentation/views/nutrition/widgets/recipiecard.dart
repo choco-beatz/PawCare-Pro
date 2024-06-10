@@ -12,38 +12,39 @@ class RecipieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: fieldColor,
-        borderRadius: BorderRadius.circular(15),
-      ),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(2),
-                child: CircleAvatar(
-                  backgroundColor: Color.fromARGB(31, 122, 125, 127),
-                  radius: 80,
+    return 
+      Container(
+        decoration: BoxDecoration(
+          color: fieldColor,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(2),
                   child: CircleAvatar(
-                    backgroundColor: Color.fromARGB(31, 122, 125, 127),
-                    radius: 68,
+                    backgroundColor: const Color.fromARGB(31, 122, 125, 127),
+                    radius: 80,
                     child: CircleAvatar(
-                      radius: 56,
-                      backgroundImage: FileImage(File(image)),
+                      backgroundColor: const Color.fromARGB(31, 122, 125, 127),
+                      radius: 68,
+                      child: CircleAvatar(
+                        radius: 56,
+                        backgroundImage: FileImage(File(image)),
+                      ),
                     ),
                   ),
                 ),
-              ),
-              space,
-              leading(heading),
-            ],
+                space,
+                leading(heading),
+              ],
+            ),
           ),
         ),
-      ),
-    );
+      );
   }
 }

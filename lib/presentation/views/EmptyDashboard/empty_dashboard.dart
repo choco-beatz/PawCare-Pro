@@ -40,7 +40,7 @@ class EmptyDash extends StatelessWidget {
               heading('Uh-Oh!'),
               sizedBox,
               subject(
-                  'Looks like you have no profiles set up at this moment, add your pet now'),
+                  'Looks like you have no profiles set up at this moment, add your pet now.'),
               SizedBox(height: height * 0.12),
               FilledButton(
                   onPressed: () {

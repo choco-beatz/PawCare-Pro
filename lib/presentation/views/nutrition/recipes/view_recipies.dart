@@ -3,6 +3,7 @@ import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/domain/recipe%20model/recipe.dart';
 import 'package:pawcare_pro/presentation/views/nutrition/recipes/add_recipies.dart';
 import 'package:pawcare_pro/presentation/views/nutrition/recipes/empty_recipies.dart';
+import 'package:pawcare_pro/presentation/views/nutrition/recipes/view_rec.dart';
 import 'package:pawcare_pro/presentation/views/nutrition/widgets/recipiecard.dart';
 import 'package:pawcare_pro/service/recipe_service.dart';
 
@@ -56,7 +57,9 @@ class _ViewRecipiesState extends State<ViewRecipies> {
                   final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: ((context) => AddRecipies(petId: widget.petId,))));
+                          builder: ((context) => AddRecipies(
+                                petId: widget.petId,
+                              ))));
 
                   //to check if the returned result is not null and they type is Certificate
                   if (result != null && result is Recipe) {
@@ -77,7 +80,9 @@ class _ViewRecipiesState extends State<ViewRecipies> {
         body: Padding(
           padding: const EdgeInsets.all(6),
           child: _recipe.isEmpty
-              ? EmptyRecipies(petId: widget.petId,)
+              ? EmptyRecipies(
+                  petId: widget.petId,
+                )
               : GridView.builder(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2, childAspectRatio: 0.8),
@@ -86,8 +91,21 @@ class _ViewRecipiesState extends State<ViewRecipies> {
                     final current = currentRecipe[index];
                     return Padding(
                       padding: const EdgeInsets.all(6),
-                      child: RecipieCard(
-                          heading: current.name, image: current.image),
+                      child: GestureDetector(
+                        onTap: () {
+                          print('object');
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: ((context) => ViewRec(
+                                      name: current.name,
+                                      ingredients: current.ingredients,
+                                      direction: current.direction,
+                                      image: current.image))));
+                        },
+                        child: RecipieCard(
+                            heading: current.name, image: current.image),
+                      ),
                     );
                   }),
         ));
