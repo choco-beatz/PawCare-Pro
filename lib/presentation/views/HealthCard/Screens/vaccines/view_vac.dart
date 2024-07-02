@@ -25,7 +25,7 @@ class ViewVac extends StatelessWidget {
           backgroundColor: mainBG,
           foregroundColor: Colors.white,
           title: const Text(
-            'Documents',
+            'Vaccinations',
             style: TextStyle(fontSize: 18),
           ),
         ),
@@ -40,13 +40,17 @@ class ViewVac extends StatelessWidget {
               sizedBox,
               sizedBox,
               label('Date'),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [subject2('Issued Date'), leading(idate)],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [subject2('Expiry Date'), leading(edate)],
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [subject2('Issued Date'), leading(idate)],
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [subject2('Expiry Date'), leading(edate)],
+                  ),
+                ],
               ),
               SizedBox(
                 height: height * 0.2,

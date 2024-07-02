@@ -7,26 +7,55 @@ import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/user%20model/user.dart';
 import 'package:pawcare_pro/presentation/views/emptydashboard/empty_dashboard.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
-import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/service/user_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class Onboarding extends StatefulWidget {
-  const Onboarding({super.key});
+class EditUserProfile extends StatefulWidget {
+  const EditUserProfile({super.key});
 
   @override
-  State<Onboarding> createState() => _OnboardingState();
+  State<EditUserProfile> createState() => _EditUserProfileState();
 }
 
-class _OnboardingState extends State<Onboarding> {
+class _EditUserProfileState extends State<EditUserProfile> {
   String? image;
+
   final TextEditingController _usernameController = TextEditingController();
 
   final UserInfoService _userInfoService = UserInfoService();
 
+  late List<UserInfo?> _user;
+
+  //loading/fetching data from the hive
+  Future<void> _loadUser() async {
+    //the datas recived from the db is stored
+    _user = await _userInfoService.getuser();
+    setState(() {
+      _usernameController.text = _user.first!.username;
+      image = _user.first!.image;
+    });
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    _loadUser();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: mainBG,
+        foregroundColor: Colors.white,
+        title: const Text(
+          'Edit User Profile',
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
       backgroundColor: mainBG,
       body: SingleChildScrollView(
         child: Padding(
@@ -37,12 +66,6 @@ class _OnboardingState extends State<Onboarding> {
               const SizedBox(
                 height: 120,
               ),
-              heading('Welcome'),
-              sizedBox,
-              sizedBox,
-              subject('Please enter your information below to get started.'),
-              sizedBox,
-              sizedBox,
               Stack(clipBehavior: Clip.none, children: [
                 CircleAvatar(
                   backgroundColor: grey,
@@ -88,7 +111,6 @@ class _OnboardingState extends State<Onboarding> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
-                  cursorColor: Colors.white,
                   style: const TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor(' Enter your name'),
                   controller: _usernameController,
@@ -111,19 +133,14 @@ class _OnboardingState extends State<Onboarding> {
                       final user = UserInfo(
                           username: _usernameController.text,
                           image: image ?? '',
-                          id: DateTime.now().millisecond);
+                          id: _user.first!.id);
 
-                      await _userInfoService.adduser(user);
+                      await _userInfoService.updateuser(user, user.id);
                       _usernameController.clear();
-
-                      //shared preference is initialized and a key and value is set
-                      final SharedPreferences sP =
-                          await SharedPreferences.getInstance();
-                      sP.setString('username', user.username);
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const EmptyDash()));
+                      if (mounted) {
+                        _user.first = user;
+                      }
+                      Navigator.pop(context);
                     }
                   },
                   style: mainButton,

@@ -128,6 +128,7 @@ class _AddPetState extends State<AddPet> {
                     height: 120,
                     width: 170,
                     child: RadioMenuButton(
+                      
                       value: 'Dog',
                       style: fieldRadio,
                       groupValue: selected,
@@ -173,6 +174,7 @@ class _AddPetState extends State<AddPet> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
+                  cursorColor: Colors.white,
                   style: const TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor(" Enter pet's name"),
                   controller: _nameController,
@@ -184,6 +186,7 @@ class _AddPetState extends State<AddPet> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
+                    cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                     decoration: fieldDecor(" Enter pet's breed"),
                     controller: _breedController),
@@ -194,6 +197,7 @@ class _AddPetState extends State<AddPet> {
                 // height: 52,
                 width: 370,
                 child: TextFormField(
+                    cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                     maxLines: 4,
                     decoration:
@@ -337,6 +341,7 @@ class _AddPetState extends State<AddPet> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
+                  cursorColor: Colors.white,
                   style: const TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor("Enter Weight in Kg"),
                   controller: _weigthController,
@@ -426,39 +431,46 @@ class _AddPetState extends State<AddPet> {
               space,
               FilledButton(
                   onPressed: () async {
-                    final pet = PetInfo(
-                        type: selected,
-                        name: _nameController.text,
-                        breed: _breedController.text,
-                        description: _descriptionController.text,
-                        gender: gender,
-                        size: size,
-                        weight: _weigthController.text,
-                        image: image ?? '',
-                        bday: formattedBDate,
-                        aday: formattedADate,
-                        id: DateTime.now().microsecond,
-                        isActive: false);
+                    if (_nameController.text.isEmpty || selected.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('Please Enter the neccessary details!')));
+                      return;
+                    } else {
+                      final pet = PetInfo(
+                          type: selected,
+                          name: _nameController.text,
+                          breed: _breedController.text,
+                          description: _descriptionController.text,
+                          gender: gender,
+                          size: size,
+                          weight: _weigthController.text,
+                          image: image ?? '',
+                          bday: formattedBDate,
+                          aday: formattedADate,
+                          id: DateTime.now().microsecond,
+                          isActive: false);
 
-                    await _petInfoService.addPet(pet);
-                    await _petInfoService.updateIsActive(pet.id,pet);
-                    setState(() {});
-                    _nameController.clear();
-                    _breedController.clear();
-                    _descriptionController.clear();
-                    _weigthController.clear();
+                      await _petInfoService.addPet(pet);
+                      await _petInfoService.updateIsActive(pet.id, pet);
+                      setState(() {});
+                      _nameController.clear();
+                      _breedController.clear();
+                      _descriptionController.clear();
+                      _weigthController.clear();
 
-                    //shared preference is initialized and a key and value is set
-                    final SharedPreferences sP =
-                        await SharedPreferences.getInstance();
-                    sP.setString('petname', pet.name);
+                      //shared preference is initialized and a key and value is set
+                      final SharedPreferences sP =
+                          await SharedPreferences.getInstance();
+                      sP.setString('petname', pet.name);
 
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => Dashboard(
-                                  petID: pet.id,
-                                )));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Dashboard(
+                                    petID: pet.id,
+                                  )));
+                    }
                   },
                   style: mainButton,
                   child: const Text('Save'))

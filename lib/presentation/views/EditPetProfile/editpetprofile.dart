@@ -34,8 +34,8 @@ class _EditPetProfileState extends State<EditPetProfile> {
   DateTime bdate = DateTime.now();
   DateTime adate = DateTime.now();
 
-  String? formattedADate;
-  String? formattedBDate;
+  String formattedADate = 'Not set';
+  String formattedBDate = 'Not set';
 
   final PetInfoService _petInfoService = PetInfoService();
 
@@ -46,8 +46,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
   final TextEditingController _weightController = TextEditingController();
 
   //to store all the values that is fetched from db
-  // List<PetInfo> _pet = [];
-  late PetInfo? _pet;
+  PetInfo? _pet;
 
   //loading/fetching data from the hive
   Future<void> _loadPets() async {
@@ -62,9 +61,13 @@ class _EditPetProfileState extends State<EditPetProfile> {
       selected = _pet!.type;
       gender = _pet!.gender;
       size = _pet!.size;
+      formattedBDate = _pet!.bday;
+      formattedADate = _pet!.aday;
       image = _pet!.image;
-      print(gender);
     });
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -76,6 +79,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: mainBG,
       appBar: AppBar(
@@ -87,7 +91,12 @@ class _EditPetProfileState extends State<EditPetProfile> {
         ),
         centerTitle: true,
       ),
-      body: SingleChildScrollView(
+      body:  _pet == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            :
+      SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
@@ -132,7 +141,16 @@ class _EditPetProfileState extends State<EditPetProfile> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          heading2(_pet!.name),
+                          SizedBox(
+                            height: 52,
+                            width: width * 0.4,
+                            child: TextFormField(
+                              cursorColor: Colors.white,
+                              style: name,
+                              decoration: nameField('Name'),
+                              controller: _nameController,
+                            ),
+                          ),
                           subject('${_pet!.type} | ${_pet!.breed}')
                         ],
                       ),
@@ -155,7 +173,6 @@ class _EditPetProfileState extends State<EditPetProfile> {
                           selected = selection!;
 
                           _pet!.type = selected;
-                          // _petInfoService.updatePet(_pet!);
                         });
                       },
                       child: const FaIcon(
@@ -179,7 +196,6 @@ class _EditPetProfileState extends State<EditPetProfile> {
                         setState(() {
                           selected = selection!;
                           _pet!.type = selected;
-                          // _petInfoService.updatePet(_pet!);
                         });
                       },
                       child: const FaIcon(
@@ -192,22 +208,12 @@ class _EditPetProfileState extends State<EditPetProfile> {
                 ],
               ),
               line,
-              label('Name'),
-              SizedBox(
-                height: 52,
-                width: 370,
-                child: TextFormField(
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                  decoration: fieldDecor(" Enter pet's name"),
-                  controller: _nameController,
-                ),
-              ),
-              line,
               label('Breed'),
               SizedBox(
                 height: 52,
                 width: 370,
                 child: TextFormField(
+                    cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                     decoration: fieldDecor(" Enter pet's breed"),
                     controller: _breedController),
@@ -215,9 +221,9 @@ class _EditPetProfileState extends State<EditPetProfile> {
               line,
               label('Appearance and distinctive signs'),
               SizedBox(
-                // height: 52,
                 width: 370,
                 child: TextFormField(
+                    cursorColor: Colors.white,
                     style: const TextStyle(color: Colors.white, fontSize: 20),
                     maxLines: 4,
                     decoration:
@@ -232,7 +238,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                     height: 60,
                     width: 170,
                     child: RadioMenuButton(
-                        value: 'female',
+                        value: 'Female',
                         style: fieldRadio,
                         groupValue: _pet!.gender,
                         onChanged: (selection) {
@@ -251,14 +257,13 @@ class _EditPetProfileState extends State<EditPetProfile> {
                     height: 60,
                     width: 170,
                     child: RadioMenuButton(
-                        value: 'male',
+                        value: 'Male',
                         style: fieldRadio,
                         groupValue: _pet!.gender,
                         onChanged: (selection) {
                           setState(() {
                             gender = selection!;
                             _pet!.gender = gender;
-                            // _petInfoService.updatePet(_pet!);
                           });
                         },
                         child: subject('Male')),
@@ -280,14 +285,13 @@ class _EditPetProfileState extends State<EditPetProfile> {
                       height: 60,
                       width: 95,
                       child: RadioMenuButton(
-                          value: 'small',
+                          value: 'Small',
                           style: fieldRadio,
                           groupValue: _pet!.size,
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
                               _pet!.size = size;
-                              // _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
@@ -309,14 +313,13 @@ class _EditPetProfileState extends State<EditPetProfile> {
                       height: 60,
                       width: 95,
                       child: RadioMenuButton(
-                          value: 'medium',
+                          value: 'Medium',
                           style: fieldRadio,
                           groupValue: _pet!.size,
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
                               _pet!.size = size;
-                              // _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
@@ -337,14 +340,13 @@ class _EditPetProfileState extends State<EditPetProfile> {
                     SizedBox(
                       width: 95,
                       child: RadioMenuButton(
-                          value: 'huge',
+                          value: 'Huge',
                           style: fieldRadio,
                           groupValue: _pet!.size,
                           onChanged: (selection) {
                             setState(() {
                               size = selection!;
                               _pet!.size = size;
-                              // _petInfoService.updatePet(_pet!);
                             });
                           },
                           child: const SizedBox(
@@ -372,6 +374,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                 width: 370,
                 child: TextFormField(
                   style: const TextStyle(color: Colors.white, fontSize: 20),
+                  cursorColor: Colors.white,
                   decoration: fieldDecor("Enter Weight in Kg"),
                   controller: _weightController,
                   keyboardType: TextInputType.number,
@@ -392,10 +395,10 @@ class _EditPetProfileState extends State<EditPetProfile> {
                           .then((value) {
                         setState(() {
                           bdate = value!;
+                          formattedBDate =
+                              DateFormat('dd-MM-yyyy').format(bdate);
                         });
                       });
-                      formattedBDate = DateFormat('dd-MM-yyyy').format(bdate);
-                      print(formattedBDate);
                     });
                     // _showDatePicker;
                     // formattedDate = DateFormat('dd-MM-yyyy').format(date);
@@ -411,7 +414,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                       const SizedBox(
                         width: 10,
                       ),
-                      subject('Add Birth date')
+                      subject(formattedBDate)
                     ],
                   )),
               line,
@@ -428,12 +431,11 @@ class _EditPetProfileState extends State<EditPetProfile> {
                           .then((value) {
                         setState(() {
                           adate = value!;
+                          formattedADate =
+                              DateFormat('dd-MM-yyyy').format(adate);
                         });
                       });
-                      formattedADate = DateFormat('dd-MM-yyyy').format(bdate);
                     });
-                    // _showDatePicker;
-                    // formattedDate = DateFormat('dd-MM-yyyy').format(date);
                   },
                   style: dateButton,
                   child: Row(
@@ -446,7 +448,7 @@ class _EditPetProfileState extends State<EditPetProfile> {
                       const SizedBox(
                         width: 10,
                       ),
-                      subject('Add Adoption date')
+                      subject(formattedADate)
                     ],
                   )),
               space,
@@ -462,23 +464,22 @@ class _EditPetProfileState extends State<EditPetProfile> {
                         size: size,
                         weight: _weightController.text,
                         image: image ?? _pet!.image,
-                        bday: formattedBDate ?? _pet!.bday,
-                        aday: formattedADate ?? _pet!.aday,
+                        bday: formattedBDate,
+                        aday: formattedADate,
                         isActive: true,
                         id: _pet!.id);
 
-                    print(_pet!.id);
                     await _petInfoService.updatePet(_pet!.id, pet).then((_) {
                       _nameController.clear();
                       _breedController.clear();
                       _descriptionController.clear();
                       _weightController.clear();
-                      setState(() {});
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => Dashboard(petID: pet.id,)));
-                      Navigator.pop(context);
+                      if (mounted) {
+                        setState(() {
+                          _pet = pet;
+                        });
+                      }
+                      Navigator.pop(context, _pet);
                     });
                   },
                   style: mainButton,

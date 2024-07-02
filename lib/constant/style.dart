@@ -9,6 +9,18 @@ heading(String data) {
   );
 }
 
+heading3(String data) {
+  return Center(
+    child: Text(
+      data,
+      textAlign: TextAlign.center,
+      overflow: TextOverflow.ellipsis,
+      style: const TextStyle(
+          color: Colors.white, fontSize: 28, fontWeight: FontWeight.w700),
+    ),
+  );
+}
+
 subject(String data) {
   return Text(
     data,
@@ -39,6 +51,17 @@ subject2(String data) {
   );
 }
 
+eventicon(String data) {
+  return Text(
+    data,
+    overflow: TextOverflow.ellipsis,
+    style: const TextStyle(
+      color: Color.fromARGB(255, 211, 211, 211),
+      fontSize: 16,
+    ),
+  );
+}
+
 dateButtonText(String data) {
   return Text(
     overflow: TextOverflow.ellipsis,
@@ -61,3 +84,6 @@ leading(String data) {
     ),
   );
 }
+
+const TextStyle name =
+    TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w500);

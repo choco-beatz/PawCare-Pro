@@ -3,7 +3,9 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
+import 'package:pawcare_pro/domain/certificate%20model/certificates.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/certificate/add_certificates.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/screens/certificate/view_certificate.dart';
 
 class EmptyCert extends StatelessWidget {
   final int petId;
@@ -40,11 +42,22 @@ class EmptyCert extends StatelessWidget {
                   "Store certificates for complete care. Manage your pet's health seamlessly."),
               SizedBox(height: height * 0.15),
               OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(
+                  onPressed: () async {
+                    final result = await Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddCertificates(petId: petId),
+                      ),
+                    );
+
+                    if (result != null && result is Certificates) {
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => AddCertificates(petId: petId,)));
+                          builder: (context) => ViewCertificates(petId: petId),
+                        ),
+                      );
+                    }
                   },
                   style: dateButton,
                   child: subject('Add Certificate +'))

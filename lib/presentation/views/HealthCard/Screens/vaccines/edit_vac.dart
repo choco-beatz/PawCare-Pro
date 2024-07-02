@@ -1,31 +1,32 @@
+import 'dart:core';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:open_file/open_file.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/constant/textField.dart';
-import 'package:pawcare_pro/domain/document%20model/document.dart';
+import 'package:pawcare_pro/domain/vaccine%20model/vaccine.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
-import 'package:pawcare_pro/service/document_services.dart';
+import 'package:pawcare_pro/service/vaccine_services.dart';
 
-class AddDocuments extends StatefulWidget {
+class EditVaccine extends StatefulWidget {
+  final int id;
   final int petId;
-  const AddDocuments({super.key, required this.petId});
+  const EditVaccine({super.key, required this.id, required this.petId});
 
   @override
-  State<AddDocuments> createState() => _AddDocumentsState();
+  State<EditVaccine> createState() => _EditVaccineState();
 }
 
-class _AddDocumentsState extends State<AddDocuments> {
+class _EditVaccineState extends State<EditVaccine> {
   //TextEditingController
-  final TextEditingController _docNameController = TextEditingController();
+  final TextEditingController _vacNameController = TextEditingController();
 
   //to access the db functions
-  final DocumentService _documentService = DocumentService();
+  final VaccineService _vaccineService = VaccineService();
 
   //for dates
   DateTime idate = DateTime.now();
@@ -42,6 +43,30 @@ class _AddDocumentsState extends State<AddDocuments> {
   //for file picker
   FilePickerResult? result;
 
+  Vaccine? _vaccine;
+
+  Future<void> _loadVac() async {
+    final vac = await _vaccineService.getVaccine(widget.id);
+    if (vac != null) {
+      setState(() {
+        _vaccine = vac;
+        _vacNameController.text = _vaccine!.name;
+        formattedEDate = _vaccine!.edate;
+        formattedIDate = _vaccine!.idate;
+      });
+    }
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    _loadVac();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
@@ -50,7 +75,7 @@ class _AddDocumentsState extends State<AddDocuments> {
         backgroundColor: mainBG,
         foregroundColor: Colors.white,
         title: const Text(
-          'Documents',
+          'Edit Vaccine',
           style: TextStyle(fontSize: 18),
         ),
       ),
@@ -62,70 +87,15 @@ class _AddDocumentsState extends State<AddDocuments> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               sizedBox,
-              Center(
-                child: CircleAvatar(
-                    backgroundColor: grey,
-                    radius: 95,
-                    child: GestureDetector(
-                      onTap: () async {
-                        result = await FilePicker.platform
-                            .pickFiles(type: FileType.any);
-
-                        if (result != null) {
-                          setState(() {
-                            filePath = result?.files.single.path;
-                            file = result!.files.single;
-                          });
-                        }
-                      },
-                      child: CircleAvatar(
-                          backgroundColor: transGrey,
-                          radius: 80,
-                          child: result == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      size: 50,
-                                      Icons.file_upload,
-                                      color: Colors.white,
-                                    ),
-                                    sSpace,
-                                    eventicon('Upload file here')
-                                  ],
-                                )
-                              : GestureDetector(
-                                  onTap: () {
-                                    final file = result!.files.first;
-                                    openFile(file);
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        size: 50,
-                                        Icons.file_open_outlined,
-                                        color: Colors.white,
-                                      ),
-                                      sSpace,
-                                      eventicon(file!.name),
-                                      eventicon('Tap to view the file')
-                                    ],
-                                  ),
-                                )),
-                    )),
-              ),
-              space,
-              space,
-              label('Document name'),
+             
+              label('Vaccine name'),
               SizedBox(
                 height: 52,
                 width: 370,
                 child: TextFormField(
-                  cursorColor: Colors.white,
                   style: const TextStyle(color: Colors.white, fontSize: 20),
                   decoration: fieldDecor("Enter the name of the document"),
-                  controller: _docNameController,
+                  controller: _vacNameController,
                 ),
               ),
               line,
@@ -179,25 +149,24 @@ class _AddDocumentsState extends State<AddDocuments> {
               ),
               FilledButton(
                   onPressed: () async {
-                    if (_docNameController.text.isEmpty || filePath!.isEmpty) {
+                    if (_vacNameController.text.isEmpty || filePath!.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content:
                               Text('Please Enter the neccessary details!')));
                       return;
                     } else {
-                      final document = Documents(
-                          dname: _docNameController.text,
-                          did: DateTime.now().microsecond,
-                          dfile: filePath ?? '',
-                          didate: formattedIDate,
-                          dedate: formattedEDate,
-                          petID: widget.petId);
-                      await _documentService
-                          .updatedocument(document.did, document)
+                      final vac = Vaccine(
+                          name: _vacNameController.text,
+                          id: _vaccine!.id,
+                          idate: formattedIDate,
+                          edate: formattedEDate,
+                          petId: widget.petId);
+                      await _vaccineService
+                          .updateVaccine(vac.id, vac)
                           .then((_) {
-                        _docNameController.clear();
+                        _vacNameController.clear();
                         setState(() {});
-                        Navigator.pop(context, document);
+                        Navigator.pop(context, vac);
                       });
                     }
                   },
@@ -210,8 +179,4 @@ class _AddDocumentsState extends State<AddDocuments> {
     );
   }
 
-  //function to open the file
-  void openFile(PlatformFile file) {
-    OpenFile.open(filePath);
-  }
 }

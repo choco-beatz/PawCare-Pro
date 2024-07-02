@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
@@ -19,7 +20,7 @@ class _ActiveProfileState extends State<ActiveProfile> {
 
   //to store all the values that is fetched from db
   // List<PetInfo?> _pet = [];
-  late PetInfo? _pet;
+  PetInfo? _pet;
 
   //loading/fetching data from the hive
   Future<void> _loadPets() async {
@@ -38,20 +39,27 @@ class _ActiveProfileState extends State<ActiveProfile> {
 
   @override
   Widget build(BuildContext context) {
-    print(_pet!.image);
     double height = MediaQuery.of(context).size.height;
+    if (_pet == null) {
+      return const Center(child: CircularProgressIndicator());
+    }
     return Stack(children: [
       GestureDetector(
-        onTap: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PetProfile(
-                        petId: _pet!.id,
-                      )));
-                      setState(() {
-                        
-                      });
+        onTap: () async {
+          final updatedPetInfo = await Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PetProfile(
+                petId: _pet!.id,
+              ),
+            ),
+          );
+
+          if (updatedPetInfo != null && updatedPetInfo is PetInfo) {
+            setState(() {
+              _pet = updatedPetInfo;
+            });
+          }
         },
         child: Container(
           height: height * 0.18,
@@ -86,24 +94,20 @@ class _ActiveProfileState extends State<ActiveProfile> {
                 child: CircleAvatar(
                     backgroundColor: const Color.fromARGB(100, 196, 229, 255),
                     radius: 80,
-                    child: CircleAvatar(
-                      backgroundImage: FileImage(File(_pet!.image)),
-                      radius: 65,
-                    )
-
-                    //  _pet!.image != null
-                    //     ? CircleAvatar(
-                    //         backgroundImage: FileImage(File(_pet!.image ?? '')),
-                    //         radius: 65,
-                    //       )
-                    //     : const CircleAvatar(
-                    //         radius: 65,
-                    //         child: Icon(
-                    //           Icons.camera_alt_outlined,
-                    //           color: Colors.white,
-                    //         ),
-                    //       ),
-                    )),
+                    child: _pet!.image.isNotEmpty
+                        ? CircleAvatar(
+                            backgroundImage: FileImage(File(_pet!.image)),
+                            radius: 65,
+                          )
+                        : const CircleAvatar(
+                            radius: 80,
+                            backgroundColor: Color.fromARGB(100, 196, 229, 255),
+                            child: FaIcon(
+                              size: 100,
+                              FontAwesomeIcons.paw,
+                              color: Colors.white,
+                            ),
+                          ))),
           ))
     ]);
   }

@@ -31,12 +31,12 @@ class UserInfoService {
   }
 
   //to update datas in the box
-  Future<void> updateuser(int index, UserInfo user) async {
+  Future<void> updateuser(UserInfo user, int index) async {
     if (_userInfoBox == null) {
       await openBox();
     }
 
-    await _userInfoBox!.putAt(index, user);
+    await _userInfoBox!.put(index,user);
   }
 
   //to delete data in the box

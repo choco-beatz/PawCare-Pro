@@ -79,8 +79,8 @@ class _SplashScreenState extends State<SplashScreen>
                         petID: petId,
                       )));
         } else {
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => const EmptyDash()));
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const EmptyDash()));
         }
       }
     });
@@ -100,7 +100,7 @@ class _SplashScreenState extends State<SplashScreen>
         builder: (BuildContext context) {
           double height = MediaQuery.of(context).size.height;
           return Container(
-            height: height * 0.45,
+            height: height * 0.46,
             decoration: const BoxDecoration(
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25),

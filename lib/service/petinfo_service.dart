@@ -1,5 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
+
+ValueNotifier<List<PetInfo>> petNotifier = ValueNotifier([]);
 
 class PetInfoService {
   Box<PetInfo>? _petInfoBox;
@@ -11,6 +14,7 @@ class PetInfoService {
   //to create/open the box
   Future<void> openBox() async {
     _petInfoBox = await Hive.openBox<PetInfo>('PETINFOBOX');
+    
   }
 
   //to close the box
@@ -36,6 +40,7 @@ class PetInfoService {
     for (var i in _petInfoBox!.values) {
       list.add(i);
     }
+
     return _petInfoBox!.values.toList();
   }
 

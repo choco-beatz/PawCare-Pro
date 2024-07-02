@@ -1,14 +1,19 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/presentation/views/addpet/add_pet.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
+import 'package:pawcare_pro/presentation/views/calender/event.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/widgets/drawerfunctions.dart';
-import 'package:pawcare_pro/presentation/views/dashboard/widgets/drawerheader.dart';
+import 'package:pawcare_pro/presentation/views/userprofile/userprofile.dart';
+import 'package:pawcare_pro/presentation/views/widgets/aboutus.dart';
+import 'package:pawcare_pro/presentation/views/widgets/appbar.dart';
+import 'package:pawcare_pro/presentation/views/widgets/privacydialoge.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 
 class CustDrawer extends StatefulWidget {
@@ -47,8 +52,8 @@ class _CustDrawerState extends State<CustDrawer> {
       child: ListView(children: [
         SizedBox(
             height: height * 0.15,
-            child: const DrawerHeader(
-              child: CustDrawerHeader(),
+            child: DrawerHeader(
+              child: Appbar(bg: Colors.black),
             )),
         Padding(
           padding: const EdgeInsets.only(left: 10, top: 15),
@@ -86,11 +91,21 @@ class _CustDrawerState extends State<CustDrawer> {
                                 backgroundColor: current!.isActive == true
                                     ? mainColor
                                     : grey,
-                                child: CircleAvatar(
-                                  radius: width * 0.09,
-                                  backgroundImage:
-                                      FileImage(File(current.image)),
-                                ),
+                                child: current.image.isEmpty
+                                    ? CircleAvatar(
+                                        backgroundColor: mainBG,
+                                        radius: width * 0.09,
+                                        child: const FaIcon(
+                                          size: 50,
+                                          FontAwesomeIcons.paw,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : CircleAvatar(
+                                        radius: width * 0.09,
+                                        backgroundImage:
+                                            FileImage(File(current.image)),
+                                      ),
                               ),
                               space,
                               Text(
@@ -144,9 +159,39 @@ class _CustDrawerState extends State<CustDrawer> {
           ),
         ),
         line,
-        list(Icons.dashboard_customize_outlined, 'Dashboard'),
-        list(Icons.calendar_today_outlined, 'Calender'),
-        list(Icons.person_outline_outlined, 'User Account'),
+        GestureDetector(
+            onTap: () => Navigator.push(context,
+                MaterialPageRoute(builder: ((context) => const UserProfile()))),
+            child: DrawerList(
+                icon: Icons.person_outline_outlined, text: 'User Account')),
+        GestureDetector(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return PrivacyDialoge(mdFileName: 'termsandconditions.md');
+                  });
+            },
+            child: DrawerList(
+                icon: Icons.file_present_outlined,
+                text: 'Terms and Conditions')),
+        line,
+        GestureDetector(
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (context) {
+                    return PrivacyDialoge(mdFileName: 'privacypolicy.md');
+                  });
+            },
+            child: DrawerList(
+                icon: Icons.lock_outline_rounded, text: 'Privacy policy')),
+        GestureDetector(
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: ((context) => const AboutUs())));
+            },
+            child: DrawerList(icon: Icons.info_outlined, text: 'About us')),
       ]),
     );
   }

@@ -7,3 +7,7 @@ const sizedBox = SizedBox(
 const space = SizedBox(
   height: 10,
 );
+
+const sSpace = SizedBox(
+  height: 5,
+);

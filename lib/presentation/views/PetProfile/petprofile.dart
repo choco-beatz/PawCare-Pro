@@ -27,7 +27,7 @@ class _PetProfileState extends State<PetProfile> {
   // List<PetInfo> _pet = [];
   PetInfo? _pet;
 
-  //loading/fetching data from the hive
+  // loading/fetching data from the hive
   Future<void> _loadPets() async {
     //the datas recived from the db is stored
     _pet = await _petInfoService.getPet(widget.petId);
@@ -38,13 +38,12 @@ class _PetProfileState extends State<PetProfile> {
 
   @override
   void initState() {
-    _loadPets();
     super.initState();
+    _loadPets();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(_pet!.image);
     return Scaffold(
       backgroundColor: mainBG,
       appBar: AppBar(
@@ -57,112 +56,124 @@ class _PetProfileState extends State<PetProfile> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
+        child: _pet == null
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CircleAvatar(
-                        backgroundColor: lightGrey,
-                        radius: 90,
-                        child: CircleAvatar(
-                          backgroundImage: FileImage(File(_pet!.image)),
-                          radius: 70,
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                    SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
                         children: [
-                          heading2(_pet!.name),
-                          subject('${_pet!.type} | ${_pet!.breed}')
+                          CircleAvatar(
+                              backgroundColor: lightGrey,
+                              radius: 90,
+                              child: CircleAvatar(
+                                backgroundImage: FileImage(File(_pet!.image)),
+                                radius: 70,
+                              )),
+                          Padding(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                heading2(_pet!.name),
+                                subject('${_pet!.type} | ${_pet!.breed}')
+                              ],
+                            ),
+                          )
                         ],
                       ),
-                    )
+                    ),
+                    space,
+                    space,
+                    label('Appearence and distinctive signs'),
+                    subject2(_pet!.description),
+                    space,
+                    line,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [subject2('Gender'), label2(_pet!.gender)],
+                    ),
+                    line,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [subject2('Size'), label2(_pet!.size)],
+                    ),
+                    line,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [subject2('Weight'), label2(_pet!.weight)],
+                    ),
+                    space,
+                    space,
+                    label('Important Dates'),
+                    ListTile(
+                      leading: Container(
+                        height: 55,
+                        width: 55,
+                        decoration: BoxDecoration(
+                          color: mainColor,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Center(
+                            child: FaIcon(
+                          FontAwesomeIcons.cakeCandles,
+                          color: Colors.white,
+                          size: 20,
+                        )),
+                      ),
+                      title: subject2('Birthday'),
+                      subtitle: label2(_pet!.bday),
+                    ),
+                    line,
+                    ListTile(
+                      leading: Container(
+                        height: 55,
+                        width: 55,
+                        decoration: BoxDecoration(
+                          color: mainColor,
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        child: const Center(
+                            child: FaIcon(
+                          FontAwesomeIcons.house,
+                          color: Colors.white,
+                          size: 20,
+                        )),
+                      ),
+                      title: subject2('Adoption Day'),
+                      subtitle: label2(_pet!.aday),
+                    ),
+                    space,
+                    space,
+                    space,
+                    space,
+                    FilledButton(
+                        onPressed: () async {
+                          final updatedPetInfo = await Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => EditPetProfile(
+                                        petID: _pet!.id,
+                                      )));
+
+                          if (updatedPetInfo != null &&
+                              updatedPetInfo is PetInfo) {
+                            setState(() {
+                              _pet = updatedPetInfo;
+                            });
+                            Navigator.pop(context, updatedPetInfo);
+                          }
+                        },
+                        style: mainButton,
+                        child: const Text('Edit'))
                   ],
                 ),
               ),
-              space,
-              space,
-              label('Appearence and distinctive signs'),
-              subject2(_pet!.description),
-              space,
-              line,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Gender'), label2(_pet!.gender)],
-              ),
-              line,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Size'), label2(_pet!.size)],
-              ),
-              line,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [subject2('Weight'), label2(_pet!.weight)],
-              ),
-              space,
-              space,
-              label('Important Dates'),
-              ListTile(
-                leading: Container(
-                  height: 55,
-                  width: 55,
-                  decoration: BoxDecoration(
-                    color: mainColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: const Center(
-                      child: FaIcon(
-                    FontAwesomeIcons.cakeCandles,
-                    color: Colors.white,
-                    size: 20,
-                  )),
-                ),
-                title: subject2('Birthday'),
-                subtitle: label2(_pet!.bday),
-              ),
-              line,
-              ListTile(
-                leading: Container(
-                  height: 55,
-                  width: 55,
-                  decoration: BoxDecoration(
-                    color: mainColor,
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: const Center(
-                      child: FaIcon(
-                    FontAwesomeIcons.house,
-                    color: Colors.white,
-                    size: 20,
-                  )),
-                ),
-                title: subject2('Adoption Day'),
-                subtitle: label2(_pet!.aday),
-              ),
-              space,
-              space,
-              space,
-              space,
-              FilledButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => EditPetProfile(
-                                  petID: _pet!.id,
-                                )));
-                  },
-                  style: mainButton,
-                  child: const Text('Edit'))
-            ],
-          ),
-        ),
       ),
     );
   }

@@ -1,10 +1,10 @@
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/adapters.dart';
 
-part 'certificate.g.dart';
+part 'certificates.g.dart';
 
 @HiveType(typeId: 2)
-class Certificate {
+class Certificates {
   @HiveField(0)
   late String name;
 
@@ -23,7 +23,7 @@ class Certificate {
   @HiveField(5)
   late int id;
 
-  Certificate(
+  Certificates(
       {required this.name,
       required this.file,
       required this.idate,

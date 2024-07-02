@@ -20,19 +20,22 @@ class UserInfoAdapter extends TypeAdapter<UserInfo> {
       username: fields[0] as String,
       image: fields[1] as String,
       pets: (fields[2] as List?)?.cast<PetInfo>(),
+      id: fields[3] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, UserInfo obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.username)
       ..writeByte(1)
       ..write(obj.image)
       ..writeByte(2)
-      ..write(obj.pets);
+      ..write(obj.pets)
+      ..writeByte(3)
+      ..write(obj.id);
   }
 
   @override

@@ -9,7 +9,7 @@ class Recipe {
   late String name;
 
   @HiveField(1)
-  late String ingredients;
+  late List<String> ingredients;
 
   @HiveField(2)
   late String direction;

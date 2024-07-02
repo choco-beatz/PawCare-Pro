@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
 import 'package:pawcare_pro/constant/colors.dart';
-import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
+import 'package:pawcare_pro/domain/certificate%20model/certificates.dart';
 import 'package:pawcare_pro/domain/document%20model/document.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/domain/recipe%20model/recipe.dart';
@@ -27,7 +27,7 @@ void main() async {
   await UserInfoService().openBox();
 
 //getting the adapter that we created certificate.g.dart
-  Hive.registerAdapter(CertificateAdapter());
+  Hive.registerAdapter(CertificatesAdapter());
   await CertificateService().openBox();
 
 //getting the adapter that we created vaccine.g.dart
@@ -52,7 +52,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primaryColor: mainColor, focusColor: Colors.white),
+      theme: ThemeData(
+        primaryColor: mainColor,
+        focusColor: Colors.white,
+      ),
       home: SplashScreen(),
     );
   }

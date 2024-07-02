@@ -3,7 +3,9 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
+import 'package:pawcare_pro/domain/vaccine%20model/vaccine.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/add_vaccines.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/view_vaccines.dart';
 
 class EmptyVaccine extends StatelessWidget {
   final int petId;
@@ -40,9 +42,22 @@ class EmptyVaccine extends StatelessWidget {
                   "Organize your pet's vaccinations effortlessly. Manage your pet's health seamlessly."),
               SizedBox(height: height * 0.15),
               OutlinedButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => AddVaccines(petId: petId,)));
+                  onPressed: () async {
+                    final result = await Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddVaccines(petId: petId),
+                      ),
+                    );
+
+                    if (result != null && result is Vaccine) {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ViewVaccines(petId: petId),
+                        ),
+                      );
+                    }
                   },
                   style: dateButton,
                   child: subject('Add Vaccines +'))

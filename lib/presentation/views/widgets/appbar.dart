@@ -40,59 +40,40 @@ class _AppbarState extends State<Appbar> {
       automaticallyImplyLeading: false,
       titleSpacing: 0,
       title: _user.isEmpty
-          ? const ListTile(
-              title: Padding(
-                padding: EdgeInsets.only(top: 10),
-                child: Text(
-                  'Hello,',
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400),
-                ),
-              ),
-              subtitle: Text(
-                'Username',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500),
-              ),
-              leading: CircleAvatar(
-                backgroundColor: mainBG,
+      ? const CircularProgressIndicator()
+      : ListTile(
+        title: const Text(
+          'Hello,',
+          style: TextStyle(
+              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
+        ),
+        subtitle: Text(
+          _user.first.username,
+          style: const TextStyle(
+              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
+        ),
+        leading: _user.first.image.isEmpty
+            ? const CircleAvatar(
+                radius: 30,
+                backgroundColor: Colors.white,
                 child: CircleAvatar(
-                  radius: 70,
+                  radius: 25,
+                  backgroundColor: mainBG,
                   child: FaIcon(
-                    size: 65,
-                    FontAwesomeIcons.person,
+                    size: 30,
+                    FontAwesomeIcons.user,
                     color: Colors.white,
                   ),
                 ),
-              ),
-            )
-          : ListTile(
-              title: const Text(
-                'Hello,',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
-              ),
-              subtitle: Text(
-                _user.first.username,
-                style: const TextStyle(
-                    color: Colors.white,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500),
-              ),
-              leading: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: mainBG,
-                  child: CircleAvatar(
-                    backgroundImage: FileImage(File(_user.first.image)),
-                    radius: 80,
-                  )),
-            ),
+              )
+            : CircleAvatar(
+                radius: 30,
+                backgroundColor: mainBG,
+                child: CircleAvatar(
+                  backgroundImage: FileImage(File(_user.first.image)),
+                  radius: 80,
+                )),
+      ),
       backgroundColor: widget.bg,
       foregroundColor: Colors.white,
     );

@@ -23,6 +23,7 @@ class _ViewRecipiesState extends State<ViewRecipies> {
 
   Future<void> _loadRecipe() async {
     //the datas recived from the db is stored
+    currentRecipe.clear();
     _recipe = await _recipeService.getRecipes();
     for (var rec in _recipe) {
       if (widget.petId == rec.petId) {
@@ -36,8 +37,8 @@ class _ViewRecipiesState extends State<ViewRecipies> {
 
   @override
   void initState() {
-    _loadRecipe();
     super.initState();
+    _loadRecipe();
   }
 
   @override
@@ -63,15 +64,14 @@ class _ViewRecipiesState extends State<ViewRecipies> {
 
                   //to check if the returned result is not null and they type is Certificate
                   if (result != null && result is Recipe) {
-                    setState(() async {
-                      //the result that is recieved is added to the List that is to be displayed
-                      // _document.add(result);
-                      await _loadRecipe();
-                    });
+                    //the result that is recieved is added to the List that is to be displayed
+                    // _document.add(result);
+                    await _loadRecipe();
                   }
                 },
                 icon: const Icon(
                   Icons.add,
+                  size: 35,
                   color: mainColor,
                 ))
           ],
@@ -93,11 +93,12 @@ class _ViewRecipiesState extends State<ViewRecipies> {
                       padding: const EdgeInsets.all(6),
                       child: GestureDetector(
                         onTap: () {
-                          print('object');
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                   builder: ((context) => ViewRec(
+                                      petId: widget.petId,
+                                      id: current.id,
                                       name: current.name,
                                       ingredients: current.ingredients,
                                       direction: current.direction,

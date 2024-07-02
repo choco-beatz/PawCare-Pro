@@ -4,6 +4,7 @@ import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/widgets/active_profile.dart';
+import 'package:pawcare_pro/presentation/views/calender/event.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/widgets/cardbutton.dart';
 import 'package:pawcare_pro/presentation/views/HealthCard/Screens/healthcard_dashboard.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/widgets/drawer.dart';
@@ -59,7 +60,9 @@ class _DashboardState extends State<Dashboard> {
       drawer: const CustDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(15),
-        child: SingleChildScrollView(
+        child: _pet == null
+        ? const Center(child: CircularProgressIndicator(),)
+        : SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -122,10 +125,13 @@ class _DashboardState extends State<Dashboard> {
                       ),
                     ),
                     GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (context) => const Event()));
+                      },
                       child: CardButton(
                         bg: lightPink,
-                        heading: 'Activities',
+                        heading: 'Calender',
                         image: 'asset/activity.png',
                       ),
                     ),

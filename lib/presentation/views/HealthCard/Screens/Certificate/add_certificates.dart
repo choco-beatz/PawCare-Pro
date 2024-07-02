@@ -1,12 +1,13 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:open_file/open_file.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/constant/textField.dart';
-import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
+import 'package:pawcare_pro/domain/certificate%20model/certificates.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 import 'package:pawcare_pro/service/certificate_service.dart';
@@ -29,11 +30,13 @@ class _AddCertificatesState extends State<AddCertificates> {
   DateTime idate = DateTime.now();
   DateTime edate = DateTime.now();
 
-  String? formattedIDate;
-  String? formattedEDate;
+  String formattedIDate = 'not set';
+  String formattedEDate = 'not set';
 
   //for file
   String? filePath;
+
+  PlatformFile? file;
 
   //for file picker
   FilePickerResult? result;
@@ -58,56 +61,58 @@ class _AddCertificatesState extends State<AddCertificates> {
             children: [
               sizedBox,
               Center(
-                child: Stack(clipBehavior: Clip.none, children: [
-                  CircleAvatar(
+                child: CircleAvatar(
                     backgroundColor: grey,
                     radius: 95,
-                    child: result == null
-                        ? const CircleAvatar(
-                            backgroundColor: lightGrey,
-                            radius: 80,
-                            child: Icon(
-                              size: 65,
-                              Icons.file_upload,
-                              color: Colors.white,
-                            ),
-                          )
-                        : const CircleAvatar(
-                            radius: 80,
-                            backgroundColor: lightGrey,
-                            child: Icon(
-                              size: 65,
-                              Icons.file_copy_outlined,
-                              color: Colors.white,
-                            ),
-                          ),
-                  ),
-                  Positioned(
-                    left: 115,
-                    top: 130,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white,
-                      ),
-                      child: IconButton(
-                          onPressed: () async {
-                            result = await FilePicker.platform
-                                .pickFiles(type: FileType.any);
-                            if (result != null) {
-                              setState(() {
-                                filePath = result?.files.single.path;
-                              });
-                            }
-                          },
-                          icon: const Icon(
-                            size: 25,
-                            Icons.file_open_outlined,
-                            color: mainColor,
-                          )),
-                    ),
-                  )
-                ]),
+                    child: GestureDetector(
+                      onTap: () async {
+                        result = await FilePicker.platform
+                            .pickFiles(type: FileType.any);
+
+                        if (result != null) {
+                          setState(() {
+                            filePath = result?.files.single.path;
+                            file = result!.files.single;
+                          });
+                        }
+                      },
+                      child: CircleAvatar(
+                          backgroundColor: transGrey,
+                          radius: 80,
+                          child: result == null
+                              ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    const Icon(
+                                      size: 50,
+                                      Icons.file_upload,
+                                      color: Colors.white,
+                                    ),
+                                    sSpace,
+                                    eventicon('Upload file here')
+                                  ],
+                                )
+                              : GestureDetector(
+                                  onTap: () {
+                                    //to open file
+                                    final file = result!.files.first;
+                                    openFile(file);
+                                  },
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(
+                                        size: 50,
+                                        Icons.file_open_outlined,
+                                        color: Colors.white,
+                                      ),
+                                      sSpace,
+                                      eventicon(file!.name),
+                                      eventicon('Tap to view the file')
+                                    ],
+                                  ),
+                                )),
+                    )),
               ),
               space,
               space,
@@ -137,16 +142,18 @@ class _AddCertificatesState extends State<AddCertificates> {
                           .then((value) {
                         setState(() {
                           idate = value!;
+                          formattedIDate =
+                              DateFormat('dd-MM-yyyy').format(idate);
                         });
                       });
-                      formattedIDate = DateFormat('dd-MM-yyyy').format(idate);
-                      print(formattedIDate);
                     });
                     // _showDatePicker;
                     // formattedDate = DateFormat('dd-MM-yyyy').format(date);
                   },
                   style: dateButton,
-                  child: dateButtonText('Add Issued date')),
+                  child: formattedIDate == 'not set'
+                      ? dateButtonText('Add Issued date')
+                      : dateButtonText('Issued date: $formattedIDate')),
               space,
               OutlinedButton(
                   onPressed: () {
@@ -161,41 +168,53 @@ class _AddCertificatesState extends State<AddCertificates> {
                           .then((value) {
                         setState(() {
                           edate = value!;
+
+                          formattedEDate =
+                              DateFormat('dd-MM-yyyy').format(edate);
                         });
                       });
-                      formattedEDate = DateFormat('dd-MM-yyyy').format(edate);
                     });
                     // _showDatePicker;
                     // formattedDate = DateFormat('dd-MM-yyyy').format(date);
                   },
                   style: dateButton,
-                  child: subject('Add Expiry date')),
+                  child: formattedEDate == 'not set'
+                      ? dateButtonText('Add Expiry date')
+                      : dateButtonText('Expiry date: $formattedEDate')),
               const SizedBox(
                 height: 90,
               ),
               FilledButton(
                   onPressed: () async {
-                    final certificate = Certificate(
-                      name: _fileNameController.text,
-                      id: DateTime.now().microsecond,
-                      file: filePath ?? '',
-                      idate: formattedIDate ?? '',
-                      edate: formattedEDate ?? '',
-                      petId: widget.petId
-                    );
-                    print(certificate.name);
-                    await _certificateService
-                        .updateCertificate(certificate.id, certificate)
-                        .then((_) {
-                      _fileNameController.clear();
+                    if (_fileNameController.text.isEmpty ||
+                        filePath!.isEmpty ||
+                        filePath == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('Please Enter the neccessary details!')));
+                      return;
+                    } else {
+                      final certificate = Certificates(
+                          name: _fileNameController.text,
+                          id: DateTime.now().microsecond,
+                          file: filePath ?? '',
+                          idate: formattedIDate,
+                          edate: formattedEDate,
+                          petId: widget.petId);
 
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => Dashboard(petID: pet.id,)));
+                      await _certificateService
+                          .updateCertificate(certificate.id, certificate)
+                          .then((_) {
+                        _fileNameController.clear();
 
-                      Navigator.pop(context, certificate);
-                    });
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => Dashboard(petID: pet.id,)));
+
+                        Navigator.pop(context, certificate);
+                      });
+                    }
                   },
                   style: mainButton,
                   child: const Text('Save'))
@@ -204,5 +223,10 @@ class _AddCertificatesState extends State<AddCertificates> {
         ),
       ),
     );
+  }
+
+  //function to open the file
+  void openFile(PlatformFile file) {
+    OpenFile.open(filePath);
   }
 }

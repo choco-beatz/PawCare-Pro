@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/document%20model/document.dart';
 import 'package:pawcare_pro/presentation/views/documents/add_documents.dart';
+import 'package:pawcare_pro/presentation/views/documents/edit_doc.dart';
 import 'package:pawcare_pro/presentation/views/documents/emptydocument.dart';
 import 'package:pawcare_pro/presentation/views/documents/view_doc.dart';
 import 'package:pawcare_pro/service/document_services.dart';
@@ -25,6 +27,7 @@ class _ViewDocumentsState extends State<ViewDocuments> {
   //loading/fetching data from the hive
   Future<void> _loadDocument() async {
     //the datas recived from the db is stored
+    newDocuments.clear();
     _document = await _documentService.getdocuments();
     for (var doc in _document) {
       if (widget.petID == doc.petID) {
@@ -55,7 +58,7 @@ class _ViewDocumentsState extends State<ViewDocuments> {
           actions: [
             IconButton(
                 onPressed: () async {
-                  //the result(vaccine object) which is passed from the pop is recieved here
+                  //the result(document object) which is passed from the pop is recieved here
                   final result = await Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -65,15 +68,14 @@ class _ViewDocumentsState extends State<ViewDocuments> {
 
                   //to check if the returned result is not null and they type is Certificate
                   if (result != null && result is Documents) {
-                    setState(() async {
-                      //the result that is recieved is added to the List that is to be displayed
-                      // _document.add(result);
-                      await _loadDocument();
-                    });
+                    //the result that is recieved is added to the List that is to be displayed
+                    // _document.add(result);
+                    await _loadDocument();
                   }
                 },
                 icon: const Icon(
                   Icons.add,
+                  size: 35,
                   color: mainColor,
                 ))
           ],
@@ -104,72 +106,88 @@ class _ViewDocumentsState extends State<ViewDocuments> {
                                           didate: current.didate,
                                           dfile: current.dfile,
                                         )));
-
-                            // showBottomSheet(
-                            //     context: context,
-                            //     builder: (context) {
-                            //       return Container(
-                            //         height: height * 0.31,
-                            //         decoration: bottomSheetStyle,
-                            //         child: Padding(
-                            //           padding: const EdgeInsets.all(20),
-                            //           child: Column(
-                            //             crossAxisAlignment:
-                            //                 CrossAxisAlignment.start,
-                            //             children: [
-                            //               label(current.dname),
-                            //               label('Date'),
-                            //               Row(
-                            //                 mainAxisAlignment:
-                            //                     MainAxisAlignment.spaceBetween,
-                            //                 children: [
-                            //                   Column(
-                            //                     crossAxisAlignment:
-                            //                         CrossAxisAlignment.start,
-                            //                     children: [
-                            //                       subject2('Issued Date'),
-                            //                       leading(current.didate)
-                            //                     ],
-                            //                   ),
-                            //                   Column(
-                            //                     crossAxisAlignment:
-                            //                         CrossAxisAlignment.start,
-                            //                     children: [
-                            //                       subject2('Expiry Date'),
-                            //                       leading(current.dedate)
-                            //                     ],
-                            //                   )
-                            //                 ],
-                            //               ),
-                            //               space,
-                            //               space,
-                            //               space,
-                            //               FilledButton(
-                            //                 onPressed: () {
-                            //                   Navigator.pop(context);
-                            //                 },
-                            //                 style: mainButton,
-                            //                 child: const Text('Done'),
-                            //               )
-                            //             ],
-                            //           ),
-                            //         ),
-                            //       );
-                            //     });
                           },
-                          trailing: IconButton(
-                              onPressed: () async {
-                                await _documentService
-                                    .deletedocument(current.did);
-                                setState(() {
-                                  newDocuments.removeAt(index);
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.delete_outline_rounded,
-                                size: 35,
-                                color: Color.fromARGB(255, 211, 211, 211),
-                              )),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () async {
+                                    final updatedDocInfo = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditDocuments(
+                                          did: current.did,
+                                          petId: current.petID,
+                                        ),
+                                      ),
+                                    );
+
+                                    if (updatedDocInfo != null &&
+                                        updatedDocInfo is Documents) {
+                                      setState(() {
+                                        newDocuments[index] = updatedDocInfo;
+                                      });
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.mode_edit_outline_outlined,
+                                    size: 35,
+                                    color: Color.fromARGB(255, 211, 211, 211),
+                                  )),
+                              IconButton(
+                                  onPressed: () => showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                            backgroundColor: mainBG,
+                                            title: const Text(
+                                              'Delete?',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            content: const Text(
+                                              'Are you sure?',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                style: cancelButton,
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                style: delButton,
+                                                onPressed: () async {
+                                                  await _documentService
+                                                      .deletedocument(
+                                                          current.did);
+                                                  setState(() {
+                                                    newDocuments
+                                                        .removeAt(index);
+                                                  });
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  'OK',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                  icon: const Icon(
+                                    Icons.delete_outline_rounded,
+                                    size: 35,
+                                    color: Color.fromARGB(255, 211, 211, 211),
+                                  )),
+                            ],
+                          ),
                           title: leading(current.dname),
                           subtitle: Row(
                             children: [

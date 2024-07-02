@@ -11,15 +11,16 @@ import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
 import 'package:pawcare_pro/service/recipe_service.dart';
 
-class AddRecipies extends StatefulWidget {
+class EditRecipies extends StatefulWidget {
   final int petId;
-  const AddRecipies({super.key, required this.petId});
+  final int id;
+  const EditRecipies({super.key, required this.petId, required this.id});
 
   @override
-  State<AddRecipies> createState() => _AddRecipiesState();
+  State<EditRecipies> createState() => _EditRecipiesState();
 }
 
-class _AddRecipiesState extends State<AddRecipies> {
+class _EditRecipiesState extends State<EditRecipies> {
   //TextEditingController
   final TextEditingController _nameController = TextEditingController();
   List<TextEditingController> ingredientsController = [TextEditingController()];
@@ -30,6 +31,32 @@ class _AddRecipiesState extends State<AddRecipies> {
   //for getting the db functions
   final RecipeService _recipeService = RecipeService();
 
+  Recipe? _recipe;
+
+  //loading/fetching data from the hive
+  Future<void> _loadRecipe() async {
+    //the datas recived from the db is stored into list
+    _recipe = await _recipeService.getRecipe(widget.id);
+    setState(() {
+      _nameController.text = _recipe!.name;
+      _directionController.text = _recipe!.direction;
+      ingredientsController = _recipe!.ingredients
+          .map((ingredient) => TextEditingController(text: ingredient))
+          .toList();
+      image = _recipe!.image;
+    });
+    if (mounted) {
+      setState(() {});
+    }
+  }
+
+  @override
+  void initState() {
+    _loadRecipe();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -38,7 +65,7 @@ class _AddRecipiesState extends State<AddRecipies> {
           backgroundColor: mainBG,
           foregroundColor: Colors.white,
           title: const Text(
-            'Add Recipies',
+            'Edit Recipies',
             style: TextStyle(fontSize: 18),
           ),
         ),
@@ -168,7 +195,6 @@ class _AddRecipiesState extends State<AddRecipies> {
                   space,
                   label('Directions'),
                   SizedBox(
-                    // height: 52,
                     width: 370,
                     child: TextFormField(
                         cursorColor: Colors.white,
@@ -191,7 +217,7 @@ class _AddRecipiesState extends State<AddRecipies> {
                             name: _nameController.text,
                             ingredients: ingredients,
                             direction: _directionController.text,
-                            id: DateTime.now().microsecond,
+                            id: widget.id,
                             image: image ?? '',
                             petId: widget.petId);
 

@@ -18,7 +18,7 @@ class RecipeAdapter extends TypeAdapter<Recipe> {
     };
     return Recipe(
       name: fields[0] as String,
-      ingredients: fields[1] as String,
+      ingredients: (fields[1] as List).cast<String>(),
       direction: fields[2] as String,
       id: fields[4] as int,
       image: fields[3] as String,

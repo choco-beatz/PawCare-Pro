@@ -28,8 +28,8 @@ class _AddVaccinesState extends State<AddVaccines> {
   DateTime idate = DateTime.now();
   DateTime edate = DateTime.now();
 
-  String? formattedIDate;
-  String? formattedEDate;
+  String formattedIDate = 'not set';
+  String formattedEDate = 'not set';
 
   @override
   Widget build(BuildContext context) {
@@ -76,16 +76,19 @@ class _AddVaccinesState extends State<AddVaccines> {
                           .then((value) {
                         setState(() {
                           idate = value!;
+                          formattedIDate =
+                              DateFormat('dd-MM-yyyy').format(idate);
                         });
                       });
-                      formattedIDate = DateFormat('dd-MM-yyyy').format(idate);
                       print(formattedIDate);
                     });
                     // _showDatePicker;
                     // formattedDate = DateFormat('dd-MM-yyyy').format(date);
                   },
                   style: dateButton,
-                  child: dateButtonText('Add Issued date')),
+                  child: formattedIDate == 'not set'
+                      ? dateButtonText('Add Issued date')
+                      : dateButtonText('Issued date: $formattedIDate')),
               space,
               OutlinedButton(
                   onPressed: () {
@@ -100,40 +103,49 @@ class _AddVaccinesState extends State<AddVaccines> {
                           .then((value) {
                         setState(() {
                           edate = value!;
+                          formattedEDate =
+                              DateFormat('dd-MM-yyyy').format(edate);
                         });
                       });
-                      formattedEDate = DateFormat('dd-MM-yyyy').format(edate);
                     });
                     // _showDatePicker;
                     // formattedDate = DateFormat('dd-MM-yyyy').format(date);
                   },
                   style: dateButton,
-                  child: subject('Add Expiry date')),
+                  child: formattedEDate == 'not set'
+                      ? dateButtonText('Add Expiry date')
+                      : dateButtonText('Expiry date: $formattedEDate')),
               SizedBox(
                 height: height * 0.41,
               ),
               FilledButton(
                   onPressed: () async {
-                    final vaccine = Vaccine(
-                      name: _nameController.text,
-                      id: DateTime.now().microsecond,
-                      idate: formattedIDate ?? '',
-                      edate: formattedEDate ?? '',
-                      petId: widget.petId
-                    );
+                    if (_nameController.text.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('Please Enter the neccessary details!')));
+                      return;
+                    } else {
+                      final vaccine = Vaccine(
+                          name: _nameController.text,
+                          id: DateTime.now().microsecond,
+                          idate: formattedIDate ,
+                          edate: formattedEDate,
+                          petId: widget.petId);
 
-                    await _vaccineService
-                        .updateVaccine(vaccine.id, vaccine)
-                        .then((_) {
-                      _nameController.clear();
+                      await _vaccineService
+                          .updateVaccine(vaccine.id, vaccine)
+                          .then((_) {
+                        _nameController.clear();
 
-                      // Navigator.push(
-                      //     context,
-                      //     MaterialPageRoute(
-                      //         builder: (context) => Dashboard(petID: pet.id,)));
+                        // Navigator.push(
+                        //     context,
+                        //     MaterialPageRoute(
+                        //         builder: (context) => Dashboard(petID: pet.id,)));
 
-                      Navigator.pop(context, vaccine);
-                    });
+                        Navigator.pop(context, vaccine);
+                      });
+                    }
                   },
                   style: mainButton,
                   child: const Text('Save'))

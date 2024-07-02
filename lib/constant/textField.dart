@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 
 fieldDecor(String hint) {
@@ -13,6 +14,24 @@ fieldDecor(String hint) {
     fillColor: fieldColor,
     filled: true,
     hintText: hint,
+    hintStyle: const TextStyle(
+        color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
+  );
+}
+
+nameField(String hint) {
+  return InputDecoration(
+    border: InputBorder.none,
+    
+    focusColor: Colors.white,
+    suffixIcon: const FaIcon(
+      FontAwesomeIcons.penToSquare,
+      color: grey,
+      size: 35,
+    ),
+    enabledBorder: InputBorder.none,
+    hintText: hint,
+    
     hintStyle: const TextStyle(
         color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
   );

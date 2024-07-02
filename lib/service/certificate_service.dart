@@ -1,14 +1,14 @@
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
+import 'package:pawcare_pro/domain/certificate%20model/certificates.dart';
 
 class CertificateService {
-  Box<Certificate>? _certificateBox;
+  Box<Certificates>? _certificateBox;
 
   //to insert the generated id into db
 
   //to create/open the box
   Future<void> openBox() async {
-    _certificateBox = await Hive.openBox<Certificate>('CERTIFICATEBOX');
+    _certificateBox = await Hive.openBox<Certificates>('CERTIFICATEBOX');
   }
 
   //to close the box
@@ -17,7 +17,7 @@ class CertificateService {
   }
 
   //to add to box
-  Future<void> addCertificate(Certificate certificate) async {
+  Future<void> addCertificate(Certificates certificate) async {
     if (_certificateBox == null) {
       await openBox();
     }
@@ -26,11 +26,11 @@ class CertificateService {
   }
 
   //to get datas from the box
-  Future<List<Certificate>> getCertificates() async {
+  Future<List<Certificates>> getCertificates() async {
     if (_certificateBox == null) {
       await openBox();
     }
-    final list = <Certificate>[];
+    final list = <Certificates>[];
     for (var i in _certificateBox!.values) {
       list.add(i);
     }
@@ -39,7 +39,7 @@ class CertificateService {
   }
 
   //to get data from the box
-  Future<Certificate?> getCertificate(int? id) async {
+  Future<Certificates?> getCertificate(int? id) async {
     if (_certificateBox == null) {
       await openBox();
     }
@@ -48,14 +48,13 @@ class CertificateService {
   }
 
   //to update datas in the box
-  Future<void> updateCertificate(int? id, Certificate certificate) async {
+  Future<void> updateCertificate(int? id, Certificates certificate) async {
     if (_certificateBox == null) {
       await openBox();
     }
     if (id != null) {
       await _certificateBox!.put(id, certificate);
     } else {
-      print(id);
     }
   }
 

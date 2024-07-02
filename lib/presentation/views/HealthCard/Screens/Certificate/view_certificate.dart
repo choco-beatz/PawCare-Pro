@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
-import 'package:pawcare_pro/domain/certificate%20model/certificate.dart';
+import 'package:pawcare_pro/domain/certificate%20model/certificates.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/Screens/Certificate/add_certificates.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/screens/certificate/edit_cert.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/certificate/emptycertificate.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/certificate/view_cert.dart';
 import 'package:pawcare_pro/service/certificate_service.dart';
@@ -22,12 +24,13 @@ class _ViewCertificatesState extends State<ViewCertificates> {
   String? file;
 
   //we get all the datas in the db as list of type model
-  List<Certificate> _certificate = [];
-  List<Certificate> currentCertificate = [];
+  List<Certificates> _certificate = [];
+  List<Certificates> currentCertificate = [];
 
   //loading/fetching data from the hive
   Future<void> _loadCertificates() async {
     //the datas recived from the db is stored
+    currentCertificate.clear();
     _certificate = await _certificateService.getCertificates();
     for (var cert in _certificate) {
       if (widget.petId == cert.petId) {
@@ -67,15 +70,16 @@ class _ViewCertificatesState extends State<ViewCertificates> {
                               ))));
 
                   //to check if the returned result is not null and they type is Certificate
-                  if (result != null && result is Certificate) {
-                    setState(() {
+                  if (result != null && result is Certificates) {
+                    setState(() async {
                       //the result that is recieved is added to the List that is to be displayed
-                      _certificate.add(result);
+                      await _loadCertificates();
                     });
                   }
                 },
                 icon: const Icon(
                   Icons.add,
+                  size: 35,
                   color: mainColor,
                 ))
           ],
@@ -106,20 +110,90 @@ class _ViewCertificatesState extends State<ViewCertificates> {
                                         name: current.name,
                                         file: current.file))));
                           },
-                          trailing: IconButton(
-                              onPressed: () async {
-                                await _certificateService
-                                    .deleteCertificate(current.id);
-                                print('object');
-                                setState(() {
-                                  _certificate.removeAt(index);
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.delete_outline_rounded,
-                                size: 35,
-                                color: Color.fromARGB(255, 211, 211, 211),
-                              )),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                  onPressed: () async {
+                                    final updatedCertInfo =
+                                        await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditCertificates(
+                                          id: current.id,
+                                          petId: current.petId,
+                                        ),
+                                      ),
+                                    );
+
+                                    if (updatedCertInfo != null &&
+                                        updatedCertInfo is Certificates) {
+                                      setState(() {
+                                        currentCertificate[index] =
+                                            updatedCertInfo;
+                                      });
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.mode_edit_outline_outlined,
+                                    size: 35,
+                                    color: Color.fromARGB(255, 211, 211, 211),
+                                  )),
+                              IconButton(
+                                  onPressed: () => showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                            backgroundColor: mainBG,
+                                            title: const Text(
+                                              'Delete?',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            content: const Text(
+                                              'Are you sure?',
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                style: cancelButton,
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                style: delButton,
+                                                onPressed: () async {
+                                                  await _certificateService
+                                                      .deleteCertificate(
+                                                          current.id);
+
+                                                  setState(() {
+                                                    _certificate
+                                                        .removeAt(index);
+                                                  });
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  'OK',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                  icon: const Icon(
+                                    Icons.delete_outline_rounded,
+                                    size: 35,
+                                    color: Color.fromARGB(255, 211, 211, 211),
+                                  )),
+                            ],
+                          ),
                           title: leading(current.name),
                           subtitle: Row(
                             children: [

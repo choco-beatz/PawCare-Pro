@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
+import 'package:path/path.dart' as path;
 import 'package:open_file/open_file.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
@@ -24,12 +24,13 @@ class ViewCert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    final String fileName = path.basename(file);
     return Scaffold(
         appBar: AppBar(
           backgroundColor: mainBG,
           foregroundColor: Colors.white,
           title: const Text(
-            'Documents',
+            'Certificate',
             style: TextStyle(fontSize: 18),
           ),
         ),
@@ -39,48 +40,36 @@ class ViewCert extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              label(name),
-              sizedBox,
               sizedBox,
               Center(
                 child: GestureDetector(
                   onTap: () async {
                     cert = await file;
+                    OpenFile.open(cert);
                   },
-                  child: cert != null
-                      ? GestureDetector(
-                          onTap: () async {
-                            final result = await OpenFile.open(cert);
-                            print(result.message);
-                          },
-                          child: const CircleAvatar(
-                              backgroundColor: grey,
-                              radius: 95,
-                              child: CircleAvatar(
-                                  backgroundColor: lightGrey,
-                                  radius: 80,
-                                  child: FaIcon(
-                                      color: Colors.white,
-                                      size: 65,
-                                      FontAwesomeIcons.fileCirclePlus))),
-                        )
-                      : const CircleAvatar(
-                          backgroundColor: grey,
-                          radius: 95,
-                          child: CircleAvatar(
-                            backgroundColor: lightGrey,
-                            radius: 80,
-                            child: Icon(
-                              size: 65,
-                              Icons.file_copy_outlined,
-                              color: Colors.white,
-                            ),
-                          )),
+                  child: CircleAvatar(
+                      backgroundColor: grey,
+                      radius: 95,
+                      child: CircleAvatar(
+                          backgroundColor: transGrey,
+                          radius: 80,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                  color: Colors.white,
+                                  size: 65,
+                                  Icons.file_open_outlined),
+                              sSpace,
+                              eventicon('Tap to view the file')
+                            ],
+                          ))),
                 ),
               ),
               sizedBox,
+              label(name),
               sizedBox,
-              sizedBox,
+              eventicon(fileName),
               sizedBox,
               label('Date'),
               Column(

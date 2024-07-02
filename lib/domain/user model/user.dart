@@ -15,9 +15,13 @@ class UserInfo {
   @HiveField(2)
   late List<PetInfo>? pets;
 
+  @HiveField(3)
+  late int id;
+
   UserInfo({
     required this.username,
     required this.image,
-    this.pets
+    this.pets,
+    required this.id
   });
 }

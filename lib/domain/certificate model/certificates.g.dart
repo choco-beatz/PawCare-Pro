@@ -1,22 +1,22 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'certificate.dart';
+part of 'certificates.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class CertificateAdapter extends TypeAdapter<Certificate> {
+class CertificatesAdapter extends TypeAdapter<Certificates> {
   @override
   final int typeId = 2;
 
   @override
-  Certificate read(BinaryReader reader) {
+  Certificates read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return Certificate(
+    return Certificates(
       name: fields[0] as String,
       file: fields[1] as String,
       idate: fields[2] as String,
@@ -27,7 +27,7 @@ class CertificateAdapter extends TypeAdapter<Certificate> {
   }
 
   @override
-  void write(BinaryWriter writer, Certificate obj) {
+  void write(BinaryWriter writer, Certificates obj) {
     writer
       ..writeByte(6)
       ..writeByte(0)
@@ -50,7 +50,7 @@ class CertificateAdapter extends TypeAdapter<Certificate> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is CertificateAdapter &&
+      other is CertificatesAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }

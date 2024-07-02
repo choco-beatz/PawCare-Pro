@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/vaccine%20model/vaccine.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/add_vaccines.dart';
+import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/edit_vac.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/emptyvaccine.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/vaccines/view_vac.dart';
 import 'package:pawcare_pro/service/vaccine_services.dart';
@@ -73,6 +75,7 @@ class _ViewVaccinesState extends State<ViewVaccines> {
                 },
                 icon: const Icon(
                   Icons.add,
+                  size: 35,
                   color: mainColor,
                 ))
           ],
@@ -102,19 +105,84 @@ class _ViewVaccinesState extends State<ViewVaccines> {
                                         idate: current.idate,
                                         name: current.name)));
                           },
-                          trailing: IconButton(
-                              onPressed: () async {
-                                await _vaccineService.deleteVaccine(current.id);
-                                print('object');
-                                setState(() {
-                                  _vaccine.removeAt(index);
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.delete_outline_rounded,
-                                size: 35,
-                                color: Color.fromARGB(255, 211, 211, 211),
-                              )),
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                               IconButton(
+                                  onPressed: () async {
+                                    
+                                    final updatedVacInfo = await Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => EditVaccine( id: current.id,
+                                          petId: current.petId,
+                                        ),
+                                      ),
+                                    );
+
+                                    if (updatedVacInfo != null &&
+                                        updatedVacInfo is Vaccine) {
+                                      setState(() {
+                                        currentVaccine[index] = updatedVacInfo;
+                                      });
+                                    }
+                                  },
+                                  icon: const Icon(
+                                    Icons.mode_edit_outline_outlined,
+                                    size: 35,
+                                    color: Color.fromARGB(255, 211, 211, 211),
+                                  )),
+                              IconButton(
+                                  onPressed: () => showDialog<void>(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                            backgroundColor: mainBG,
+                                            title: const Text(
+                                              'Delete?',
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                            content: const Text(
+                                              'Are you sure?',
+                                              style: TextStyle(color: Colors.white),
+                                            ),
+                                            actions: <Widget>[
+                                              TextButton(
+                                                style: cancelButton,
+                                                onPressed: () =>
+                                                    Navigator.pop(context),
+                                                child: const Text(
+                                                  'Cancel',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                style: delButton,
+                                                onPressed: () async {
+                                                  await _vaccineService
+                                                      .deleteVaccine(current.id);
+                              
+                                                  setState(() {
+                                                    _vaccine.removeAt(index);
+                                                  });
+                                                  Navigator.pop(context);
+                                                },
+                                                child: const Text(
+                                                  'OK',
+                                                  style: TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
+                                            ],
+                                          )),
+                                  icon: const Icon(
+                                    Icons.delete_outline_rounded,
+                                    size: 35,
+                                    color: Color.fromARGB(255, 211, 211, 211),
+                                  )),
+                            ],
+                          ),
                           title: leading(current.name),
                           subtitle: Row(
                             children: [
