@@ -16,7 +16,7 @@ import 'package:pawcare_pro/service/petinfo_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AddPet extends StatefulWidget {
-  AddPet({super.key});
+  const AddPet({super.key});
 
   @override
   State<AddPet> createState() => _AddPetState();

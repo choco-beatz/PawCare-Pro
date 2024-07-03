@@ -99,6 +99,7 @@ class _SplashScreenState extends State<SplashScreen>
         context: context,
         builder: (BuildContext context) {
           double height = MediaQuery.of(context).size.height;
+          double width = MediaQuery.of(context).size.width;
           return Container(
             height: height * 0.46,
             decoration: const BoxDecoration(
@@ -111,10 +112,10 @@ class _SplashScreenState extends State<SplashScreen>
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                const Positioned(
+                Positioned(
                   top: -35,
-                  left: 170,
-                  child: CircleAvatar(
+                  left: width * 0.181,
+                  child: const CircleAvatar(
                     backgroundColor: mainBG,
                     radius: 40,
                     child: CircleAvatar(
