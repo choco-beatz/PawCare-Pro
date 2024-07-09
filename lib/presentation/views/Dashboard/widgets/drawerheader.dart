@@ -42,9 +42,7 @@ class _CustDrawerHeaderState extends State<CustDrawerHeader> {
               child: Text(
                 'Hello,',
                 style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400),
+                    color: white, fontSize: 16, fontWeight: FontWeight.w400),
               ),
             ),
             subtitle: leading('Username'),
@@ -55,7 +53,7 @@ class _CustDrawerHeaderState extends State<CustDrawerHeader> {
                 child: FaIcon(
                   size: 65,
                   FontAwesomeIcons.person,
-                  color: Colors.white,
+                  color: white,
                 ),
               ),
             ),
@@ -64,16 +62,12 @@ class _CustDrawerHeaderState extends State<CustDrawerHeader> {
             title: const Text(
               'Hello,',
               style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400),
+                  color: white, fontSize: 16, fontWeight: FontWeight.w400),
             ),
             subtitle: Text(
               _user.first.username,
               style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.w500),
+                  color: white, fontSize: 20, fontWeight: FontWeight.w500),
             ),
             leading: CircleAvatar(
                 radius: 30,

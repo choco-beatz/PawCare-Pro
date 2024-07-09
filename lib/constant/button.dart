@@ -23,10 +23,10 @@ final ButtonStyle dateButton = OutlinedButton.styleFrom(
 
 final ButtonStyle cancelButton = FilledButton.styleFrom(
     backgroundColor: mainColor,
-    textStyle: const TextStyle(fontSize: 18, color: Colors.white),
+    textStyle: const TextStyle(fontSize: 18, color: white),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)));
 
 final ButtonStyle delButton = FilledButton.styleFrom(
     backgroundColor: Colors.red,
-    textStyle: const TextStyle(fontSize: 18, color: Colors.white),
+    textStyle: const TextStyle(fontSize: 18, color: white),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)));

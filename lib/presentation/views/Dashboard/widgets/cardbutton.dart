@@ -37,7 +37,7 @@ class CardButton extends StatelessWidget {
                   backgroundColor: lightGrey,
                   radius: 60,
                   child: CircleAvatar(
-                    backgroundColor: Color.fromARGB(0, 255, 255, 255),
+                    backgroundColor: transparent,
                     radius: 59,
                     child: CircleAvatar(
                       radius: 40,
@@ -52,7 +52,7 @@ class CardButton extends StatelessWidget {
           ),
           Positioned(
               top: 60,
-              left: 50,
+              left: screenWidth > 600 ? screenWidth * 0.2 : 50,
               child: Image.asset(
                 height: 75,
                 width: 75,

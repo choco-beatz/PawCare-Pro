@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
 
 // ignore: must_be_immutable
@@ -12,7 +13,7 @@ class DrawerList extends StatelessWidget {
     return ListTile(
       leading: Icon(
         icon,
-        color: Colors.white,
+        color: white,
       ),
       title: leading(text!),
     );

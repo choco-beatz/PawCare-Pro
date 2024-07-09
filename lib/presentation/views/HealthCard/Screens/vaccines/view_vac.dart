@@ -23,7 +23,7 @@ class ViewVac extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: mainBG,
-          foregroundColor: Colors.white,
+          foregroundColor: white,
           title: const Text(
             'Vaccinations',
             style: TextStyle(fontSize: 18),
@@ -52,9 +52,7 @@ class ViewVac extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: height * 0.2,
-              ),
+              Spacer(),
               FilledButton(
                 onPressed: () {
                   Navigator.pop(context);

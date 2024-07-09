@@ -17,20 +17,23 @@ class Appbar extends StatefulWidget {
 class _AppbarState extends State<Appbar> {
   final UserInfoService _userInfoService = UserInfoService();
 
-  //to store all the values that is fetched from db
-  List<UserInfo> _user = [];
+  late ValueNotifier<List<UserInfo>> _usersNotifier;
 
-  //loading/fetching data from the hive
-  Future<void> _loadUsers() async {
-    //the datas recived from the db is stored into list
-    _user = await _userInfoService.getuser();
-    setState(() {});
-  }
+  // //to store all the values that is fetched from db
+  // List<UserInfo> _user = [];
+
+  // //loading/fetching data from the hive
+  // Future<void> _loadUsers() async {
+  //   //the datas recived from the db is stored into list
+  //   _user = await _userInfoService.getuser();
+  //   setState(() {});
+  // }
 
   @override
   void initState() {
-    _loadUsers();
     super.initState();
+    _usersNotifier = _userInfoService.usersNotifier;
+    _userInfoService.openBox();
   }
 
   @override
@@ -39,43 +42,51 @@ class _AppbarState extends State<Appbar> {
       toolbarHeight: double.infinity,
       automaticallyImplyLeading: false,
       titleSpacing: 0,
-      title: _user.isEmpty
-      ? const CircularProgressIndicator()
-      : ListTile(
-        title: const Text(
-          'Hello,',
-          style: TextStyle(
-              color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
-        ),
-        subtitle: Text(
-          _user.first.username,
-          style: const TextStyle(
-              color: Colors.white, fontSize: 20, fontWeight: FontWeight.w500),
-        ),
-        leading: _user.first.image.isEmpty
-            ? const CircleAvatar(
-                radius: 30,
-                backgroundColor: Colors.white,
-                child: CircleAvatar(
-                  radius: 25,
-                  backgroundColor: mainBG,
-                  child: FaIcon(
-                    size: 30,
-                    FontAwesomeIcons.user,
-                    color: Colors.white,
-                  ),
-                ),
-              )
-            : CircleAvatar(
-                radius: 30,
-                backgroundColor: mainBG,
-                child: CircleAvatar(
-                  backgroundImage: FileImage(File(_user.first.image)),
-                  radius: 80,
-                )),
+      title: ValueListenableBuilder<List<UserInfo>>(
+        valueListenable: _usersNotifier,
+        builder: (context, users, _) {
+          if (users.isEmpty) {
+            return const CircularProgressIndicator();
+          } else {
+            UserInfo user = users.first;
+            return ListTile(
+              title: const Text(
+                'Hello,',
+                style: TextStyle(
+                    color: white, fontSize: 16, fontWeight: FontWeight.w400),
+              ),
+              subtitle: Text(
+                user.username,
+                style: const TextStyle(
+                    color: white, fontSize: 20, fontWeight: FontWeight.w500),
+              ),
+              leading: user.image.isEmpty
+                  ? const CircleAvatar(
+                      radius: 30,
+                      backgroundColor: white,
+                      child: CircleAvatar(
+                        radius: 25,
+                        backgroundColor: mainBG,
+                        child: FaIcon(
+                          size: 30,
+                          FontAwesomeIcons.user,
+                          color: white,
+                        ),
+                      ),
+                    )
+                  : CircleAvatar(
+                      radius: 30,
+                      backgroundColor: mainBG,
+                      child: CircleAvatar(
+                        backgroundImage: FileImage(File(user.image)),
+                        radius: 80,
+                      )),
+            );
+          }
+        },
       ),
       backgroundColor: widget.bg,
-      foregroundColor: Colors.white,
+      foregroundColor: white,
     );
   }
 }

@@ -4,7 +4,7 @@ import 'package:pawcare_pro/constant/colors.dart';
 
 fieldDecor(String hint) {
   return InputDecoration(
-    focusColor: Colors.white,
+    focusColor: white,
     enabledBorder: OutlineInputBorder(
         borderSide: const BorderSide(color: lightGrey, width: 1),
         borderRadius: BorderRadius.circular(16)),
@@ -15,15 +15,14 @@ fieldDecor(String hint) {
     filled: true,
     hintText: hint,
     hintStyle: const TextStyle(
-        color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
+        color: white, fontSize: 16, fontWeight: FontWeight.w400),
   );
 }
 
 nameField(String hint) {
   return InputDecoration(
     border: InputBorder.none,
-    
-    focusColor: Colors.white,
+    focusColor: white,
     suffixIcon: const FaIcon(
       FontAwesomeIcons.penToSquare,
       color: grey,
@@ -31,8 +30,7 @@ nameField(String hint) {
     ),
     enabledBorder: InputBorder.none,
     hintText: hint,
-    
     hintStyle: const TextStyle(
-        color: Colors.white, fontSize: 16, fontWeight: FontWeight.w400),
+        color: white, fontSize: 16, fontWeight: FontWeight.w400),
   );
 }

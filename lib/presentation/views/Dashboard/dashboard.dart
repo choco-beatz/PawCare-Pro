@@ -10,6 +10,7 @@ import 'package:pawcare_pro/presentation/views/HealthCard/Screens/healthcard_das
 import 'package:pawcare_pro/presentation/views/dashboard/widgets/drawer.dart';
 import 'package:pawcare_pro/presentation/views/documents/view_documents.dart';
 import 'package:pawcare_pro/presentation/views/nutrition/nutrition_dashbord.dart';
+import 'package:pawcare_pro/presentation/views/userprofile/userprofile.dart';
 import 'package:pawcare_pro/presentation/views/widgets/appbar.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 
@@ -50,97 +51,109 @@ class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(height * 0.1),
-          child: Appbar(
-            bg: mainBG,
+          child: GestureDetector(
+            onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: ((context) =>
+                        width > 600 ? const CustDrawer() : const UserProfile()))),
+            child: Appbar(
+              bg: mainBG,
+            ),
           )),
       backgroundColor: mainBG,
       drawer: const CustDrawer(),
       body: Padding(
         padding: const EdgeInsets.all(15),
         child: _pet == null
-        ? const Center(child: CircularProgressIndicator(),)
-        : SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              label('Active Pet Profile'),
-              space,
-              ActiveProfile(
-                petID: _pet!.id,
-              ),
-              space,
-              space,
-              Column(children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewDocuments(
-                                      petID: _pet!.id!,
-                                    )));
-                      },
-                      child: CardButton(
-                        bg: lightBlue,
-                        heading: 'Documents',
-                        image: 'asset/document.png',
-                      ),
+                    label('Active Pet Profile'),
+                    space,
+                    ActiveProfile(
+                      petID: _pet!.id,
                     ),
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => HealthCardDashboard(
-                                    petId: _pet!.id!,
-                                  ))),
-                      child: CardButton(
-                        bg: lightgreen,
-                        heading: 'Health Card',
-                        image: 'asset/veterinary.png',
+                    space,
+                    space,
+                    Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ViewDocuments(
+                                            petID: _pet!.id!,
+                                          )));
+                            },
+                            child: CardButton(
+                              bg: lightBlue,
+                              heading: 'Documents',
+                              image: 'asset/document.png',
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => HealthCardDashboard(
+                                          petId: _pet!.id!,
+                                        ))),
+                            child: CardButton(
+                              bg: lightgreen,
+                              heading: 'Health Card',
+                              image: 'asset/veterinary.png',
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
+                      space,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NutritionDashboard(
+                                          petId: _pet!.id!,
+                                        ))),
+                            child: CardButton(
+                              bg: lightRed,
+                              heading: 'Nutrition',
+                              image: 'asset/pet-food.png',
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => ShowEvent(petId: _pet!.id!,)));
+                            },
+                            child: CardButton(
+                              bg: lightPink,
+                              heading: 'Calender',
+                              image: 'asset/activity.png',
+                            ),
+                          ),
+                        ],
+                      )
+                    ]),
                   ],
                 ),
-                space,
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => NutritionDashboard(
-                                    petId: _pet!.id!,
-                                  ))),
-                      child: CardButton(
-                        bg: lightRed,
-                        heading: 'Nutrition',
-                        image: 'asset/pet-food.png',
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => const Event()));
-                      },
-                      child: CardButton(
-                        bg: lightPink,
-                        heading: 'Calender',
-                        image: 'asset/activity.png',
-                      ),
-                    ),
-                  ],
-                )
-              ]),
-            ],
-          ),
-        ),
+              ),
       ),
     );
   }

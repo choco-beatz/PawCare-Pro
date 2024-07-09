@@ -10,6 +10,8 @@ import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/certificate%20model/certificates.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/documents/widget/date.dart';
+import 'package:pawcare_pro/presentation/views/widgets/normalappbar.dart';
 import 'package:pawcare_pro/service/certificate_service.dart';
 
 class AddCertificates extends StatefulWidget {
@@ -44,76 +46,66 @@ class _AddCertificatesState extends State<AddCertificates> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: normalAppBar('Certificates'),
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Certificates',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
-      backgroundColor: mainBG,
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        body: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
               sizedBox,
               Center(
-                child: CircleAvatar(
-                    backgroundColor: grey,
-                    radius: 95,
-                    child: GestureDetector(
-                      onTap: () async {
-                        result = await FilePicker.platform
-                            .pickFiles(type: FileType.any);
-
-                        if (result != null) {
-                          setState(() {
-                            filePath = result?.files.single.path;
-                            file = result!.files.single;
-                          });
-                        }
-                      },
-                      child: CircleAvatar(
-                          backgroundColor: transGrey,
-                          radius: 80,
-                          child: result == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      size: 50,
-                                      Icons.file_upload,
-                                      color: Colors.white,
-                                    ),
-                                    sSpace,
-                                    eventicon('Upload file here')
-                                  ],
-                                )
-                              : GestureDetector(
-                                  onTap: () {
-                                    //to open file
-                                    final file = result!.files.first;
-                                    openFile(file);
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        size: 50,
-                                        Icons.file_open_outlined,
-                                        color: Colors.white,
-                                      ),
-                                      sSpace,
-                                      eventicon(file!.name),
-                                      eventicon('Tap to view the file')
-                                    ],
-                                  ),
-                                )),
-                    )),
-              ),
+                  child: CircleAvatar(
+                      backgroundColor: grey,
+                      radius: 95,
+                      child: GestureDetector(
+                          onTap: () async {
+                            result = await FilePicker.platform
+                                .pickFiles(type: FileType.any);
+            
+                            if (result != null) {
+                              setState(() {
+                                filePath = result?.files.single.path;
+                                file = result!.files.single;
+                              });
+                            }
+                          },
+                          child: CircleAvatar(
+                              backgroundColor: transGrey,
+                              radius: 80,
+                              child: result == null
+                                  ? Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const Icon(
+                                          size: 50,
+                                          Icons.file_upload,
+                                          color: white,
+                                        ),
+                                        sSpace,
+                                        eventicon('Upload file here')
+                                      ],
+                                    )
+                                  : GestureDetector(
+                                      onTap: () {
+                                        final file = result!.files.first;
+                                        openFile(file);
+                                      },
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              size: 50,
+                                              Icons.file_open_outlined,
+                                              color: white,
+                                            ),
+                                            sSpace,
+                                            eventicon(file!.name),
+                                            eventicon(
+                                                'Tap to view the file')
+                                          ])))))),
               space,
               space,
               label('Certificate name'),
@@ -121,8 +113,9 @@ class _AddCertificatesState extends State<AddCertificates> {
                 height: 52,
                 width: 370,
                 child: TextFormField(
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                  decoration: fieldDecor(" Enter the name of the Certificate"),
+                  style: const TextStyle(color: white, fontSize: 20),
+                  decoration:
+                      fieldDecor(" Enter the name of the Certificate"),
                   controller: _fileNameController,
                 ),
               ),
@@ -132,14 +125,7 @@ class _AddCertificatesState extends State<AddCertificates> {
               OutlinedButton(
                   onPressed: () {
                     setState(() {
-                      //  DateTime selDate = await _showDatePicker;
-                      showDatePicker(
-                              // barrierColor: mainBG,
-                              context: context,
-                              initialDate: idate,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime.now())
-                          .then((value) {
+                      showIDate(context, idate).then((value) {
                         setState(() {
                           idate = value!;
                           formattedIDate =
@@ -147,8 +133,6 @@ class _AddCertificatesState extends State<AddCertificates> {
                         });
                       });
                     });
-                    // _showDatePicker;
-                    // formattedDate = DateFormat('dd-MM-yyyy').format(date);
                   },
                   style: dateButton,
                   child: formattedIDate == 'not set'
@@ -158,40 +142,30 @@ class _AddCertificatesState extends State<AddCertificates> {
               OutlinedButton(
                   onPressed: () {
                     setState(() {
-                      //  DateTime selDate = await _showDatePicker;
-                      showDatePicker(
-                              // barrierColor: mainBG,
-                              context: context,
-                              initialDate: edate,
-                              firstDate: DateTime.now(),
-                              lastDate: DateTime(3000))
-                          .then((value) {
+                      showEDate(context, edate).then((value) {
                         setState(() {
                           edate = value!;
-
+            
                           formattedEDate =
                               DateFormat('dd-MM-yyyy').format(edate);
                         });
                       });
                     });
-                    // _showDatePicker;
-                    // formattedDate = DateFormat('dd-MM-yyyy').format(date);
                   },
                   style: dateButton,
                   child: formattedEDate == 'not set'
                       ? dateButtonText('Add Expiry date')
                       : dateButtonText('Expiry date: $formattedEDate')),
-              const SizedBox(
-                height: 90,
-              ),
+              Spacer(),
               FilledButton(
                   onPressed: () async {
                     if (_fileNameController.text.isEmpty ||
                         filePath!.isEmpty ||
                         filePath == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content:
-                              Text('Please Enter the neccessary details!')));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  'Please Enter the neccessary details!')));
                       return;
                     } else {
                       final certificate = Certificates(
@@ -201,28 +175,17 @@ class _AddCertificatesState extends State<AddCertificates> {
                           idate: formattedIDate,
                           edate: formattedEDate,
                           petId: widget.petId);
-
+            
                       await _certificateService
                           .updateCertificate(certificate.id, certificate)
                           .then((_) {
-                        _fileNameController.clear();
-
-                        // Navigator.push(
-                        //     context,
-                        //     MaterialPageRoute(
-                        //         builder: (context) => Dashboard(petID: pet.id,)));
-
                         Navigator.pop(context, certificate);
                       });
                     }
                   },
                   style: mainButton,
                   child: const Text('Save'))
-            ],
-          ),
-        ),
-      ),
-    );
+            ])));
   }
 
   //function to open the file

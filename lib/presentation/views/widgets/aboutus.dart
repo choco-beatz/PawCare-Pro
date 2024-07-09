@@ -15,7 +15,7 @@ class AboutUs extends StatelessWidget {
       backgroundColor: mainBG,
       appBar: AppBar(
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
+        foregroundColor: white,
         title: const Text(
           'User Profile',
           style: TextStyle(fontSize: 18),

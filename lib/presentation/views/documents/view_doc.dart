@@ -28,7 +28,7 @@ class ViewDoc extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: mainBG,
-          foregroundColor: Colors.white,
+          foregroundColor: white,
           title: const Text(
             'Documents',
             style: TextStyle(fontSize: 18),
@@ -58,7 +58,7 @@ class ViewDoc extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(
-                                  color: Colors.white,
+                                  color: white,
                                   size: 65,
                                   Icons.file_open_outlined),
                               sSpace,
@@ -86,9 +86,7 @@ class ViewDoc extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(
-                height: height * 0.2,
-              ),
+              Spacer(),
               FilledButton(
                 onPressed: () {
                   Navigator.pop(context);

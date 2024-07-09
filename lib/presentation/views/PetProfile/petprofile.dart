@@ -48,7 +48,7 @@ class _PetProfileState extends State<PetProfile> {
       backgroundColor: mainBG,
       appBar: AppBar(
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
+        foregroundColor: white,
         title: const Text(
           'Pet Profile',
           style: TextStyle(fontSize: 18),
@@ -71,10 +71,20 @@ class _PetProfileState extends State<PetProfile> {
                           CircleAvatar(
                               backgroundColor: lightGrey,
                               radius: 90,
-                              child: CircleAvatar(
-                                backgroundImage: FileImage(File(_pet!.image)),
-                                radius: 70,
-                              )),
+                              child: _pet!.image.isNotEmpty
+                                  ? CircleAvatar(
+                                      backgroundImage:
+                                          FileImage(File(_pet!.image)),
+                                      radius: 70,
+                                    )
+                                  : const CircleAvatar(
+                                      radius: 70,
+                                      backgroundColor: transparent1,
+                                      child: FaIcon(
+                                        size: 100,
+                                        FontAwesomeIcons.paw,
+                                        color: white,
+                                      ))),
                           Padding(
                             padding: const EdgeInsets.all(20),
                             child: Column(
@@ -88,8 +98,7 @@ class _PetProfileState extends State<PetProfile> {
                         ],
                       ),
                     ),
-                    space,
-                    space,
+                    oBSB,
                     label('Appearence and distinctive signs'),
                     subject2(_pet!.description),
                     space,
@@ -108,8 +117,7 @@ class _PetProfileState extends State<PetProfile> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [subject2('Weight'), label2(_pet!.weight)],
                     ),
-                    space,
-                    space,
+                    oBSB,
                     label('Important Dates'),
                     ListTile(
                       leading: Container(
@@ -122,7 +130,7 @@ class _PetProfileState extends State<PetProfile> {
                         child: const Center(
                             child: FaIcon(
                           FontAwesomeIcons.cakeCandles,
-                          color: Colors.white,
+                          color: white,
                           size: 20,
                         )),
                       ),
@@ -141,17 +149,15 @@ class _PetProfileState extends State<PetProfile> {
                         child: const Center(
                             child: FaIcon(
                           FontAwesomeIcons.house,
-                          color: Colors.white,
+                          color: white,
                           size: 20,
                         )),
                       ),
                       title: subject2('Adoption Day'),
                       subtitle: label2(_pet!.aday),
                     ),
-                    space,
-                    space,
-                    space,
-                    space,
+                    oBSB,
+                    oBSB,
                     FilledButton(
                         onPressed: () async {
                           final updatedPetInfo = await Navigator.push(

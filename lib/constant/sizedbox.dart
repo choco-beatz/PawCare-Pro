@@ -8,6 +8,18 @@ const space = SizedBox(
   height: 10,
 );
 
+const hspace = SizedBox(
+  width: 10,
+);
+
 const sSpace = SizedBox(
   height: 5,
+);
+
+const oBSB = SizedBox(
+  height: 40,
+);
+
+const drawerSB = SizedBox(
+  height: 90,
 );

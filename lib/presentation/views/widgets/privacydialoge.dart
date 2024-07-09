@@ -13,7 +13,6 @@ class PrivacyDialoge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Dialog(
-      
       backgroundColor: mainBG,
       shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(radius)),
@@ -31,17 +30,17 @@ class PrivacyDialoge extends StatelessWidget {
               if (snapshot.hasData) {
                 return Markdown(
                   styleSheet: MarkdownStyleSheet(
-                    p: const TextStyle(color: Colors.white),
-                    h1: const TextStyle(color: Colors.white),
-                    h2: const TextStyle(color: Colors.white),
-                    h3: const TextStyle(color: Colors.white),
-                    h4: const TextStyle(color: Colors.white),
-                    h5: const TextStyle(color: Colors.white),
-                    h6: const TextStyle(color: Colors.white),
-                    strong: const TextStyle(color: Colors.white),
-                    em: const TextStyle(color: Colors.white),
-                    code: const TextStyle(color: Colors.white),
-                    blockquote: const TextStyle(color: Colors.white),
+                    p: const TextStyle(color: white),
+                    h1: const TextStyle(color: white),
+                    h2: const TextStyle(color: white),
+                    h3: const TextStyle(color: white),
+                    h4: const TextStyle(color: white),
+                    h5: const TextStyle(color: white),
+                    h6: const TextStyle(color: white),
+                    strong: const TextStyle(color: white),
+                    em: const TextStyle(color: white),
+                    code: const TextStyle(color: white),
+                    blockquote: const TextStyle(color: white),
                   ),
                   data: snapshot.data!,
                 );
@@ -56,7 +55,7 @@ class PrivacyDialoge extends StatelessWidget {
               style: cancelButton,
               child: const Text(
                 "Close",
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: white),
               ),
             ),
           ),

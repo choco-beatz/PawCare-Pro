@@ -28,7 +28,7 @@ class ViewCert extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: mainBG,
-          foregroundColor: Colors.white,
+          foregroundColor: white,
           title: const Text(
             'Certificate',
             style: TextStyle(fontSize: 18),
@@ -57,7 +57,7 @@ class ViewCert extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Icon(
-                                  color: Colors.white,
+                                  color: white,
                                   size: 65,
                                   Icons.file_open_outlined),
                               sSpace,
@@ -80,9 +80,7 @@ class ViewCert extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [subject2('Expiry Date'), leading(edate)],
               ),
-              SizedBox(
-                height: height * 0.2,
-              ),
+              Spacer(),
               FilledButton(
                 onPressed: () {
                   Navigator.pop(context);

@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="pawcare_pro"
+        android:label="PawCare Pro"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

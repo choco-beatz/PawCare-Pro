@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:pawcare_pro/constant/colors.dart';
 
 heading(String data) {
   return Text(
     data,
     overflow: TextOverflow.ellipsis,
     style: const TextStyle(
-        color: Colors.white, fontSize: 28, fontWeight: FontWeight.w700),
+        color: white, fontSize: 28, fontWeight: FontWeight.w700),
   );
 }
 
@@ -16,7 +17,7 @@ heading3(String data) {
       textAlign: TextAlign.center,
       overflow: TextOverflow.ellipsis,
       style: const TextStyle(
-          color: Colors.white, fontSize: 28, fontWeight: FontWeight.w700),
+          color: white, fontSize: 28, fontWeight: FontWeight.w700),
     ),
   );
 }
@@ -26,7 +27,7 @@ subject(String data) {
     data,
     textAlign: TextAlign.center,
     style: const TextStyle(
-      color: Colors.white,
+      color: white,
       fontSize: 18,
     ),
   );
@@ -37,7 +38,7 @@ heading2(String data) {
     data,
     overflow: TextOverflow.ellipsis,
     style: const TextStyle(
-        color: Colors.white, fontSize: 28, fontWeight: FontWeight.w500),
+        color: white, fontSize: 28, fontWeight: FontWeight.w500),
   );
 }
 
@@ -67,7 +68,7 @@ dateButtonText(String data) {
     overflow: TextOverflow.ellipsis,
     data,
     style: const TextStyle(
-      color: Colors.white,
+      color: white,
       fontSize: 18,
     ),
   );
@@ -79,11 +80,11 @@ leading(String data) {
     data,
     style: const TextStyle(
       fontWeight: FontWeight.w500,
-      color: Colors.white,
+      color: white,
       fontSize: 18,
     ),
   );
 }
 
 const TextStyle name =
-    TextStyle(color: Colors.white, fontSize: 28, fontWeight: FontWeight.w500);
+    TextStyle(color: white, fontSize: 28, fontWeight: FontWeight.w500);

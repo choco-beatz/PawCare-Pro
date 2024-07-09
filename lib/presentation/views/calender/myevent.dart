@@ -1,15 +1,20 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/textField.dart';
+import 'package:pawcare_pro/domain/event%20model/event.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
-import 'package:pawcare_pro/presentation/views/calender/event.dart';
+import 'package:pawcare_pro/service/event_service.dart';
 
 class MyEvent extends StatefulWidget {
-  const MyEvent({super.key});
+  final int petId;
+  final String date;
+  const MyEvent({super.key, required this.petId, required this.date});
 
   @override
   State<MyEvent> createState() => _MyEventState();
@@ -17,6 +22,8 @@ class MyEvent extends StatefulWidget {
 
 class _MyEventState extends State<MyEvent> {
   final titleController = TextEditingController();
+
+  final EventService _eventService = EventService();
 
   String eventIcon = 'not selected';
 
@@ -33,7 +40,7 @@ class _MyEventState extends State<MyEvent> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
+        foregroundColor: white,
         title: const Text(
           'Events',
           style: TextStyle(fontSize: 18),
@@ -54,28 +61,28 @@ class _MyEventState extends State<MyEvent> {
                 _buildIconContainer(
                   iconName: 'Activity',
                   icon: FontAwesomeIcons.futbol,
-                  color: Colors.purple,
+                  color: purple,
                   height: height,
                   width: width,
                 ),
                 _buildIconContainer(
                   iconName: 'Medicine',
                   icon: FontAwesomeIcons.pills,
-                  color: Colors.green,
+                  color: green,
                   height: height,
                   width: width,
                 ),
                 _buildIconContainer(
                   iconName: 'Check up',
                   icon: FontAwesomeIcons.stethoscope,
-                  color: Colors.pink,
+                  color: pink,
                   height: height,
                   width: width,
                 ),
                 _buildIconContainer(
                   iconName: 'Groom',
                   icon: FontAwesomeIcons.scissors,
-                  color: Colors.yellow,
+                  color: yellow,
                   height: height,
                   width: width,
                 ),
@@ -89,27 +96,28 @@ class _MyEventState extends State<MyEvent> {
               height: 52,
               width: 370,
               child: TextFormField(
-                cursorColor: Colors.white,
-                style: const TextStyle(color: Colors.white, fontSize: 20),
+                cursorColor: white,
+                style: const TextStyle(color: white, fontSize: 20),
                 decoration: fieldDecor("Enter the Event"),
                 controller: titleController,
               ),
             ),
-            sizedBox,
-            sizedBox,
+            Spacer(),
             FilledButton(
-                onPressed: () {
+                onPressed: () async {
                   if (titleController.text.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(content: Text('Enter title')));
                     return;
                   } else {
-                    final event = MyEvents(
-                      eventTitle: titleController.text,
-                      icon: eventIcon,
-                    );
+                    final event = Event(
+                        iname: eventIcon,
+                        title: titleController.text,
+                        id: DateTime.now().millisecond,
+                        petId: widget.petId,
+                        date: widget.date);
+                    await _eventService.updateEvent(event.id, event);
                     Navigator.pop(context, event);
-                    return;
                   }
                 },
                 style: mainButton,
@@ -155,7 +163,7 @@ class _MyEventState extends State<MyEvent> {
   Widget eventicon(String iconName) {
     return Text(
       iconName,
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: white),
     );
   }
 }

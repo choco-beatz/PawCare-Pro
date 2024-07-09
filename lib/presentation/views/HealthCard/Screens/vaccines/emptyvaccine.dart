@@ -16,55 +16,56 @@ class EmptyVaccine extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: mainBG,
-      body: Padding(
-        padding: const EdgeInsets.only(right: 25, left: 25),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: height * 0.14,
-              ),
-              SizedBox(
-                height: height * 0.20,
-                width: width * 0.4,
-                child: const Image(
-                  fit: BoxFit.fill,
-                  image: AssetImage('asset/vaccine.png'),
+        backgroundColor: mainBG,
+        body: Center(
+            child: Container(
+          constraints: const BoxConstraints(maxWidth: 500),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 25, left: 25),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: width > 600 ? height * 0.01 : height * 0.12,
                 ),
-              ),
-              space,
-              space,
-              space,
-              heading('No vaccination added'),
-              sizedBox,
-              subject(
-                  "Organize your pet's vaccinations effortlessly. Manage your pet's health seamlessly."),
-              SizedBox(height: height * 0.15),
-              OutlinedButton(
-                  onPressed: () async {
-                    final result = await Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddVaccines(petId: petId),
-                      ),
-                    );
-
-                    if (result != null && result is Vaccine) {
-                      Navigator.pushReplacement(
+                SizedBox(
+                  height: width > 600 ? height * 0.6 : height * 0.26,
+                  width: width * 0.5,
+                  child: const Image(
+                    fit: BoxFit.fill,
+                    image: AssetImage('asset/vaccine.png'),
+                  ),
+                ),
+                space,
+                space,
+                space,
+                heading('No vaccination added'),
+                sizedBox,
+                subject(
+                    "Organize your pet's vaccinations effortlessly. Manage your pet's health seamlessly."),
+                Spacer(),
+                OutlinedButton(
+                    onPressed: () async {
+                      final result = await Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ViewVaccines(petId: petId),
+                          builder: (context) => AddVaccines(petId: petId),
                         ),
                       );
-                    }
-                  },
-                  style: dateButton,
-                  child: subject('Add Vaccines +'))
-            ],
+            
+                      if (result != null && result is Vaccine) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewVaccines(petId: petId),
+                          ),
+                        );
+                      }
+                    },
+                    style: dateButton,
+                    child: subject('Add Vaccines +'))
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        )));
   }
 }

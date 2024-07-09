@@ -73,7 +73,7 @@ class _EditVaccineState extends State<EditVaccine> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
+        foregroundColor: white,
         title: const Text(
           'Edit Vaccine',
           style: TextStyle(fontSize: 18),
@@ -82,98 +82,94 @@ class _EditVaccineState extends State<EditVaccine> {
       backgroundColor: mainBG,
       body: Padding(
         padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              sizedBox,
-             
-              label('Vaccine name'),
-              SizedBox(
-                height: 52,
-                width: 370,
-                child: TextFormField(
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                  decoration: fieldDecor("Enter the name of the document"),
-                  controller: _vacNameController,
-                ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            sizedBox,
+           
+            label('Vaccine name'),
+            SizedBox(
+              height: 52,
+              width: 370,
+              child: TextFormField(
+                style: const TextStyle(color: white, fontSize: 20),
+                decoration: fieldDecor("Enter the name of the document"),
+                controller: _vacNameController,
               ),
-              line,
-              space,
-              label('Important Dates'),
-              OutlinedButton(
-                  onPressed: () {
-                    setState(() {
-                      showDatePicker(
-                              context: context,
-                              initialDate: idate,
-                              firstDate: DateTime(2000),
-                              lastDate: DateTime.now())
-                          .then((value) {
-                        setState(() {
-                          idate = value!;
-                          formattedIDate =
-                              DateFormat('dd-MMM-yyyy').format(idate);
-                        });
+            ),
+            line,
+            space,
+            label('Important Dates'),
+            OutlinedButton(
+                onPressed: () {
+                  setState(() {
+                    showDatePicker(
+                            context: context,
+                            initialDate: idate,
+                            firstDate: DateTime(2000),
+                            lastDate: DateTime.now())
+                        .then((value) {
+                      setState(() {
+                        idate = value!;
+                        formattedIDate =
+                            DateFormat('dd-MMM-yyyy').format(idate);
                       });
                     });
-                  },
-                  style: dateButton,
-                  child: formattedIDate == 'not set'
-                      ? dateButtonText('Add Issued date')
-                      : dateButtonText('Issued date: $formattedIDate')),
-              space,
-              OutlinedButton(
-                  onPressed: () {
-                    setState(() {
-                      showDatePicker(
-                              context: context,
-                              firstDate: DateTime.now(),
-                              initialDate: edate,
-                              lastDate: DateTime(3000))
-                          .then((value) {
-                        setState(() {
-                          edate = value!;
-                          formattedEDate =
-                              DateFormat('dd-MMM-yyyy').format(edate);
-                        });
+                  });
+                },
+                style: dateButton,
+                child: formattedIDate == 'not set'
+                    ? dateButtonText('Add Issued date')
+                    : dateButtonText('Issued date: $formattedIDate')),
+            space,
+            OutlinedButton(
+                onPressed: () {
+                  setState(() {
+                    showDatePicker(
+                            context: context,
+                            firstDate: DateTime.now(),
+                            initialDate: edate,
+                            lastDate: DateTime(3000))
+                        .then((value) {
+                      setState(() {
+                        edate = value!;
+                        formattedEDate =
+                            DateFormat('dd-MMM-yyyy').format(edate);
                       });
                     });
-                  },
-                  style: dateButton,
-                  child: formattedEDate == 'not set'
-                      ? dateButtonText('Add Expiry date')
-                      : dateButtonText('Expiry date: $formattedEDate')),
-              SizedBox(
-                height: height * 0.1,
-              ),
-              FilledButton(
-                  onPressed: () async {
-                    if (_vacNameController.text.isEmpty || filePath!.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content:
-                              Text('Please Enter the neccessary details!')));
-                      return;
-                    } else {
-                      final vac = Vaccine(
-                          name: _vacNameController.text,
-                          id: _vaccine!.id,
-                          idate: formattedIDate,
-                          edate: formattedEDate,
-                          petId: widget.petId);
-                      await _vaccineService
-                          .updateVaccine(vac.id, vac)
-                          .then((_) {
-                        _vacNameController.clear();
-                        setState(() {});
-                        Navigator.pop(context, vac);
-                      });
-                    }
-                  },
-                  style: mainButton,
-                  child: const Text('Save'))
-            ],
-          ),
+                  });
+                },
+                style: dateButton,
+                child: formattedEDate == 'not set'
+                    ? dateButtonText('Add Expiry date')
+                    : dateButtonText('Expiry date: $formattedEDate')),
+            Spacer(),
+            FilledButton(
+                onPressed: () async {
+                  if (_vacNameController.text.isEmpty || filePath!.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                        content:
+                            Text('Please Enter the neccessary details!')));
+                    return;
+                  } else {
+                    final vac = Vaccine(
+                        name: _vacNameController.text,
+                        id: _vaccine!.id,
+                        idate: formattedIDate,
+                        edate: formattedEDate,
+                        petId: widget.petId);
+                    await _vaccineService
+                        .updateVaccine(vac.id, vac)
+                        .then((_) {
+                      _vacNameController.clear();
+                      setState(() {});
+                      Navigator.pop(context, vac);
+                    });
+                  }
+                },
+                style: mainButton,
+                child: const Text('Save'))
+          ],
         ),
       ),
     );

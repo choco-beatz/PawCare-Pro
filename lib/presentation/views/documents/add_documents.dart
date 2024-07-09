@@ -6,10 +6,11 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
-import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/document%20model/document.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/documents/widget/fileupload.dart';
+import 'package:pawcare_pro/presentation/views/widgets/normalappbar.dart';
 import 'package:pawcare_pro/service/document_services.dart';
 
 class AddDocuments extends StatefulWidget {
@@ -44,90 +45,61 @@ class _AddDocumentsState extends State<AddDocuments> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      appBar: AppBar(
+        appBar: normalAppBar('Documents'),
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Documents',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
-      backgroundColor: mainBG,
-      body: Padding(
-        padding: const EdgeInsets.all(20),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        body: Padding(
+            padding: const EdgeInsets.all(20),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               sizedBox,
               Center(
-                child: CircleAvatar(
-                    backgroundColor: grey,
-                    radius: 95,
-                    child: GestureDetector(
-                      onTap: () async {
-                        result = await FilePicker.platform
-                            .pickFiles(type: FileType.any);
+                  child: CircleAvatar(
+                      backgroundColor: grey,
+                      radius: 95,
+                      child: GestureDetector(
+                          onTap: () async {
+                            result = await FilePicker.platform
+                                .pickFiles(type: FileType.any);
 
-                        if (result != null) {
-                          setState(() {
-                            filePath = result?.files.single.path;
-                            file = result!.files.single;
-                          });
-                        }
-                      },
-                      child: CircleAvatar(
-                          backgroundColor: transGrey,
-                          radius: 80,
-                          child: result == null
-                              ? Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(
-                                      size: 50,
-                                      Icons.file_upload,
-                                      color: Colors.white,
-                                    ),
-                                    sSpace,
-                                    eventicon('Upload file here')
-                                  ],
-                                )
-                              : GestureDetector(
-                                  onTap: () {
-                                    final file = result!.files.first;
-                                    openFile(file);
-                                  },
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const Icon(
-                                        size: 50,
-                                        Icons.file_open_outlined,
-                                        color: Colors.white,
-                                      ),
-                                      sSpace,
-                                      eventicon(file!.name),
-                                      eventicon('Tap to view the file')
-                                    ],
-                                  ),
-                                )),
-                    )),
-              ),
+                            if (result != null) {
+                              setState(() {
+                                filePath = result?.files.single.path;
+                                file = result!.files.single;
+                              });
+                            }
+                          },
+                          child: CircleAvatar(
+                              backgroundColor: transGrey,
+                              radius: 80,
+                              child: result == null
+                                  ? fileUpload('Upload file here')
+                                  : GestureDetector(
+                                      onTap: () {
+                                        if (result != null) {
+                                          final file = result!.files.first;
+                                          openFile(file);
+                                        }
+                                      },
+                                      child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            const Icon(
+                                              size: 50,
+                                              Icons.file_open_outlined,
+                                              color: white,
+                                            ),
+                                            sSpace,
+                                            eventicon(file!.name),
+                                            eventicon('Tap to view the file')
+                                          ])))))),
               space,
               space,
               label('Document name'),
-              SizedBox(
-                height: 52,
-                width: 370,
-                child: TextFormField(
-                  cursorColor: Colors.white,
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
-                  decoration: fieldDecor("Enter the name of the document"),
-                  controller: _docNameController,
-                ),
-              ),
+              Fields(
+                  hint: "Enter the name of the document",
+                  controller: _docNameController),
               line,
               space,
               label('Important Dates'),
@@ -174,9 +146,7 @@ class _AddDocumentsState extends State<AddDocuments> {
                   child: formattedEDate == 'not set'
                       ? dateButtonText('Add Expiry date')
                       : dateButtonText('Expiry date: $formattedEDate')),
-              SizedBox(
-                height: height * 0.1,
-              ),
+              Spacer(),
               FilledButton(
                   onPressed: () async {
                     if (_docNameController.text.isEmpty || filePath!.isEmpty) {
@@ -203,11 +173,7 @@ class _AddDocumentsState extends State<AddDocuments> {
                   },
                   style: mainButton,
                   child: const Text('Save'))
-            ],
-          ),
-        ),
-      ),
-    );
+            ])));
   }
 
   //function to open the file

@@ -8,7 +8,10 @@ import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/recipe%20model/recipe.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/field_style.dart';
+import 'package:pawcare_pro/presentation/views/addpet/widgets/imagebuttondecor.dart';
 import 'package:pawcare_pro/presentation/views/addpet/widgets/lable.dart';
+import 'package:pawcare_pro/presentation/views/nutrition/widgets/icons.dart';
+import 'package:pawcare_pro/presentation/views/widgets/normalappbar.dart';
 import 'package:pawcare_pro/service/recipe_service.dart';
 
 class AddRecipies extends StatefulWidget {
@@ -34,14 +37,7 @@ class _AddRecipiesState extends State<AddRecipies> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: mainBG,
-          foregroundColor: Colors.white,
-          title: const Text(
-            'Add Recipies',
-            style: TextStyle(fontSize: 18),
-          ),
-        ),
+        appBar: normalAppBar('Add Recipies'),
         backgroundColor: mainBG,
         body: Padding(
             padding: const EdgeInsets.all(20),
@@ -51,8 +47,8 @@ class _AddRecipiesState extends State<AddRecipies> {
                     children: [
                   sizedBox,
                   Center(
-                    child: Stack(clipBehavior: Clip.none, children: [
-                      CircleAvatar(
+                      child: Stack(clipBehavior: Clip.none, children: [
+                    CircleAvatar(
                         backgroundColor: grey,
                         radius: 95,
                         child: image != null
@@ -66,118 +62,89 @@ class _AddRecipiesState extends State<AddRecipies> {
                                 child: Icon(
                                   size: 65,
                                   Icons.camera_alt_outlined,
-                                  color: Colors.white,
-                                ),
-                              ),
-                      ),
-                      Positioned(
+                                  color: white,
+                                ))),
+                    Positioned(
                         left: 115,
                         top: 130,
                         child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.white,
-                          ),
-                          child: IconButton(
-                              onPressed: () async {
-                                getMainImagesFromGallery();
-                              },
-                              icon: const Icon(
-                                size: 25,
-                                Icons.image_outlined,
-                                color: mainColor,
-                              )),
-                        ),
-                      )
-                    ]),
-                  ),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: white,
+                            ),
+                            child: IconButton(
+                                onPressed: () async {
+                                  getMainImagesFromGallery();
+                                },
+                                icon: imageIcon())))
+                  ])),
                   space,
                   space,
                   label('Recipe name'),
-                  SizedBox(
-                    height: 52,
-                    width: 370,
-                    child: TextFormField(
-                      cursorColor: Colors.white,
-                      style: const TextStyle(color: Colors.white, fontSize: 20),
-                      decoration: fieldDecor("Enter the name of the recipe"),
-                      controller: _nameController,
-                    ),
-                  ),
+                  Fields(
+                      hint: "Enter the name of the recipe",
+                      controller: _nameController),
                   space,
                   line,
                   space,
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      label('Ingredients'),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              ingredientsController
-                                  .add(TextEditingController());
-                            });
-                          },
-                          icon: const Icon(
-                            size: 25,
-                            Icons.add,
-                            color: Colors.white,
-                          )),
-                    ],
-                  ),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        label('Ingredients'),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                ingredientsController
+                                    .add(TextEditingController());
+                              });
+                            },
+                            icon: addIcon())
+                      ]),
                   ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: ingredientsController.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            SizedBox(
-                              height: 52,
-                              width: width * 0.8,
-                              child: TextFormField(
-                                cursorColor: Colors.white,
-                                style: const TextStyle(
-                                    color: Colors.white, fontSize: 20),
-                                decoration: fieldDecor("Enter the ingredient"),
-                                controller: ingredientsController[index],
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  ingredientsController[index].clear();
-                                  ingredientsController[index].dispose();
-                                  ingredientsController.removeAt(index);
-                                });
-                              },
-                              child: const Icon(
-                                Icons.delete_outline_rounded,
-                                color: Colors.white,
-                                size: 35,
-                              ),
-                            )
-                          ],
-                        ),
-                      );
-                    },
-                  ),
+                      shrinkWrap: true,
+                      itemCount: ingredientsController.length,
+                      itemBuilder: (context, index) {
+                        return Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  SizedBox(
+                                    height: 52,
+                                    width: width * 0.8,
+                                    child: TextFormField(
+                                      cursorColor: white,
+                                      style: const TextStyle(
+                                          color: white, fontSize: 20),
+                                      decoration:
+                                          fieldDecor("Enter the ingredient"),
+                                      controller: ingredientsController[index],
+                                    ),
+                                  ),
+                                  GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          ingredientsController[index].clear();
+                                          ingredientsController[index]
+                                              .dispose();
+                                          ingredientsController.removeAt(index);
+                                        });
+                                      },
+                                      child: deleteIcon())
+                                ]));
+                      }),
                   line,
                   space,
                   label('Directions'),
                   SizedBox(
-                    // height: 52,
-                    width: 370,
-                    child: TextFormField(
-                        cursorColor: Colors.white,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 20),
-                        maxLines: 5,
-                        decoration: fieldDecor(" Enter the directions"),
-                        controller: _directionController),
-                  ),
+                      width: 370,
+                      child: TextFormField(
+                          cursorColor: white,
+                          style: const TextStyle(color: white, fontSize: 20),
+                          maxLines: 5,
+                          decoration: fieldDecor(" Enter the directions"),
+                          controller: _directionController)),
                   space,
                   space,
                   FilledButton(
@@ -199,6 +166,7 @@ class _AddRecipiesState extends State<AddRecipies> {
                             .updateRecipe(recipe.id, recipe)
                             .then(
                           (_) {
+                            setState(() {});
                             Navigator.pop(context, recipe);
                           },
                         );

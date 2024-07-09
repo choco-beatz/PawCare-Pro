@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:pawcare_pro/constant/colors.dart';
 
 label2(String data) {
   return Text(
     data,
     style: const TextStyle(
-        color: Colors.white, fontSize: 18, fontWeight: FontWeight.w500),
+        color: white, fontSize: 18, fontWeight: FontWeight.w500),
   );
 }

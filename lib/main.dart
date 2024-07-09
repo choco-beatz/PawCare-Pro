@@ -3,6 +3,7 @@ import 'package:hive_flutter/adapters.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/domain/certificate%20model/certificates.dart';
 import 'package:pawcare_pro/domain/document%20model/document.dart';
+import 'package:pawcare_pro/domain/event%20model/event.dart';
 import 'package:pawcare_pro/domain/pet%20model/pet.dart';
 import 'package:pawcare_pro/domain/recipe%20model/recipe.dart';
 import 'package:pawcare_pro/domain/user%20model/user.dart';
@@ -10,6 +11,7 @@ import 'package:pawcare_pro/domain/vaccine%20model/vaccine.dart';
 import 'package:pawcare_pro/presentation/views/splash/splash_screen.dart';
 import 'package:pawcare_pro/service/certificate_service.dart';
 import 'package:pawcare_pro/service/document_services.dart';
+import 'package:pawcare_pro/service/event_service.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 import 'package:pawcare_pro/service/recipe_service.dart';
 import 'package:pawcare_pro/service/user_service.dart';
@@ -42,6 +44,10 @@ void main() async {
   Hive.registerAdapter(RecipeAdapter());
   await RecipeService().openBox();
 
+  //getting the adapter that we created recipe.g.dart
+  Hive.registerAdapter(EventAdapter());
+  await EventService().openBox();
+
   runApp(const MyApp());
 }
 
@@ -54,9 +60,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primaryColor: mainColor,
-        focusColor: Colors.white,
+        focusColor: white,
       ),
-      home: SplashScreen(),
+      home: const SplashScreen(),
     );
   }
 }

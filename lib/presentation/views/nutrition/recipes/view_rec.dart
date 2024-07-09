@@ -37,9 +37,9 @@ class ViewRec extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: transparent,
         elevation: 0,
-        foregroundColor: Colors.white,
+        foregroundColor: white,
         title: const Text(
           'Recipies',
           style: TextStyle(fontSize: 18),
@@ -104,7 +104,7 @@ class ViewRec extends StatelessWidget {
                             children: [
                               FaIcon(
                                 FontAwesomeIcons.penToSquare,
-                                color: Colors.white,
+                                color: white,
                                 size: 20,
                               ),
                               Text(
@@ -125,11 +125,11 @@ class ViewRec extends StatelessWidget {
                                     backgroundColor: mainBG,
                                     title: const Text(
                                       'Delete?',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: white),
                                     ),
                                     content: const Text(
                                       'Are you sure?',
-                                      style: TextStyle(color: Colors.white),
+                                      style: TextStyle(color: white),
                                     ),
                                     actions: <Widget>[
                                       TextButton(
@@ -137,7 +137,7 @@ class ViewRec extends StatelessWidget {
                                         onPressed: () => Navigator.pop(context),
                                         child: const Text(
                                           'Cancel',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: white),
                                         ),
                                       ),
                                       TextButton(
@@ -147,10 +147,11 @@ class ViewRec extends StatelessWidget {
 
                                           Navigator.pop(context);
                                           Navigator.pop(context);
+                                          Navigator.pop(context);
                                         },
                                         child: const Text(
                                           'Delete',
-                                          style: TextStyle(color: Colors.white),
+                                          style: TextStyle(color: white),
                                         ),
                                       ),
                                     ],
@@ -161,7 +162,7 @@ class ViewRec extends StatelessWidget {
                             children: [
                               Icon(
                                 Icons.delete_outline_rounded,
-                                color: Colors.white,
+                                color: white,
                                 size: 25,
                               ),
                               Text(

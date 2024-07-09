@@ -3,6 +3,8 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
 import 'package:pawcare_pro/domain/certificate%20model/certificates.dart';
+import 'package:pawcare_pro/presentation/views/documents/widget/alert.dart';
+import 'package:pawcare_pro/presentation/views/documents/widget/icons.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/Screens/Certificate/add_certificates.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/certificate/edit_cert.dart';
 import 'package:pawcare_pro/presentation/views/healthcard/screens/certificate/emptycertificate.dart';
@@ -19,9 +21,6 @@ class ViewCertificates extends StatefulWidget {
 
 class _ViewCertificatesState extends State<ViewCertificates> {
   final CertificateService _certificateService = CertificateService();
-
-  //for file
-  String? file;
 
   //we get all the datas in the db as list of type model
   List<Certificates> _certificate = [];
@@ -53,7 +52,7 @@ class _ViewCertificatesState extends State<ViewCertificates> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: mainBG,
-          foregroundColor: Colors.white,
+          foregroundColor: white,
           title: const Text(
             'Certificates',
             style: TextStyle(fontSize: 18),
@@ -77,142 +76,119 @@ class _ViewCertificatesState extends State<ViewCertificates> {
                     });
                   }
                 },
-                icon: const Icon(
-                  Icons.add,
-                  size: 35,
-                  color: mainColor,
-                ))
+                icon: add())
           ],
         ),
         backgroundColor: mainBG,
         body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: currentCertificate.isEmpty
-              ? EmptyCert(
-                  petId: widget.petId,
-                )
-              : ListView.builder(
-                  itemCount: currentCertificate.length,
-                  itemBuilder: (context, index) {
-                    final current = currentCertificate[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Card(
-                        color: grey,
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: ((context) => ViewCert(
-                                        edate: current.edate,
-                                        idate: current.idate,
-                                        name: current.name,
-                                        file: current.file))));
-                          },
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                  onPressed: () async {
-                                    final updatedCertInfo =
-                                        await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditCertificates(
-                                          id: current.id,
-                                          petId: current.petId,
-                                        ),
-                                      ),
-                                    );
-
-                                    if (updatedCertInfo != null &&
-                                        updatedCertInfo is Certificates) {
-                                      setState(() {
-                                        currentCertificate[index] =
-                                            updatedCertInfo;
-                                      });
-                                    }
+            padding: const EdgeInsets.all(15),
+            child: currentCertificate.isEmpty
+                ? EmptyCert(
+                    petId: widget.petId,
+                  )
+                : ListView.builder(
+                    itemCount: currentCertificate.length,
+                    itemBuilder: (context, index) {
+                      final current = currentCertificate[index];
+                      return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Card(
+                              color: grey,
+                              child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: ((context) => ViewCert(
+                                                edate: current.edate,
+                                                idate: current.idate,
+                                                name: current.name,
+                                                file: current.file))));
                                   },
-                                  icon: const Icon(
-                                    Icons.mode_edit_outline_outlined,
-                                    size: 35,
-                                    color: Color.fromARGB(255, 211, 211, 211),
-                                  )),
-                              IconButton(
-                                  onPressed: () => showDialog<void>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                            backgroundColor: mainBG,
-                                            title: const Text(
-                                              'Delete?',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            content: const Text(
-                                              'Are you sure?',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                style: cancelButton,
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                                child: const Text(
-                                                  'Cancel',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
+                                  trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () async {
+                                              final updatedCertInfo =
+                                                  await Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      EditCertificates(
+                                                    id: current.id,
+                                                    petId: current.petId,
+                                                  ),
                                                 ),
-                                              ),
-                                              TextButton(
-                                                style: delButton,
-                                                onPressed: () async {
-                                                  await _certificateService
-                                                      .deleteCertificate(
-                                                          current.id);
+                                              );
 
-                                                  setState(() {
-                                                    _certificate
-                                                        .removeAt(index);
-                                                  });
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text(
-                                                  'OK',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            ],
-                                          )),
-                                  icon: const Icon(
-                                    Icons.delete_outline_rounded,
-                                    size: 35,
-                                    color: Color.fromARGB(255, 211, 211, 211),
-                                  )),
-                            ],
-                          ),
-                          title: leading(current.name),
-                          subtitle: Row(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(right: 5),
-                                child: Icon(
-                                  Icons.calendar_today,
-                                  color: Color.fromARGB(255, 211, 211, 211),
-                                  size: 18,
-                                ),
-                              ),
-                              subject2(current.idate)
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-        ));
+                                              if (updatedCertInfo != null &&
+                                                  updatedCertInfo
+                                                      is Certificates) {
+                                                setState(() {
+                                                  currentCertificate[index] =
+                                                      updatedCertInfo;
+                                                });
+                                              }
+                                            },
+                                            icon: edit()),
+                                        IconButton(
+                                            onPressed: () => showDialog<void>(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    AlertDialog(
+                                                        backgroundColor: mainBG,
+                                                        title: aleartText(
+                                                            'Delete?'),
+                                                        content: aleartText(
+                                                            'Are you sure?'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                              style:
+                                                                  cancelButton,
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      context),
+                                                              child: aleartText(
+                                                                  'Cancel')),
+                                                          TextButton(
+                                                              style: delButton,
+                                                              onPressed:
+                                                                  () async {
+                                                                await _certificateService
+                                                                    .deleteCertificate(
+                                                                        current
+                                                                            .id);
+
+                                                                setState(() {
+                                                                  _certificate
+                                                                      .removeAt(
+                                                                          index);
+                                                                });
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: aleartText(
+                                                                  'OK'))
+                                                        ])),
+                                            icon: const Icon(
+                                              Icons.delete_outline_rounded,
+                                              size: 35,
+                                              color: offwhite,
+                                            ))
+                                      ]),
+                                  title: leading(current.name),
+                                  subtitle: Row(children: [
+                                    const Padding(
+                                        padding: EdgeInsets.only(right: 5),
+                                        child: Icon(
+                                          Icons.calendar_today,
+                                          color: offwhite,
+                                          size: 18,
+                                        )),
+                                    subject2(current.idate)
+                                  ]))));
+                    })));
   }
 }

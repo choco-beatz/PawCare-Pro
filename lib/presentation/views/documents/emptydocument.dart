@@ -16,54 +16,55 @@ class EmptyDoc extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      backgroundColor: mainBG,
-      body: Padding(
-        padding: const EdgeInsets.only(right: 25, left: 25),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              SizedBox(
-                height: height * 0.14,
-              ),
-              SizedBox(
-                height: height * 0.24,
-                width: width * 0.5,
-                child: const Image(
-                  fit: BoxFit.fill,
-                  image: AssetImage('asset/story.png'),
+        backgroundColor: mainBG,
+        body: Center(
+            child: Container(
+          constraints: const BoxConstraints(maxWidth: 500),
+          child: Padding(
+            padding: const EdgeInsets.only(right: 25, left: 25),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: width > 600 ? height * 0.01 : height * 0.12,
                 ),
-              ),
-              space,
-              space,
-              heading('No documents added'),
-              sizedBox,
-              subject(
-                  "Organize your pet's vaccinations effortlessly. Store certificates for complete care."),
-              SizedBox(height: height * 0.15),
-              OutlinedButton(
-                  onPressed: () async {
-                    final result = await Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => AddDocuments(petId: petId),
-                      ),
-                    );
-
-                    if (result != null && result is Documents) {
-                      Navigator.pushReplacement(
+                SizedBox(
+                  height: width > 600 ? height * 0.47 : height * 0.27,
+                  width: width * 0.5,
+                  child: const Image(
+                    fit: BoxFit.fill,
+                    image: AssetImage('asset/story.png'),
+                  ),
+                ),
+                space,
+                space,
+                heading('No documents added'),
+                sizedBox,
+                subject(
+                    "Organize your pet's vaccinations effortlessly. Store certificates for complete care."),
+                Spacer(),
+                OutlinedButton(
+                    onPressed: () async {
+                      final result = await Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ViewDocuments(petID: petId),
+                          builder: (context) => AddDocuments(petId: petId),
                         ),
                       );
-                    }
-                  },
-                  style: dateButton,
-                  child: subject('Add Documents +'))
-            ],
+
+                      if (result != null && result is Documents) {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ViewDocuments(petID: petId),
+                          ),
+                        );
+                      }
+                    },
+                    style: dateButton,
+                    child: subject('Add Documents +'))
+              ],
+            ),
           ),
-        ),
-      ),
-    );
+        )));
   }
 }

@@ -7,6 +7,8 @@ import 'package:pawcare_pro/presentation/views/documents/add_documents.dart';
 import 'package:pawcare_pro/presentation/views/documents/edit_doc.dart';
 import 'package:pawcare_pro/presentation/views/documents/emptydocument.dart';
 import 'package:pawcare_pro/presentation/views/documents/view_doc.dart';
+import 'package:pawcare_pro/presentation/views/documents/widget/alert.dart';
+import 'package:pawcare_pro/presentation/views/documents/widget/icons.dart';
 import 'package:pawcare_pro/service/document_services.dart';
 
 class ViewDocuments extends StatefulWidget {
@@ -49,164 +51,138 @@ class _ViewDocumentsState extends State<ViewDocuments> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: mainBG,
-          foregroundColor: Colors.white,
-          title: const Text(
-            'Documents',
-            style: TextStyle(fontSize: 18),
-          ),
-          actions: [
-            IconButton(
-                onPressed: () async {
-                  //the result(document object) which is passed from the pop is recieved here
-                  final result = await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: ((context) => AddDocuments(
-                                petId: widget.petID,
-                              ))));
+            backgroundColor: mainBG,
+            foregroundColor: white,
+            title: const Text(
+              'Documents',
+              style: TextStyle(fontSize: 18),
+            ),
+            actions: [
+              IconButton(
+                  onPressed: () async {
+                    //the result(document object) which is passed from the pop is recieved here
+                    final result = await Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: ((context) => AddDocuments(
+                                  petId: widget.petID,
+                                ))));
 
-                  //to check if the returned result is not null and they type is Certificate
-                  if (result != null && result is Documents) {
-                    //the result that is recieved is added to the List that is to be displayed
-                    // _document.add(result);
-                    await _loadDocument();
-                  }
-                },
-                icon: const Icon(
-                  Icons.add,
-                  size: 35,
-                  color: mainColor,
-                ))
-          ],
-        ),
+                    //to check if the returned result is not null and they type is Certificate
+                    if (result != null && result is Documents) {
+                      await _loadDocument();
+                    }
+                  },
+                  icon: add())
+            ]),
         backgroundColor: mainBG,
         body: Padding(
-          padding: const EdgeInsets.all(15),
-          child: newDocuments.isEmpty
-              ? EmptyDoc(
-                  petId: widget.petID,
-                )
-              : ListView.builder(
-                  itemCount: newDocuments.length,
-                  itemBuilder: (context, index) {
-                    final current = newDocuments[index];
-                    return Padding(
-                      padding: const EdgeInsets.only(bottom: 8),
-                      child: Card(
-                        color: grey,
-                        child: ListTile(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => ViewDoc(
-                                          dname: current.dname,
-                                          dedate: current.dedate,
-                                          didate: current.didate,
-                                          dfile: current.dfile,
-                                        )));
-                          },
-                          trailing: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                  onPressed: () async {
-                                    final updatedDocInfo = await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => EditDocuments(
-                                          did: current.did,
-                                          petId: current.petID,
-                                        ),
-                                      ),
-                                    );
-
-                                    if (updatedDocInfo != null &&
-                                        updatedDocInfo is Documents) {
-                                      setState(() {
-                                        newDocuments[index] = updatedDocInfo;
-                                      });
-                                    }
+            padding: const EdgeInsets.all(15),
+            child: newDocuments.isEmpty
+                ? EmptyDoc(
+                    petId: widget.petID,
+                  )
+                : ListView.builder(
+                    itemCount: newDocuments.length,
+                    itemBuilder: (context, index) {
+                      final current = newDocuments[index];
+                      return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Card(
+                              color: grey,
+                              child: ListTile(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => ViewDoc(
+                                                  dname: current.dname,
+                                                  dedate: current.dedate,
+                                                  didate: current.didate,
+                                                  dfile: current.dfile,
+                                                )));
                                   },
-                                  icon: const Icon(
-                                    Icons.mode_edit_outline_outlined,
-                                    size: 35,
-                                    color: Color.fromARGB(255, 211, 211, 211),
-                                  )),
-                              IconButton(
-                                  onPressed: () => showDialog<void>(
-                                      context: context,
-                                      builder: (BuildContext context) =>
-                                          AlertDialog(
-                                            backgroundColor: mainBG,
-                                            title: const Text(
-                                              'Delete?',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            content: const Text(
-                                              'Are you sure?',
-                                              style: TextStyle(
-                                                  color: Colors.white),
-                                            ),
-                                            actions: <Widget>[
-                                              TextButton(
-                                                style: cancelButton,
-                                                onPressed: () =>
-                                                    Navigator.pop(context),
-                                                child: const Text(
-                                                  'Cancel',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                              TextButton(
-                                                style: delButton,
-                                                onPressed: () async {
-                                                  await _documentService
-                                                      .deletedocument(
-                                                          current.did);
-                                                  setState(() {
-                                                    newDocuments
-                                                        .removeAt(index);
-                                                  });
-                                                  Navigator.pop(context);
-                                                },
-                                                child: const Text(
-                                                  'OK',
-                                                  style: TextStyle(
-                                                      color: Colors.white),
-                                                ),
-                                              ),
-                                            ],
-                                          )),
-                                  icon: const Icon(
-                                    Icons.delete_outline_rounded,
-                                    size: 35,
-                                    color: Color.fromARGB(255, 211, 211, 211),
-                                  )),
-                            ],
-                          ),
-                          title: leading(current.dname),
-                          subtitle: Row(
-                            children: [
-                              const Padding(
-                                padding: EdgeInsets.only(right: 5),
-                                child: Icon(
-                                  Icons.calendar_today,
-                                  color: Color.fromARGB(255, 211, 211, 211),
-                                  size: 18,
-                                ),
-                              ),
-                              subject2(current.didate)
-                            ],
-                          ),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-        ));
+                                  trailing: Row(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        IconButton(
+                                            onPressed: () async {
+                                              final updatedDocInfo =
+                                                  await Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              EditDocuments(
+                                                                did:
+                                                                    current.did,
+                                                                petId: current
+                                                                    .petID,
+                                                              )));
+
+                                              if (updatedDocInfo != null &&
+                                                  updatedDocInfo is Documents) {
+                                                setState(() {
+                                                  newDocuments[index] =
+                                                      updatedDocInfo;
+                                                });
+                                              }
+                                            },
+                                            icon: edit()),
+                                        IconButton(
+                                            onPressed: () => showDialog<void>(
+                                                context: context,
+                                                builder: (BuildContext
+                                                        context) =>
+                                                    AlertDialog(
+                                                        backgroundColor: mainBG,
+                                                        title: aleartText(
+                                                            'Delete?'),
+                                                        content: aleartText(
+                                                            'Are you sure?'),
+                                                        actions: <Widget>[
+                                                          TextButton(
+                                                              style:
+                                                                  cancelButton,
+                                                              onPressed: () =>
+                                                                  Navigator.pop(
+                                                                      context),
+                                                              child: aleartText(
+                                                                  'Cancel')),
+                                                          TextButton(
+                                                              style: delButton,
+                                                              onPressed:
+                                                                  () async {
+                                                                await _documentService
+                                                                    .deletedocument(
+                                                                        current
+                                                                            .did);
+                                                                setState(() {
+                                                                  newDocuments
+                                                                      .removeAt(
+                                                                          index);
+                                                                });
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                              child: aleartText(
+                                                                  'OK'))
+                                                        ])),
+                                            icon: const Icon(
+                                                Icons.delete_outline_rounded,
+                                                size: 35,
+                                                color: offwhite))
+                                      ]),
+                                  title: leading(current.dname),
+                                  subtitle: Row(children: [
+                                    const Padding(
+                                        padding: EdgeInsets.only(right: 5),
+                                        child: Icon(
+                                          Icons.calendar_today,
+                                          color: offwhite,
+                                          size: 18,
+                                        )),
+                                    subject2(current.didate)
+                                  ]))));
+                    })));
   }
 }

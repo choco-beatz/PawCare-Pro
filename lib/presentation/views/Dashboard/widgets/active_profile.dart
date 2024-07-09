@@ -40,6 +40,7 @@ class _ActiveProfileState extends State<ActiveProfile> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     if (_pet == null) {
       return const Center(child: CircularProgressIndicator());
     }
@@ -62,7 +63,7 @@ class _ActiveProfileState extends State<ActiveProfile> {
           }
         },
         child: Container(
-          height: height * 0.18,
+          height: width > 600 ? height * 0.225 : height * 0.18,
           decoration: BoxDecoration(
               color: mainColor, borderRadius: BorderRadius.circular(20)),
           child: Row(
@@ -83,32 +84,31 @@ class _ActiveProfileState extends State<ActiveProfile> {
         ),
       ),
       Positioned(
-          left: 160,
+          left: width > 600 ? width * 0.8 : 160,
           top: -45,
           child: CircleAvatar(
-            backgroundColor: const Color.fromARGB(28, 196, 229, 255),
-            radius: 120,
-            child: CircleAvatar(
-                backgroundColor: const Color.fromARGB(80, 196, 229, 255),
-                radius: 100,
-                child: CircleAvatar(
-                    backgroundColor: const Color.fromARGB(100, 196, 229, 255),
-                    radius: 80,
-                    child: _pet!.image.isNotEmpty
-                        ? CircleAvatar(
-                            backgroundImage: FileImage(File(_pet!.image)),
-                            radius: 65,
-                          )
-                        : const CircleAvatar(
-                            radius: 80,
-                            backgroundColor: Color.fromARGB(100, 196, 229, 255),
-                            child: FaIcon(
-                              size: 100,
-                              FontAwesomeIcons.paw,
-                              color: Colors.white,
-                            ),
-                          ))),
-          ))
+              backgroundColor: transparent3,
+              radius: 120,
+              child: CircleAvatar(
+                  backgroundColor: transparent2,
+                  radius: 100,
+                  child: CircleAvatar(
+                      backgroundColor: transparent1,
+                      radius: 80,
+                      child: _pet!.image.isNotEmpty
+                          ? CircleAvatar(
+                              backgroundImage: FileImage(File(_pet!.image)),
+                              radius: 65,
+                            )
+                          : const CircleAvatar(
+                              radius: 80,
+                              backgroundColor:
+                                  transparent1,
+                              child: FaIcon(
+                                size: 100,
+                                FontAwesomeIcons.paw,
+                                color: white,
+                              ))))))
     ]);
   }
 }

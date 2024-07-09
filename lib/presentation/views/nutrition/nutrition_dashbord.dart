@@ -13,7 +13,7 @@ class NutritionDashboard extends StatelessWidget {
       backgroundColor: mainBG,
       appBar: AppBar(
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
+        foregroundColor: white,
         title: const Text(
           'Nutrition',
           style: TextStyle(fontSize: 18),
@@ -25,8 +25,12 @@ class NutritionDashboard extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ViewRecipies(petId: petId,)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewRecipies(
+                              petId: petId,
+                            )));
               },
               child: CardButton(
                   bgColor: transblue,

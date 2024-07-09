@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:pawcare_pro/constant/button.dart';
+import 'package:font_awesome_icon_class/font_awesome_icon_class.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/presentation/views/dashboard/dashboard.dart';
 import 'package:pawcare_pro/presentation/views/emptydashboard/empty_dashboard.dart';
-import 'package:pawcare_pro/presentation/views/onboarding/onboarding.dart';
-import 'package:pawcare_pro/constant/style.dart';
+import 'package:pawcare_pro/presentation/views/splash/widget/slidingpanel.dart';
 import 'package:pawcare_pro/service/petinfo_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -67,7 +67,7 @@ class _SplashScreenState extends State<SplashScreen>
         controller = BottomSheet.createAnimationController(this);
         controller?.duration = const Duration(seconds: 2);
         WidgetsBinding.instance.addPostFrameCallback((_) {
-          openBottomSheet(context);
+          // openBottomSheet(context);
         });
       } else {
         int? petId = await checkPet();
@@ -92,91 +92,49 @@ class _SplashScreenState extends State<SplashScreen>
     super.dispose();
   }
 
-  openBottomSheet(BuildContext context) async {
-    await Future.delayed(const Duration(seconds: 1), () {});
-    showModalBottomSheet(
-        transitionAnimationController: controller,
-        context: context,
-        builder: (BuildContext context) {
-          double height = MediaQuery.of(context).size.height;
-          double width = MediaQuery.of(context).size.width;
-          return Container(
-            height: height * 0.46,
-            decoration: const BoxDecoration(
+  @override
+  Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return Scaffold(
+      body: SlidingUpPanel(
+        collapsed: Container(
+          decoration: const BoxDecoration(
+              color: mainBG,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(25),
                 topRight: Radius.circular(25),
-              ),
-              color: mainBG,
-            ),
-            child: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                Positioned(
-                  top: -35,
-                  left: width * 0.181,
-                  child: const CircleAvatar(
-                    backgroundColor: mainBG,
-                    radius: 40,
-                    child: CircleAvatar(
-                      backgroundColor: mainColor,
-                      radius: 30,
-                      child: CircleAvatar(
-                        backgroundColor: mainBG,
-                        foregroundColor: mainColor,
-                        radius: 28,
-                        child: Icon(
-                          Icons.edit,
-                          size: 30,
-                        ),
-                      ),
-                    ),
+              )),
+          child: const Center(
+              child: FaIcon(
+            FontAwesomeIcons.chevronUp,
+            size: 40,
+            color: white,
+          )),
+        ),
+        maxHeight: height * 0.5,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(25),
+          topRight: Radius.circular(25),
+        ),
+        panel: const SlidingBox(),
+        body: Center(
+          child: width < 600
+              ? Container(
+                  constraints: const BoxConstraints(maxWidth: 500),
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('asset/splash.jpg'),
+                        fit: BoxFit.cover),
+                  ),
+                )
+              : Container(
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage('asset/web_splash.jpg'),
+                        fit: BoxFit.cover),
                   ),
                 ),
-                Positioned(
-                    child: Padding(
-                  padding: const EdgeInsets.only(left: 30, right: 30),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      const SizedBox(
-                        height: 65,
-                      ),
-                      heading('Personalized Pet Profiles'),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      subject(
-                          'Create personalized profiles for each of your beloved pets on PawCare Pro. '),
-                      const SizedBox(
-                        height: 95,
-                      ),
-                      FilledButton(
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const Onboarding()));
-                          },
-                          style: mainButton,
-                          child: const Text('Get started'))
-                    ],
-                  ),
-                )),
-              ],
-            ),
-          );
-        });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('asset/splash.jpg'), fit: BoxFit.cover),
         ),
       ),
     );

@@ -46,7 +46,7 @@ class _ViewRecipiesState extends State<ViewRecipies> {
     return Scaffold(
         appBar: AppBar(
           backgroundColor: mainBG,
-          foregroundColor: Colors.white,
+          foregroundColor: white,
           title: const Text(
             'Recipies',
             style: TextStyle(fontSize: 18),

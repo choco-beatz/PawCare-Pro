@@ -15,7 +15,7 @@ class HealthCardDashboard extends StatelessWidget {
       backgroundColor: mainBG,
       appBar: AppBar(
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
+        foregroundColor: white,
         title: const Text(
           'Health Card',
           style: TextStyle(fontSize: 18),
@@ -27,8 +27,12 @@ class HealthCardDashboard extends StatelessWidget {
           children: [
             GestureDetector(
               onTap: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ViewVaccines(petId: petId,)));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ViewVaccines(
+                              petId: petId,
+                            )));
               },
               child: CardButton(
                   bgColor: transgreen,

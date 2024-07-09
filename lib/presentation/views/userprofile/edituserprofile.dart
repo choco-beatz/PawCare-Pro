@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -5,13 +6,15 @@ import 'package:pawcare_pro/constant/button.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/textField.dart';
 import 'package:pawcare_pro/domain/user%20model/user.dart';
-import 'package:pawcare_pro/presentation/views/emptydashboard/empty_dashboard.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
+import 'package:pawcare_pro/presentation/views/widgets/normalappbar.dart';
 import 'package:pawcare_pro/service/user_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EditUserProfile extends StatefulWidget {
-  const EditUserProfile({super.key});
+  final int userIndex;
+  final UserInfo user;
+  const EditUserProfile(
+      {super.key, required this.userIndex, required this.user});
 
   @override
   State<EditUserProfile> createState() => _EditUserProfileState();
@@ -20,44 +23,27 @@ class EditUserProfile extends StatefulWidget {
 class _EditUserProfileState extends State<EditUserProfile> {
   String? image;
 
-  final TextEditingController _usernameController = TextEditingController();
+  TextEditingController _usernameController = TextEditingController();
 
   final UserInfoService _userInfoService = UserInfoService();
 
-  late List<UserInfo?> _user;
-
-  //loading/fetching data from the hive
-  Future<void> _loadUser() async {
-    //the datas recived from the db is stored
-    _user = await _userInfoService.getuser();
-    setState(() {
-      _usernameController.text = _user.first!.username;
-      image = _user.first!.image;
-    });
-    if (mounted) {
-      setState(() {});
-    }
-  }
 
   @override
   void initState() {
-    _loadUser();
     super.initState();
+    _usernameController = TextEditingController(text: widget.user.username);
+    image = widget.user.image;
   }
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
-      appBar: AppBar(
+        appBar: normalAppBar('Edit User Profile'),
         backgroundColor: mainBG,
-        foregroundColor: Colors.white,
-        title: const Text(
-          'Edit User Profile',
-          style: TextStyle(fontSize: 18),
-        ),
-      ),
-      backgroundColor: mainBG,
-      body: SingleChildScrollView(
+        body: Center(
+                  child: Container(
+        constraints: BoxConstraints(maxWidth: width),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Column(
@@ -70,7 +56,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                 CircleAvatar(
                   backgroundColor: grey,
                   radius: 95,
-                  child: image != null
+                  child: image!.isNotEmpty
                       ? CircleAvatar(
                           backgroundImage: FileImage(File(image ?? '')),
                           radius: 80,
@@ -81,7 +67,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                           child: Icon(
                             size: 65,
                             Icons.camera_alt_outlined,
-                            color: Colors.white,
+                            color: white,
                           ),
                         ),
                 ),
@@ -91,7 +77,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
+                      color: white,
                     ),
                     child: IconButton(
                         onPressed: () async {
@@ -105,42 +91,39 @@ class _EditUserProfileState extends State<EditUserProfile> {
                   ),
                 )
               ]),
-              sizedBox,
-              sizedBox,
+              oBSB,
               SizedBox(
                 height: 52,
                 width: 370,
                 child: TextFormField(
-                  style: const TextStyle(color: Colors.white, fontSize: 20),
+                  style: const TextStyle(color: white, fontSize: 20),
                   decoration: fieldDecor(' Enter your name'),
                   controller: _usernameController,
                 ),
               ),
-              sizedBox,
-              sizedBox,
-              sizedBox,
-              sizedBox,
-              sizedBox,
-              sizedBox,
+              Spacer(),
               FilledButton(
                   onPressed: () async {
                     if (_usernameController.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content:
-                              Text('Please Enter Your name to continue!')));
+                      ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text(
+                                  'Please Enter Your name to continue!')));
                       return;
                     } else {
                       final user = UserInfo(
                           username: _usernameController.text,
                           image: image ?? '',
-                          id: _user.first!.id);
-
-                      await _userInfoService.updateuser(user, user.id);
-                      _usernameController.clear();
-                      if (mounted) {
-                        _user.first = user;
-                      }
-                      Navigator.pop(context);
+                          id: widget.user.id);
+                      log(user.username);
+                      await _userInfoService.updateuser(
+                          user, widget.userIndex);
+                      setState(() {
+                        widget.user.username = user.username;
+                        widget.user.image = user.image;
+                      });
+                      _userInfoService.usersNotifier.value = await _userInfoService.getuser();
+                      Navigator.pop(context, user);
                     }
                   },
                   style: mainButton,
@@ -148,8 +131,8 @@ class _EditUserProfileState extends State<EditUserProfile> {
             ],
           ),
         ),
-      ),
-    );
+                  ),
+                ));
   }
 
   Future getMainImagesFromGallery() async {
