@@ -48,6 +48,11 @@ CalendarStyle calendarStyle() {
       borderRadius: BorderRadius.circular(8),
       border: Border.all(width: 2, color: white),
     ),
+    outsideDecoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(8),
+      color: transparent,
+    ),
+    outsideTextStyle: TextStyle(color: grey),
   );
 }
 
@@ -56,9 +61,7 @@ Container dot(Color color) {
       width: 7,
       height: 7,
       decoration: BoxDecoration(
-        color: color,
-        shape: BoxShape.circle,
-      ));
+          color: color, borderRadius: BorderRadius.circular(3.5)));
 }
 
 RoundedRectangleBorder recBorder() {
