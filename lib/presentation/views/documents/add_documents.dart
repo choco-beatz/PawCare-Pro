@@ -46,6 +46,7 @@ class _AddDocumentsState extends State<AddDocuments> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: normalAppBar('Documents'),
         backgroundColor: mainBG,
         body: Padding(
@@ -149,7 +150,9 @@ class _AddDocumentsState extends State<AddDocuments> {
               Spacer(),
               FilledButton(
                   onPressed: () async {
-                    if (_docNameController.text.isEmpty || filePath!.isEmpty) {
+                    if (_docNameController.text.isEmpty ||
+                        filePath == null ||
+                        filePath!.isEmpty) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content:
                               Text('Please Enter the neccessary details!')));

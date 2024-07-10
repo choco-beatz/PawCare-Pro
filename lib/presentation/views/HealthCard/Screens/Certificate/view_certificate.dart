@@ -50,6 +50,7 @@ class _ViewCertificatesState extends State<ViewCertificates> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: mainBG,
           foregroundColor: white,

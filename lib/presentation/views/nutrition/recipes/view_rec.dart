@@ -55,11 +55,13 @@ class ViewRec extends StatelessWidget {
                 Opacity(
                   opacity: 0.6,
                   child: Container(
-                    height: height * 0.3,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            image: FileImage(File(image)), fit: BoxFit.cover)),
-                  ),
+                      height: height * 0.3,
+                      decoration: image.isNotEmpty
+                          ? BoxDecoration(
+                              image: DecorationImage(
+                                  image: FileImage(File(image)),
+                                  fit: BoxFit.cover))
+                          : BoxDecoration(color: transparent1)),
                 ),
                 Positioned(bottom: 10, left: 12, child: title(name))
               ],

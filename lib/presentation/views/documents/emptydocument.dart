@@ -16,6 +16,7 @@ class EmptyDoc extends StatelessWidget {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         backgroundColor: mainBG,
         body: Center(
             child: Container(

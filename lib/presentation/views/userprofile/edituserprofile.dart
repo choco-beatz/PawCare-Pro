@@ -39,6 +39,7 @@ class _EditUserProfileState extends State<EditUserProfile> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: normalAppBar('Edit User Profile'),
         backgroundColor: mainBG,
         body: Center(

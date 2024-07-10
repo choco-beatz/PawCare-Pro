@@ -58,9 +58,9 @@ class _EditCertificatesState extends State<EditCertificates> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     final String? fileName = filePath != null ? path.basename(filePath!) : null;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: normalAppBar('Edit Certificate'),
         backgroundColor: mainBG,
         body: _cert == null

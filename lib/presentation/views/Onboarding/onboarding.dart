@@ -28,6 +28,7 @@ class _OnboardingState extends State<Onboarding> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: mainBG,
       body: Center(
         child: Container(

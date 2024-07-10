@@ -46,13 +46,13 @@ class _AddCertificatesState extends State<AddCertificates> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: normalAppBar('Certificates'),
         backgroundColor: mainBG,
         body: Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               sizedBox,
               Center(
                   child: CircleAvatar(
@@ -62,7 +62,7 @@ class _AddCertificatesState extends State<AddCertificates> {
                           onTap: () async {
                             result = await FilePicker.platform
                                 .pickFiles(type: FileType.any);
-            
+
                             if (result != null) {
                               setState(() {
                                 filePath = result?.files.single.path;
@@ -103,8 +103,7 @@ class _AddCertificatesState extends State<AddCertificates> {
                                             ),
                                             sSpace,
                                             eventicon(file!.name),
-                                            eventicon(
-                                                'Tap to view the file')
+                                            eventicon('Tap to view the file')
                                           ])))))),
               space,
               space,
@@ -114,8 +113,7 @@ class _AddCertificatesState extends State<AddCertificates> {
                 width: 370,
                 child: TextFormField(
                   style: const TextStyle(color: white, fontSize: 20),
-                  decoration:
-                      fieldDecor(" Enter the name of the Certificate"),
+                  decoration: fieldDecor(" Enter the name of the Certificate"),
                   controller: _fileNameController,
                 ),
               ),
@@ -145,7 +143,7 @@ class _AddCertificatesState extends State<AddCertificates> {
                       showEDate(context, edate).then((value) {
                         setState(() {
                           edate = value!;
-            
+
                           formattedEDate =
                               DateFormat('dd-MM-yyyy').format(edate);
                         });
@@ -160,12 +158,11 @@ class _AddCertificatesState extends State<AddCertificates> {
               FilledButton(
                   onPressed: () async {
                     if (_fileNameController.text.isEmpty ||
-                        filePath!.isEmpty ||
-                        filePath == null) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                              content: Text(
-                                  'Please Enter the neccessary details!')));
+                        filePath == null ||
+                        filePath!.isEmpty) {
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text('Please Enter the neccessary details!')));
                       return;
                     } else {
                       final certificate = Certificates(
@@ -175,7 +172,7 @@ class _AddCertificatesState extends State<AddCertificates> {
                           idate: formattedIDate,
                           edate: formattedEDate,
                           petId: widget.petId);
-            
+
                       await _certificateService
                           .updateCertificate(certificate.id, certificate)
                           .then((_) {

@@ -23,9 +23,9 @@ class ViewCert extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     final String fileName = path.basename(file);
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: mainBG,
           foregroundColor: white,

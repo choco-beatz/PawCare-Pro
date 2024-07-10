@@ -37,6 +37,7 @@ class _AddRecipiesState extends State<AddRecipies> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: normalAppBar('Add Recipies'),
         backgroundColor: mainBG,
         body: Padding(
@@ -154,36 +155,45 @@ class _AddRecipiesState extends State<AddRecipies> {
                         List<String> ingredients = ingredientsController
                             .map((controller) => controller.text)
                             .toList();
-                        final recipe = Recipe(
-                            name: _nameController.text,
-                            ingredients: ingredients,
-                            direction: _directionController.text,
-                            id: DateTime.now().microsecond,
-                            image: image ?? '',
-                            petId: widget.petId);
+                        if (_nameController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Please Enter the neccessary details!')));
+                          return;
+                        } else {
+                          final recipe = Recipe(
+                              name: _nameController.text,
+                              ingredients: ingredients,
+                              direction: _directionController.text,
+                              id: DateTime.now().microsecond,
+                              image: image ?? '',
+                              petId: widget.petId);
 
-                        await _recipeService
-                            .updateRecipe(recipe.id, recipe)
-                            .then(
-                          (_) {
-                            setState(() {});
-                            Navigator.pop(context, recipe);
-                          },
-                        );
+                          await _recipeService
+                              .updateRecipe(recipe.id, recipe)
+                              .then(
+                            (_) {
+                              setState(() {});
+                              Navigator.pop(context, recipe);
+                            },
+                          );
+                        }
                       })
                 ]))));
   }
 
-  Future getMainImagesFromGallery() async {
+  Future<void> getMainImagesFromGallery() async {
     final pickedFile = await ImagePicker().pickImage(
         source: ImageSource.gallery,
         imageQuality: 100,
         maxHeight: 1000,
         maxWidth: 1000);
-    XFile xfilePick = pickedFile!;
 
-    setState(() {
-      image = xfilePick.path;
-    });
+    if (pickedFile != null) {
+      setState(() {
+        image = pickedFile.path;
+      });
+    }
   }
 }

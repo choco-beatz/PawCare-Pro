@@ -49,6 +49,7 @@ class _ViewVaccinesState extends State<ViewVaccines> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: AppBar(
           backgroundColor: mainBG,
           foregroundColor: white,

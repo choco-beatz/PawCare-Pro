@@ -60,9 +60,9 @@ class _EditDocumentsState extends State<EditDocuments> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     final String? fileName = filePath != null ? path.basename(filePath!) : null;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
         appBar: normalAppBar('Edit Document'),
         backgroundColor: mainBG,
         body: _doc == null
@@ -174,7 +174,7 @@ class _EditDocumentsState extends State<EditDocuments> {
                   Spacer(),
                   FilledButton(
                       onPressed: () async {
-                        if (_docNameController.text.isEmpty ||
+                        if (_docNameController.text.isEmpty || filePath == null ||
                             filePath!.isEmpty) {
                           ScaffoldMessenger.of(context)
                               .showSnackBar(snackBar());

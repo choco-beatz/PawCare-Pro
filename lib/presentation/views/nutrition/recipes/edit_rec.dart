@@ -62,6 +62,7 @@ class _EditRecipiesState extends State<EditRecipies> {
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: normalAppBar('Edit Recipies'),
         backgroundColor: mainBG,
         body: Padding(
@@ -96,19 +97,18 @@ class _EditRecipiesState extends State<EditRecipies> {
                   line,
                   space,
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      label('Ingredients'),
-                      IconButton(
-                          onPressed: () {
-                            setState(() {
-                              ingredientsController
-                                  .add(TextEditingController());
-                            });
-                          },
-                          icon: addIcon())
-                    ]
-                  ),
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        label('Ingredients'),
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                ingredientsController
+                                    .add(TextEditingController());
+                              });
+                            },
+                            icon: addIcon())
+                      ]),
                   ListView.builder(
                       shrinkWrap: true,
                       itemCount: ingredientsController.length,
@@ -120,17 +120,17 @@ class _EditRecipiesState extends State<EditRecipies> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   SizedBox(
-                                    height: 52,
-                                    width: width * 0.8,
-                                    child: TextFormField(
-                                      cursorColor: white,
-                                      style: const TextStyle(
-                                          color: white, fontSize: 20),
-                                      decoration:
-                                          fieldDecor("Enter the ingredient"),
-                                      controller: ingredientsController[index],
-                                    )
-                                  ),
+                                      height: 52,
+                                      width: width * 0.8,
+                                      child: TextFormField(
+                                        cursorColor: white,
+                                        style: const TextStyle(
+                                            color: white, fontSize: 20),
+                                        decoration:
+                                            fieldDecor("Enter the ingredient"),
+                                        controller:
+                                            ingredientsController[index],
+                                      )),
                                   GestureDetector(
                                       onTap: () {
                                         setState(() {
@@ -164,21 +164,30 @@ class _EditRecipiesState extends State<EditRecipies> {
                         List<String> ingredients = ingredientsController
                             .map((controller) => controller.text)
                             .toList();
-                        final recipe = Recipe(
-                            name: _nameController.text,
-                            ingredients: ingredients,
-                            direction: _directionController.text,
-                            id: widget.id,
-                            image: image ?? '',
-                            petId: widget.petId);
+                        if (_nameController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                  content: Text(
+                                      'Please Enter the neccessary details!')));
+                          return;
+                        }
+                        {
+                          final recipe = Recipe(
+                              name: _nameController.text,
+                              ingredients: ingredients,
+                              direction: _directionController.text,
+                              id: widget.id,
+                              image: image ?? '',
+                              petId: widget.petId);
 
-                        await _recipeService
-                            .updateRecipe(recipe.id, recipe)
-                            .then(
-                          (_) {
-                            Navigator.pop(context, recipe);
-                          },
-                        );
+                          await _recipeService
+                              .updateRecipe(recipe.id, recipe)
+                              .then(
+                            (_) {
+                              Navigator.pop(context, recipe);
+                            },
+                          );
+                        }
                       })
                 ]))));
   }
