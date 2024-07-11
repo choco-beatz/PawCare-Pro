@@ -153,7 +153,7 @@ class _EditVaccineState extends State<EditVaccine> {
                     return;
                   } else {
                     final vac = Vaccine(
-                        name: _vacNameController.text,
+                        name: _vacNameController.text.trim(),
                         id: _vaccine!.id,
                         idate: formattedIDate,
                         edate: formattedEDate,

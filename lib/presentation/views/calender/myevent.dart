@@ -111,7 +111,7 @@ class _MyEventState extends State<MyEvent> {
                   } else {
                     final event = Event(
                         iname: eventIcon,
-                        title: titleController.text,
+                        title: titleController.text.trim(),
                         id: DateTime.now().millisecond,
                         petId: widget.petId,
                         date: widget.date);

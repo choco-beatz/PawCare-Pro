@@ -152,9 +152,12 @@ class _ShowEventState extends State<ShowEvent> {
                                 child: Column(children: [
                                   ListTile(
                                       tileColor: fieldColor,
-                                      // add rounded border to list item
                                       shape: recBorder(),
-                                      leading: leadingIcon,
+                                      leading: SizedBox(
+                                        height: 50,
+                                        width: 50,
+                                        child: leadingIcon,
+                                      ),
                                       subtitle: leading(myEvents.title),
                                       title: eventicon(
                                         DateFormat.yMMMd()
@@ -218,7 +221,6 @@ class _ShowEventState extends State<ShowEvent> {
                           }).toList(),
                         )
                       : NoEvent()
-                  
                 ]))),
         floatingActionButton: FloatingActionButton.extended(
           onPressed: () {

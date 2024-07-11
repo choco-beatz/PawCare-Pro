@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/style.dart';
 
-// ignore: must_be_immutable
+
 class DrawerList extends StatelessWidget {
   IconData? icon;
   String? text;

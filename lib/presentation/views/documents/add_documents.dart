@@ -159,7 +159,7 @@ class _AddDocumentsState extends State<AddDocuments> {
                       return;
                     } else {
                       final document = Documents(
-                          dname: _docNameController.text,
+                          dname: _docNameController.text.trim(),
                           did: DateTime.now().microsecond,
                           dfile: filePath ?? '',
                           didate: formattedIDate,

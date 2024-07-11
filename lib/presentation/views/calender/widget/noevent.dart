@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pawcare_pro/constant/colors.dart';
 import 'package:pawcare_pro/constant/sizedbox.dart';
 import 'package:pawcare_pro/constant/style.dart';
 

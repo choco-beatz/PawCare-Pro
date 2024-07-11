@@ -72,14 +72,14 @@ class _SplashScreenState extends State<SplashScreen>
       } else {
         int? petId = await checkPet();
         if (petId != null) {
-          Navigator.push(
+          Navigator.pushReplacement(
               context,
               MaterialPageRoute(
                   builder: (context) => Dashboard(
                         petID: petId,
                       )));
         } else {
-          Navigator.push(context,
+          Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (context) => const EmptyDash()));
         }
       }

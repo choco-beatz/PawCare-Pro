@@ -166,7 +166,7 @@ class _AddCertificatesState extends State<AddCertificates> {
                       return;
                     } else {
                       final certificate = Certificates(
-                          name: _fileNameController.text,
+                          name: _fileNameController.text.trim(),
                           id: DateTime.now().microsecond,
                           file: filePath ?? '',
                           idate: formattedIDate,

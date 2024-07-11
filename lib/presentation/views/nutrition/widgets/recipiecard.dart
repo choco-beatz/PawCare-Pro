@@ -30,14 +30,14 @@ class RecipieCard extends StatelessWidget {
                   radius: 80,
                   child: CircleAvatar(
                       backgroundColor: const Color.fromARGB(31, 122, 125, 127),
-                      radius: 68,
+                      radius: 64,
                       child: image.isNotEmpty
                           ? CircleAvatar(
-                              radius: 56,
+                              radius: 50,
                               backgroundImage: FileImage(File(image)),
                             )
                           : const CircleAvatar(
-                              radius: 56,
+                              radius: 50,
                               backgroundColor: transparent3,
                               child: Icon(
                                 size: 60,

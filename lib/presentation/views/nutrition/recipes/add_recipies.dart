@@ -153,9 +153,9 @@ class _AddRecipiesState extends State<AddRecipies> {
                       child: const Text('Done'),
                       onPressed: () async {
                         List<String> ingredients = ingredientsController
-                            .map((controller) => controller.text)
+                            .map((controller) => controller.text.trim())
                             .toList();
-                        if (_nameController.text.isEmpty) {
+                        if (_nameController.text.isEmpty||ingredients.isEmpty||_directionController.text.isEmpty) {
                           ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
                                   content: Text(
@@ -163,9 +163,9 @@ class _AddRecipiesState extends State<AddRecipies> {
                           return;
                         } else {
                           final recipe = Recipe(
-                              name: _nameController.text,
+                              name: _nameController.text.trim(),
                               ingredients: ingredients,
-                              direction: _directionController.text,
+                              direction: _directionController.text.trim(),
                               id: DateTime.now().microsecond,
                               image: image ?? '',
                               petId: widget.petId);

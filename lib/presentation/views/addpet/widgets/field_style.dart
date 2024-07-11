@@ -44,6 +44,7 @@ class Fields extends StatelessWidget {
       height: 52,
       width: 370,
       child: TextFormField(
+        
         cursorColor: white,
         style: const TextStyle(color: white, fontSize: 20),
         decoration: fieldDecor(hint),

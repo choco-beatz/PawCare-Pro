@@ -325,12 +325,12 @@ class _EditPetProfileState extends State<EditPetProfile> {
                                 } else {
                                   final pet = PetInfo(
                                       type: selected,
-                                      name: _nameController.text,
-                                      breed: _breedController.text,
-                                      description: _descriptionController.text,
+                                      name: _nameController.text.trim(),
+                                      breed: _breedController.text.trim(),
+                                      description: _descriptionController.text.trim(),
                                       gender: gender,
                                       size: size,
-                                      weight: _weightController.text,
+                                      weight: _weightController.text.trim(),
                                       image: image ?? _pet!.image,
                                       bday: formattedBDate,
                                       aday: formattedADate,

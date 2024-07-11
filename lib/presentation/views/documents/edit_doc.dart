@@ -181,7 +181,7 @@ class _EditDocumentsState extends State<EditDocuments> {
                           return;
                         } else {
                           final document = Documents(
-                              dname: _docNameController.text,
+                              dname: _docNameController.text.trim(),
                               did: _doc!.did,
                               dfile: filePath ?? '',
                               didate: formattedIDate,

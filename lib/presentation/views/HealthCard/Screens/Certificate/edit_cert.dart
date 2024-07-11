@@ -179,7 +179,7 @@ class _EditCertificatesState extends State<EditCertificates> {
                           return;
                         } else {
                           final certificate = Certificates(
-                              name: _certNameController.text,
+                              name: _certNameController.text.trim(),
                               id: _cert!.id,
                               file: filePath ?? '',
                               idate: formattedIDate,

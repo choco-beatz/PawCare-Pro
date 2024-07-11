@@ -124,7 +124,7 @@ class _AddVaccinesState extends State<AddVaccines> {
                     return;
                   } else {
                     final vaccine = Vaccine(
-                        name: _nameController.text,
+                        name: _nameController.text.trim(),
                         id: DateTime.now().microsecond,
                         idate: formattedIDate ,
                         edate: formattedEDate,

@@ -107,7 +107,7 @@ class _OnboardingState extends State<Onboarding> {
                         return;
                       } else {
                         final user = UserInfo(
-                            username: _usernameController.text,
+                            username: _usernameController.text.trim(),
                             image: image ?? '',
                             id: DateTime.now().millisecond);
       
