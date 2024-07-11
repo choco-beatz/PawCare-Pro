@@ -16,9 +16,9 @@ class CircleImageRec extends StatelessWidget {
     return CircleAvatar(
       backgroundColor: grey,
       radius: 95,
-      child: image != null
+      child: image != null && image!.isNotEmpty
           ? CircleAvatar(
-              backgroundImage: FileImage(File(image ?? '')),
+              backgroundImage: FileImage(File(image!)),
               radius: 80,
             )
           : const CircleAvatar(
